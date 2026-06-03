@@ -37,3 +37,15 @@ E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\ECommerce.Infrastruc
 E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\ECommerce.Application.pdb
 E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\ECommerce.Infrastructure.pdb
 E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\ECommerce.Domain.pdb
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Microsoft.Extensions.DependencyModel.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.AspNetCore.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Extensions.Hosting.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Extensions.Logging.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Formatting.Compact.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Settings.Configuration.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.Console.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.Debug.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.File.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.Seq.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.sourcelink.json

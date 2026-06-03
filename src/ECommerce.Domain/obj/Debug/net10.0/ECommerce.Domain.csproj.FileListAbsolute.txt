@@ -9,3 +9,4 @@ E:\AspNetCore\ECommerce\src\ECommerce.Domain\obj\Debug\net10.0\ECommerce.Domain.
 E:\AspNetCore\ECommerce\src\ECommerce.Domain\obj\Debug\net10.0\refint\ECommerce.Domain.dll
 E:\AspNetCore\ECommerce\src\ECommerce.Domain\obj\Debug\net10.0\ECommerce.Domain.pdb
 E:\AspNetCore\ECommerce\src\ECommerce.Domain\obj\Debug\net10.0\ref\ECommerce.Domain.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Domain\obj\Debug\net10.0\ECommerce.Domain.sourcelink.json

@@ -99,6 +99,28 @@
 - [ ] FR-056: Successful/failed payment confirmation
 - [ ] FR-057: Tracking code generation after payment
 
+## Functional Requirements
+
+### 13. Slug & SEO Friendly URLs
+
+- [x] FR-058: All entities displayed in URLs must have a Slug
+- [x] FR-059: Slug must be automatically generated from the entity name
+- [x] FR-060: Slug must be unique across the entire table
+- [x] FR-061: Slug must contain only ASCII characters (English letters and numbers)
+- [x] FR-062: Slug must support automatic conversion from Persian/Farsi names to English
+- [x] FR-063: Admin must be able to manually edit the Slug
+- [x] FR-064: If Slug is duplicate, append version number (e.g., iphone-15-pro-2)
+
+### Entities with Slug Support
+
+| Entity          | Example URL                            | Example Slug         |
+| --------------- | -------------------------------------- | -------------------- |
+| Product         | `/Products/iphone-15-pro`              | `iphone-15-pro`      |
+| Category        | `/Categories/smartphones`              | `smartphones`        |
+| Brand           | `/Brands/apple`                        | `apple`              |
+| Article         | `/Articles/top-10-smartphones`         | `top-10-smartphones` |
+| ArticleCategory | `/Articles/categories/product-reviews` | `product-reviews`    |
+
 ## Non-Functional Requirements
 
 ### Security

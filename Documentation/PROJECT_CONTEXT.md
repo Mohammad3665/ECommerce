@@ -58,3 +58,4 @@ A multi-role e-commerce platform with product management, brand management, cate
 - Docker + Docker Compose
 - Health Checks
 - Swagger
+- Auto Mapper

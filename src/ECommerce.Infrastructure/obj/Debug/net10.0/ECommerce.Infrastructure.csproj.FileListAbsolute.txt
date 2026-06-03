@@ -15,3 +15,4 @@ E:\AspNetCore\ECommerce\src\ECommerce.Infrastructure\obj\Debug\net10.0\ECommerce
 E:\AspNetCore\ECommerce\src\ECommerce.Infrastructure\obj\Debug\net10.0\refint\ECommerce.Infrastructure.dll
 E:\AspNetCore\ECommerce\src\ECommerce.Infrastructure\obj\Debug\net10.0\ECommerce.Infrastructure.pdb
 E:\AspNetCore\ECommerce\src\ECommerce.Infrastructure\obj\Debug\net10.0\ref\ECommerce.Infrastructure.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Infrastructure\obj\Debug\net10.0\ECommerce.Infrastructure.sourcelink.json

@@ -1,0 +1,15 @@
+E:\AspNetCore\ECommerce\src\ECommerce.Application\bin\Debug\net10.0\ECommerce.Application.deps.json
+E:\AspNetCore\ECommerce\src\ECommerce.Application\bin\Debug\net10.0\ECommerce.Application.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Application\bin\Debug\net10.0\ECommerce.Application.pdb
+E:\AspNetCore\ECommerce\src\ECommerce.Application\bin\Debug\net10.0\ECommerce.Domain.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Application\bin\Debug\net10.0\ECommerce.Domain.pdb
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.csproj.AssemblyReference.cache
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.GeneratedMSBuildEditorConfig.editorconfig
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.AssemblyInfoInputs.cache
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.AssemblyInfo.cs
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.csproj.CoreCompileInputs.cache
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerc.670E0CBE.Up2Date
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\refint\ECommerce.Application.dll
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ECommerce.Application.pdb
+E:\AspNetCore\ECommerce\src\ECommerce.Application\obj\Debug\net10.0\ref\ECommerce.Application.dll

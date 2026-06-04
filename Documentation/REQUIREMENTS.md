@@ -1,6 +1,5 @@
 # ECommerce System Requirements
 
-
 ## Functional Requirements
 
 ### 1. User Management & Authentication

@@ -96,8 +96,8 @@ Development: https://localhost:5162/api/v1
 | ------ | ----------------- | ----------------- | --------- |
 | GET    | /Profile          | Get my profile    | Customer+ |
 | PUT    | /Profile          | Update my profile | Customer+ |
-| GET    | /Profile/orders   | Get my orders     | Customer+ |
-| GET    | /Profile/comments | Get my comments   | Customer+ |
+| GET    | /Profile/Orders   | Get my orders     | Customer+ |
+| GET    | /Profile/Comments | Get my comments   | Customer+ |
 
 **Sample Request (Update Profile):**
 

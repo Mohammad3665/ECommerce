@@ -1,5 +1,5 @@
 using Serilog;
-
+using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
@@ -16,11 +16,11 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 app.MapControllers();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+
+app.MapOpenApi();
+app.MapScalarApiReference();
+app.MapGet("/test", () => Results.Json(new { message = "api is working"}));
+app.MapGet("/", () => Results.Redirect("/scalar"));
 app.UseHsts();
 app.UseHttpsRedirection();
 

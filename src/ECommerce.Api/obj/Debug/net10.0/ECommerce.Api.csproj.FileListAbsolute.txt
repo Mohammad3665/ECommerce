@@ -49,3 +49,12 @@ E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.Debug.
 E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.File.dll
 E:\AspNetCore\ECommerce\src\ECommerce.Api\bin\Debug\net10.0\Serilog.Sinks.Seq.dll
 E:\AspNetCore\ECommerce\src\ECommerce.Api\obj\Debug\net10.0\ECommerce.Api.sourcelink.json
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\Scalar.AspNetCore.dll
+E:\AspNetCore\ECommerce\src\ecommerce.api\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll

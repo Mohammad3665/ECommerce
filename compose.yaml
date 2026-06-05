@@ -7,4 +7,4 @@ services:
       context: .
       dockerfile: src/ECommerce.Api/Dockerfile
     ports:
-      - 5162:5162
+      - "5000:5162"

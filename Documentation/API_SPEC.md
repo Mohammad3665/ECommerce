@@ -718,3 +718,183 @@ Development: https://localhost:5162/api/v1
 | Category | /api/v1/Categories/smartphones      |
 | Brand    | /api/v1/Brands/apple                |
 | Article  | /api/v1/Articles/top-10-smartphones |
+
+## 16. Role Management (Owner only)
+
+**Base Path:** `/api/v1/Owner/Roles`
+
+| Method | Endpoint                                       | Description                 | Access     |
+| ------ | ---------------------------------------------- | --------------------------- | ---------- |
+| GET    | `/Owner/Roles`                                 | Get all roles               | Owner only |
+| GET    | `/Owner/Roles/{id}`                            | Get role by id              | Owner only |
+| POST   | `/Owner/Roles`                                 | Create new role             | Owner only |
+| PUT    | `/Owner/Roles/{id}`                            | Update role                 | Owner only |
+| DELETE | `/Owner/Roles/{id}`                            | Delete role                 | Owner only |
+| GET    | `/Owner/Roles/{id}/Permissions`                | Get role permissions        | Owner only |
+| POST   | `/Owner/Roles/{id}/Permissions`                | Assign permissions to role  | Owner only |
+| DELETE | `/Owner/Roles/{id}/Permissions/{permissionId}` | Remove permission from role | Owner only |
+| GET    | `/Owner/Roles/{id}/Users`                      | Get users with this role    | Owner only |
+
+**Sample Request (Create Role):**
+
+```json
+{
+  "name": "ProductManager",
+  "displayName": "مدیر محصولات",
+  "description": "Can manage products only",
+  "level": 60,
+  "permissions": [
+    "products.create",
+    "products.read",
+    "products.update",
+    "products.delete",
+    "categories.read",
+    "brands.read"
+  ]
+}
+```
+
+**Sample Response (Get Roles):**
+
+```json
+{
+  "isSuccess": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Owner",
+      "displayName": "مالک",
+      "description": "Full system access",
+      "isDefault": true,
+      "isSystemProtected": true,
+      "level": 100,
+      "userCount": 1
+    },
+    {
+      "id": 2,
+      "name": "Admin",
+      "displayName": "مدیر",
+      "isDefault": true,
+      "isSystemProtected": true,
+      "level": 80,
+      "userCount": 3
+    },
+    {
+      "id": 5,
+      "name": "ProductManager",
+      "displayName": "مدیر محصولات",
+      "isDefault": false,
+      "isSystemProtected": false,
+      "level": 60,
+      "userCount": 2
+    }
+  ]
+}
+```
+
+**Sample Response (Get Role Permissions):**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "roleId": 5,
+    "roleName": "ProductManager",
+    "permissions": [
+      {
+        "id": 10,
+        "name": "products.create",
+        "module": "Products",
+        "description": "Create new products"
+      },
+      {
+        "id": 11,
+        "name": "products.read",
+        "module": "Products",
+        "description": "View products"
+      }
+    ]
+  }
+}
+```
+
+## 17. Permission Management (Owner Only)
+
+**Base Path:** `/api/v1/Owner/Permissions`
+
+| Method | Endpoint                   | Description                             | Access     |
+| ------ | -------------------------- | --------------------------------------- | ---------- |
+| GET    | /Owner/Permissions         | Get all permissions (grouped by module) | Owner only |
+| GET    | /Owner/Permissions/Modules | Get all permission modules              | Owner only |
+
+**Sample Response (Get Permissions):**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "modules": [
+      {
+        "name": "User Management",
+        "permissions": [
+          { "name": "users.create", "description": "Create users" },
+          { "name": "users.read", "description": "View users" },
+          { "name": "users.update", "description": "Update users" },
+          { "name": "users.delete", "description": "Delete users" }
+        ]
+      },
+      {
+        "name": "Product Management",
+        "permissions": [
+          { "name": "products.create", "description": "Create products" },
+          { "name": "products.read", "description": "View products" },
+          { "name": "products.update", "description": "Update products" },
+          { "name": "products.delete", "description": "Delete products" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## 18. Assign Roles to Users (Admin/Owner)
+
+**Base Path:** `/api/v1/Admin/Users`
+
+| Method | Endpoint                             | Description           | Access       |
+| ------ | ------------------------------------ | --------------------- | ------------ |
+| POST   | /Admin/Users/{userId}/Roles          | Assign roles to user  | Admin, Owner |
+| GET    | /Admin/Users/{userId}/Roles          | Get user roles        | Admin, Owner |
+| DELETE | /Admin/Users/{userId}/Roles/{roleId} | Remove role from user | Admin, Owner |
+
+**Sample Request (Assign Roles):**
+
+```json
+{
+  "roleIds": [2, 5]
+}
+```
+
+**Sample Response (Get User Roles):**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "userName": "John Doe",
+    "roles": [
+      {
+        "id": 2,
+        "name": "Admin",
+        "displayName": "مدیر"
+      },
+      {
+        "id": 5,
+        "name": "ProductManager",
+        "displayName": "مدیر محصولات"
+      }
+    ]
+  }
+}
+```

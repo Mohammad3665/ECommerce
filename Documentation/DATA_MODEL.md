@@ -331,3 +331,149 @@ public class Slide : BaseEntity<long>
     public int DisplayOrder { get; set; }
 }
 ```
+
+### 18. Role
+
+```csharp
+public class Role : BaseEntity<long>
+{
+    public string Name { get; set; }           // "ProductManager"
+    public string DisplayName { get; set; }    // "مدیر محصولات"
+    public string Description { get; set; }
+    public bool IsDefault { get; set; }        // true for Owner, Admin, ContentManager, Customer
+    public bool IsSystemProtected { get; set; } // Cannot delete/modify Owner role
+    public int Level { get; set; }              // 100=Owner, 80=Admin, 50=ContentManager, 10=Customer
+
+    // Relationships
+    public ICollection<UserRole> UserRoles { get; set; }
+    public ICollection<RolePermission> RolePermissions { get; set; }
+}
+```
+
+### 19. Permission
+
+```csharp
+public class Permission : BaseEntity<long>
+{
+    public string Name { get; set; }           // "products.create"
+    public string Module { get; set; }         // "Products"
+    public string Description { get; set; }
+
+    // Relationships
+    public ICollection<RolePermission> RolePermissions { get; set; }
+}
+
+```
+
+### 20. User Role (Many To Many)
+
+```csharp
+public class UserRole
+{
+    public Guid UserId { get; set; }
+    public long RoleId { get; set; }
+
+    // Relationships
+    public User User { get; set; }
+    public Role Role { get; set; }
+}
+
+```
+
+### 21. Role Permission (Many To Many)
+
+```csharp
+public class RolePermission
+{
+    public long RoleId { get; set; }
+    public long PermissionId { get; set; }
+
+    // Relationships
+    public Role Role { get; set; }
+    public Permission Permission { get; set; }
+}
+```
+
+### 22. Initial Seeding
+
+```csharp
+public static class Permissions
+{
+    // User Permissions
+    public const string UsersCreate = "users.create";
+    public const string UsersRead = "users.read";
+    public const string UsersUpdate = "users.update";
+    public const string UsersDelete = "users.delete";
+
+    // Role Permissions
+    public const string RolesCreate = "roles.create";
+    public const string RolesRead = "roles.read";
+    public const string RolesUpdate = "roles.update";
+    public const string RolesDelete = "roles.delete";
+
+    // Product Permissions
+    public const string ProductsCreate = "products.create";
+    public const string ProductsRead = "products.read";
+    public const string ProductsUpdate = "products.update";
+    public const string ProductsDelete = "products.delete";
+
+    // Category Permissions
+    public const string CategoriesCreate = "categories.create";
+    public const string CategoriesRead = "categories.read";
+    public const string CategoriesUpdate = "categories.update";
+    public const string CategoriesDelete = "categories.delete";
+
+    // Brand Permissions
+    public const string BrandsCreate = "brands.create";
+    public const string BrandsRead = "brands.read";
+    public const string BrandsUpdate = "brands.update";
+    public const string BrandsDelete = "brands.delete";
+
+    // Order Permissions
+    public const string OrdersRead = "orders.read";
+    public const string OrdersUpdate = "orders.update";
+    public const string OrdersCancel = "orders.cancel";
+
+    // Comment Permissions
+    public const string CommentsRead = "comments.read";
+    public const string CommentsApprove = "comments.approve";
+    public const string CommentsReject = "comments.reject";
+    public const string CommentsDelete = "comments.delete";
+
+    // Article Permissions
+    public const string ArticlesCreate = "articles.create";
+    public const string ArticlesRead = "articles.read";
+    public const string ArticlesUpdate = "articles.update";
+    public const string ArticlesDelete = "articles.delete";
+
+    // Slider Permissions
+    public const string SlidersCreate = "sliders.create";
+    public const string SlidersRead = "sliders.read";
+    public const string SlidersUpdate = "sliders.update";
+    public const string SlidersDelete = "sliders.delete";
+
+    // Coupon Permissions
+    public const string CouponsCreate = "coupons.create";
+    public const string CouponsRead = "coupons.read";
+    public const string CouponsUpdate = "coupons.update";
+    public const string CouponsDelete = "coupons.delete";
+
+    // Dashboard Permissions
+    public const string DashboardView = "dashboard.view";
+}
+```
+
+### 23. Seed Data Configuration
+
+```csharp
+public static class DefaultRoles
+{
+    public static readonly List<Role> Roles = new()
+    {
+        new Role { Id = 1, Name = "Owner", DisplayName = "مالک", IsDefault = true, IsSystemProtected = true, Level = 100 },
+        new Role { Id = 2, Name = "Admin", DisplayName = "مدیر", IsDefault = true, IsSystemProtected = true, Level = 80 },
+        new Role { Id = 3, Name = "ContentManager", DisplayName = "مدیر محتوا", IsDefault = true, IsSystemProtected = true, Level = 50 },
+        new Role { Id = 4, Name = "Customer", DisplayName = "مشتری", IsDefault = true, IsSystemProtected = true, Level = 10 }
+    };
+}
+```

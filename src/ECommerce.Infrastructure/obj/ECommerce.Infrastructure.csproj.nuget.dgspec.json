@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {}
+    "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {}
   },
   "projects": {
-    "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj": {
+    "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj",
+        "projectUniqueName": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj",
         "projectName": "ECommerce.Application",
-        "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj",
+        "projectPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj",
         "packagesPath": "C:\\Users\\0\\.nuget\\packages\\",
-        "outputPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\obj\\",
+        "outputPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -35,8 +35,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj": {
-                "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj"
+              "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj": {
+                "projectPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj"
               }
             }
           }
@@ -351,14 +351,14 @@
         }
       }
     },
-    "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj": {
+    "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj",
+        "projectUniqueName": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj",
         "projectName": "ECommerce.Domain",
-        "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj",
+        "projectPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\ECommerce.Domain.csproj",
         "packagesPath": "C:\\Users\\0\\.nuget\\packages\\",
-        "outputPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\obj\\",
+        "outputPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -694,14 +694,14 @@
         }
       }
     },
-    "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {
+    "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
+        "projectUniqueName": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
         "projectName": "ECommerce.Infrastructure",
-        "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
+        "projectPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\0\\.nuget\\packages\\",
-        "outputPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\obj\\",
+        "outputPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -725,8 +725,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj": {
-                "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj"
+              "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj": {
+                "projectPath": "e:\\AspNetCore\\ECommerce\\src\\ECommerce.Application\\ECommerce.Application.csproj"
               }
             }
           }

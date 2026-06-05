@@ -11,7 +11,7 @@
 - [ ] FR-005: Password change functionality
 - [ ] FR-006: User list display for Admin/Owner
 - [ ] FR-007: Enable/disable user accounts
-- [ ] FR-008: Role management (Owner, Admin, ContentManager, Customer)
+- [ ] FR-008: Default role management (Owner, Admin, ContentManager, Customer)
 
 ### 2. Brand Management
 
@@ -116,6 +116,70 @@
 | Brand           | `/Brands/apple`                        | `apple`              |
 | Article         | `/Articles/top-10-smartphones`         | `top-10-smartphones` |
 | ArticleCategory | `/Articles/categories/product-reviews` | `product-reviews`    |
+
+## 13. Dynamic Role & Permission Management
+
+### 6.1 Default Roles (System Seed)
+
+| Role           | Description                                     | Access Level |
+| -------------- | ----------------------------------------------- | ------------ |
+| Owner          | Full system access                              | 100          |
+| Admin          | Administrative access (except Owner management) | 80           |
+| ContentManager | Article and comment management                  | 50           |
+| Customer       | Standard user access                            | 10           |
+
+### 6.2 Permission Management
+
+- [ ] FR-065: System must support granular permissions (Create, Read, Update, Delete)
+- [ ] FR-066: Each permission must be assignable to any role
+- [ ] FR-067: Permissions must be grouped by module (Product, Order, User, etc.)
+
+### 6.3 Create New Role (Owner only)
+
+- [ ] FR-068: Owner must be able to create new custom roles
+- [ ] FR-069: Owner must be able to set role name and description
+- [ ] FR-070: Owner must be able to assign permissions to new roles
+
+### 6.4 Edit Role
+
+- [ ] FR-071: Owner must be able to edit role information (name, description)
+- [ ] FR-072: Owner must be able to add/remove permissions from existing roles
+- [ ] FR-073: Owner must NOT be able to delete or modify Owner role permissions
+
+### 6.5 Delete Role
+
+- [ ] FR-074: Owner must be able to delete custom roles
+- [ ] FR-075: System must prevent deletion of default roles (Owner, Admin, ContentManager, Customer)
+- [ ] FR-076: System must check if role has assigned users before deletion
+- [ ] FR-077: System must prompt confirmation when deleting role with assigned users
+
+### 6.6 Assign Roles to Users
+
+- [ ] FR-078: Admin/Owner must be able to assign multiple roles to a user
+- [ ] FR-079: Admin/Owner must be able to remove roles from users
+- [ ] FR-080: Admin cannot assign Owner role to any user
+
+### 6.7 Permission Checking
+
+- [ ] FR-081: System must check user permissions before every operation
+- [ ] FR-082: System must return 403 Forbidden if user lacks required permission
+- [ ] FR-083: Permissions must be cached for performance
+
+### 6.8 Permission Groups (Modules)
+
+| Module              | Available Permissions                                                            |
+| ------------------- | -------------------------------------------------------------------------------- |
+| User Management     | `users.create`, `users.read`, `users.update`, `users.delete`                     |
+| Role Management     | `roles.create`, `roles.read`, `roles.update`, `roles.delete`                     |
+| Product Management  | `products.create`, `products.read`, `products.update`, `products.delete`         |
+| Category Management | `categories.create`, `categories.read`, `categories.update`, `categories.delete` |
+| Brand Management    | `brands.create`, `brands.read`, `brands.update`, `brands.delete`                 |
+| Order Management    | `orders.read`, `orders.update`, `orders.cancel`                                  |
+| Comment Management  | `comments.read`, `comments.approve`, `comments.reject`, `comments.delete`        |
+| Article Management  | `articles.create`, `articles.read`, `articles.update`, `articles.delete`         |
+| Slider Management   | `sliders.create`, `sliders.read`, `sliders.update`, `sliders.delete`             |
+| Coupon Management   | `coupons.create`, `coupons.read`, `coupons.update`, `coupons.delete`             |
+| Dashboard           | `dashboard.view`                                                                 |
 
 ## Non-Functional Requirements
 

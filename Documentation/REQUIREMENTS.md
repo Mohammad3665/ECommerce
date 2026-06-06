@@ -6,12 +6,12 @@
 
 - [ ] FR-001: User registration with default Customer role
 - [ ] FR-002: Login with JWT token
-- [ ] FR-003: User creation by Admin/Owner with custom role assignment
+- [ ] FR-003: User creation by Admin/Super Admin with custom role assignment
 - [ ] FR-004: User profile editing
 - [ ] FR-005: Password change functionality
-- [ ] FR-006: User list display for Admin/Owner
+- [ ] FR-006: User list display for Admin/Super Admin
 - [ ] FR-007: Enable/disable user accounts
-- [ ] FR-008: Default role management (Owner, Admin, ContentManager, Customer)
+- [ ] FR-008: Default role management (Super Admin, Admin, ContentManager, Customer)
 
 ### 2. Brand Management
 
@@ -65,7 +65,7 @@
 
 ### 8. Articles & Content
 
-- [ ] FR-041: Article CRUD by Owner/Admin/ContentManager
+- [ ] FR-041: Article CRUD by Super Admin/Admin/ContentManager
 - [ ] FR-042: Article categorization
 - [ ] FR-043: Display latest articles on homepage
 - [ ] FR-044: View article details
@@ -74,12 +74,12 @@
 
 - [ ] FR-045: Comment submission by authenticated users only
 - [ ] FR-046: Nested replies to comments
-- [ ] FR-047: Comment approval by ContentManager/Admin/Owner
+- [ ] FR-047: Comment approval by ContentManager/Admin/Super Admin
 - [ ] FR-048: Display approved comments on product page
 
 ### 10. Slider Management
 
-- [ ] FR-049: Slider CRUD by Admin/Owner
+- [ ] FR-049: Slider CRUD by Admin/Super Admin
 - [ ] FR-050: Each slide includes (image, title, description, link)
 - [ ] FR-051: Slide display order configuration
 
@@ -119,53 +119,53 @@
 
 ## 13. Dynamic Role & Permission Management
 
-### 6.1 Default Roles (System Seed)
+### 13.1 Default Roles (System Seed)
 
-| Role           | Description                                     | Access Level |
-| -------------- | ----------------------------------------------- | ------------ |
-| Owner          | Full system access                              | 100          |
-| Admin          | Administrative access (except Owner management) | 80           |
-| ContentManager | Article and comment management                  | 50           |
-| Customer       | Standard user access                            | 10           |
+| Role           | Description                                           | Access Level |
+| -------------- | ----------------------------------------------------- | ------------ |
+| Super Admin    | Full system access                                    | 100          |
+| Admin          | Administrative access (except Super Admin management) | 80           |
+| ContentManager | Article and comment management                        | 50           |
+| Customer       | Standard user access                                  | 10           |
 
-### 6.2 Permission Management
+### 13.2 Permission Management
 
 - [ ] FR-065: System must support granular permissions (Create, Read, Update, Delete)
 - [ ] FR-066: Each permission must be assignable to any role
 - [ ] FR-067: Permissions must be grouped by module (Product, Order, User, etc.)
 
-### 6.3 Create New Role (Owner only)
+### 13.3 Create New Role (Super Admin only)
 
-- [ ] FR-068: Owner must be able to create new custom roles
-- [ ] FR-069: Owner must be able to set role name and description
-- [ ] FR-070: Owner must be able to assign permissions to new roles
+- [ ] FR-068: Super Admin must be able to create new custom roles
+- [ ] FR-069: Super Admin must be able to set role name and description
+- [ ] FR-070: Super Admin must be able to assign permissions to new roles
 
-### 6.4 Edit Role
+### 13.4 Edit Role
 
-- [ ] FR-071: Owner must be able to edit role information (name, description)
-- [ ] FR-072: Owner must be able to add/remove permissions from existing roles
-- [ ] FR-073: Owner must NOT be able to delete or modify Owner role permissions
+- [ ] FR-071: Super Admin must be able to edit role information (name, description)
+- [ ] FR-072: Super Admin must be able to add/remove permissions from existing roles
+- [ ] FR-073: Super Admin must NOT be able to delete or modify Super Admin role permissions
 
-### 6.5 Delete Role
+### 13.5 Delete Role
 
-- [ ] FR-074: Owner must be able to delete custom roles
-- [ ] FR-075: System must prevent deletion of default roles (Owner, Admin, ContentManager, Customer)
+- [ ] FR-074: Super Admin must be able to delete custom roles
+- [ ] FR-075: System must prevent deletion of default roles (Super Admin, Admin, ContentManager, Customer)
 - [ ] FR-076: System must check if role has assigned users before deletion
 - [ ] FR-077: System must prompt confirmation when deleting role with assigned users
 
-### 6.6 Assign Roles to Users
+### 13.6 Assign Roles to Users
 
-- [ ] FR-078: Admin/Owner must be able to assign multiple roles to a user
-- [ ] FR-079: Admin/Owner must be able to remove roles from users
-- [ ] FR-080: Admin cannot assign Owner role to any user
+- [ ] FR-078: Admin/Super Admin must be able to assign multiple roles to a user
+- [ ] FR-079: Admin/Super Admin must be able to remove roles from users
+- [ ] FR-080: Admin cannot assign Super Admin role to any user
 
-### 6.7 Permission Checking
+### 13.7 Permission Checking
 
 - [ ] FR-081: System must check user permissions before every operation
 - [ ] FR-082: System must return 403 Forbidden if user lacks required permission
 - [ ] FR-083: Permissions must be cached for performance
 
-### 6.8 Permission Groups (Modules)
+### 13.8 Permission Groups (Modules)
 
 | Module              | Available Permissions                                                            |
 | ------------------- | -------------------------------------------------------------------------------- |
@@ -180,6 +180,72 @@
 | Slider Management   | `sliders.create`, `sliders.read`, `sliders.update`, `sliders.delete`             |
 | Coupon Management   | `coupons.create`, `coupons.read`, `coupons.update`, `coupons.delete`             |
 | Dashboard           | `dashboard.view`                                                                 |
+
+### 14. Subcategory Management
+
+- [ ] FR-084: The system must support multi-level category hierarchy
+- [ ] FR-085: Each category can have multiple subcategories
+- [ ] FR-086: Subcategories can have their own nested subcategories (unlimited depth)
+- [ ] FR-087: Display full category tree structure in the frontend
+- [ ] FR-088: Generate breadcrumb navigation showing the full category path
+- [ ] FR-089: Products can be assigned to any category (main or subcategory)
+- [ ] FR-090: Admin can move categories between different parent categories
+- [ ] FR-091: System must prevent circular references (a category cannot be its own ancestor)
+- [ ] FR-092: Deleting a parent category must handle subcategories (option: delete all, move to another parent, or prevent deletion)
+
+## 15. Reporting & Invoice System
+
+### 15.1 Invoice Management
+
+- [ ] FR-093: System must automatically generate invoice after successful payment
+- [ ] FR-094: Invoice must have unique sequential number (e.g., INV-20250001)
+- [ ] FR-095: Invoice must include: order details, customer info, prices, tax, total amount
+- [ ] FR-096: System must support PDF export for invoices
+- [ ] FR-097: Customer must be able to download invoice from order history
+- [ ] FR-098: Customer must be able to receive invoice via email
+- [ ] FR-099: Admin can regenerate invoice if needed
+
+### 15.2 Daily Sales Report
+
+- [ ] FR-100: System must provide daily sales report
+- [ ] FR-101: Daily report must include: date, order count, total sales, average order value
+- [ ] FR-102: Admin must be able to filter daily report by date range
+- [ ] FR-103: Admin must be able to export daily report to Excel
+- [ ] FR-104: Admin must be able to export daily report to PDF
+
+## 16. Observability & Monitoring
+
+### 16.1 OpenTelemetry Integration
+
+- [ ] FR-105: System must integrate OpenTelemetry SDK for metrics collection
+- [ ] FR-106: System must support OTLP protocol for data export
+- [ ] FR-107: System must capture HTTP request metrics (count, duration, status)
+- [ ] FR-108: System must capture .NET runtime metrics (GC, memory, thread pool)
+- [ ] FR-109: System must support distributed tracing with ActivitySource
+
+### 16.2 Prometheus Integration
+
+- [ ] FR-110: Metrics must be exposed in Prometheus format at /metrics endpoint
+- [ ] FR-111: Prometheus must scrape metrics every 15 seconds
+- [ ] FR-112: Custom business metrics must be defined (orders, sales, cart)
+
+### 16.3 Grafana Dashboards
+
+- [ ] FR-113: Grafana must be configured as visualization layer
+- [ ] FR-114: Pre-configured dashboards for business KPIs must exist
+- [ ] FR-115: Pre-configured dashboards for technical metrics must exist
+
+### 16.4 Alerting
+
+- [ ] FR-116: System must support alert rules in Prometheus
+- [ ] FR-117: Alerts must be visible in Grafana
+- [ ] FR-118: Critical alerts (high error rate, service down) must be configured
+
+### 16.5 Tracing
+
+- [ ] FR-119: Distributed tracing must be enabled for HTTP requests
+- [ ] FR-120: SQL queries must be included in traces
+- [ ] FR-121: Trace ID must be injected into logs for correlation
 
 ## Non-Functional Requirements
 
@@ -198,7 +264,7 @@
 
 - [ ] NFR-008: Clean Architecture implementation
 - [ ] NFR-009: Design patterns (Repository, UnitOfWork, CQRS, MediatR)
-- [ ] NFR-010: API documentation with Swagger
+- [ ] NFR-010: API documentation with Scalar
 
 ### Scalability
 

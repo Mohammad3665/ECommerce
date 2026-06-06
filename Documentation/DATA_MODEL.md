@@ -11,7 +11,7 @@ public class BaseEntity<TKey>
     public TKey Id { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    public bool IsActive { get; set; } = true;
+    public bool IsDeleted { get; set; }
 }
 ```
 
@@ -24,10 +24,11 @@ public class User : BaseEntity<Guid>
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public string PasswordHash { get; set; }
-    public Role Role { get; set; } // Owner, Admin, ContentManager, Customer
     public DateTime? LastLoginAt { get; set; }
+    public bool IsActive { get; set; } = true;
 
     // Relationships
+    public ICollection<Role> UserRoles { get; set; }
     public ICollection<Order> Orders { get; set; }
     public ICollection<Comment> Comments { get; set; }
     public Cart Cart { get; set; }
@@ -45,6 +46,7 @@ public class Brand : BaseEntity<long>
     public string Slug { get; set; }
     public string Description { get; set; }
     public string Logo { get; set; }
+    public bool IsActive { get; set; } = true;
 
     // Relationships
     public ICollection<Product> Products { get; set; }
@@ -61,7 +63,12 @@ public class Category : BaseEntity<long>
     public string Description { get; set; }
     public string Image { get; set; }
 
+    //Self-Reference for sub category
+    public long? ParentCategoryId { get; set; }
+
     // Relationships
+    public Category ParentCategory { get; set; }
+    public ICollection<Category> SubCategpries { get; set; }
     public ICollection<Product> Products { get; set; }
 }
 ```
@@ -80,8 +87,8 @@ public class Product : BaseEntity<long>
     public int ViewCount { get; set; }
 
     // Foreign keys
-    public int BrandId { get; set; }
-    public int CategoryId { get; set; }
+    public long BrandId { get; set; }
+    public long CategoryId { get; set; }
 
     // Relationships
     public Brand Brand { get; set; }
@@ -168,29 +175,13 @@ public class Order : BaseEntity<long>
     public decimal DiscountAmount { get; set; }
     public decimal ShippingCost { get; set; }
     public decimal TotalAmount { get; set; }
-
-    // Shipping information
-    public string FullName { get; set; }
-    public string PhoneNumber { get; set; }
-    public string Address { get; set; }
-    public string PostalCode { get; set; }
-
-    // Payment information
-    public string PaymentMethod { get; set; }
-    public string TransactionId { get; set; }
-    public bool IsPaid { get; set; }
-    public DateTime? PaidAt { get; set; }
+    public Guid? CouponId { get; set; }
 
     // Relationships
     public User User { get; set; }
     public ICollection<OrderItem> Items { get; set; }
     public ICollection<OrderHistory> Histories { get; set; }
-    public int? CouponId { get; set; }
     public Coupon Coupon { get; set; }
-
-    // Ignoring the IsActive property
-    [NotMapped]
-    public new bool IsActive { get; set; } = true;
 }
 
 public enum OrderStatus
@@ -239,7 +230,31 @@ public class OrderHistory : BaseEntity<long>
 }
 ```
 
-### 13.Coupon
+### 13. OrderPayment
+
+```csharp
+public class OrderPayment : BaseEntity<long>
+{
+    public string PaymentMethod { get; set; }
+    public string TransactionId { get; set; }
+    public bool IsPaid { get; set; }
+    public DateTime? PaidAt { get; set; }
+}
+```
+
+### 14. OrderShipping
+
+```csharp
+public class OrderShipping : BaseEntity<long>
+{
+    public string FullName { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Address { get; set; }
+    public string PostalCode { get; set; }
+}
+```
+
+### 15. Coupon
 
 ```csharp
 public class Coupon : BaseEntity<Guid>
@@ -252,6 +267,7 @@ public class Coupon : BaseEntity<Guid>
     public int UsedCount { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public bool IsActive { get; set; } = true;
 
     // Relationships
     public ICollection<Order> Orders { get; set; }
@@ -264,7 +280,7 @@ public enum CouponType
 }
 ```
 
-### 14. Article
+### 16. Article
 
 ```csharp
 public class Article : BaseEntity<long>
@@ -277,15 +293,22 @@ public class Article : BaseEntity<long>
     public int ViewCount { get; set; }
     public int ArticleCategoryId { get; set; }
     public int AuthorId { get; set; }
-    public bool IsPublished { get; set; }
+    public ArticleStatus Status { get; set; }
 
     // Relationships
     public ArticleCategory Category { get; set; }
     public User Author { get; set; }
 }
+
+public enum ArticleStatus
+{
+    Draft,
+    Published,
+    Archived
+}
 ```
 
-### 15. ArticleCategory
+### 17. ArticleCategory
 
 ```csharp
 public class ArticleCategory : BaseEntity<long>
@@ -298,7 +321,7 @@ public class ArticleCategory : BaseEntity<long>
 }
 ```
 
-### 16.Comment
+### 18.Comment
 
 ```csharp
 public class Comment : BaseEntity<Guid>
@@ -319,7 +342,7 @@ public class Comment : BaseEntity<Guid>
 }
 ```
 
-### 17. Slide
+### 19. Slide
 
 ```csharp
 public class Slide : BaseEntity<long>
@@ -329,10 +352,11 @@ public class Slide : BaseEntity<long>
     public string ImageUrl { get; set; }
     public string Link { get; set; }
     public int DisplayOrder { get; set; }
+    public bool IsActive { get; set; } = true;
 }
 ```
 
-### 18. Role
+### 20. Role
 
 ```csharp
 public class Role : BaseEntity<long>
@@ -340,9 +364,9 @@ public class Role : BaseEntity<long>
     public string Name { get; set; }           // "ProductManager"
     public string DisplayName { get; set; }    // "مدیر محصولات"
     public string Description { get; set; }
-    public bool IsDefault { get; set; }        // true for Owner, Admin, ContentManager, Customer
-    public bool IsSystemProtected { get; set; } // Cannot delete/modify Owner role
-    public int Level { get; set; }              // 100=Owner, 80=Admin, 50=ContentManager, 10=Customer
+    public bool IsDefault { get; set; }        // true for Super Admin, Admin, ContentManager, Customer
+    public bool IsSystemProtected { get; set; } // Cannot delete/modify Super Admin role
+    public int Level { get; set; }              // 100=Super Admin, 80=Admin, 50=ContentManager, 10=Customer
 
     // Relationships
     public ICollection<UserRole> UserRoles { get; set; }
@@ -350,7 +374,7 @@ public class Role : BaseEntity<long>
 }
 ```
 
-### 19. Permission
+### 21. Permission
 
 ```csharp
 public class Permission : BaseEntity<long>
@@ -365,22 +389,25 @@ public class Permission : BaseEntity<long>
 
 ```
 
-### 20. User Role (Many To Many)
+### 22. User Role (Many To Many)
 
 ```csharp
 public class UserRole
 {
     public Guid UserId { get; set; }
     public long RoleId { get; set; }
+    public DateTime AssignedAt { get; set; }
+    public Guid? AssignedByUserId { get; set; }
 
     // Relationships
     public User User { get; set; }
     public Role Role { get; set; }
+    public User AssignedBy { get; set; }
 }
 
 ```
 
-### 21. Role Permission (Many To Many)
+### 23. Role Permission (Many To Many)
 
 ```csharp
 public class RolePermission
@@ -394,7 +421,74 @@ public class RolePermission
 }
 ```
 
-### 22. Initial Seeding
+### 24. Invoice
+
+```csharp
+/// <summary>
+/// Invoice entity for billing
+/// </summary>
+public class Invoice : BaseEntity<int>
+{
+    public int OrderId { get; set; }
+    public string InvoiceNumber { get; set; }        // INV-20250001
+    public DateTime InvoiceDate { get; set; }
+
+    // Financial details
+    public decimal SubTotal { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public decimal TaxAmount { get; set; }           // 9% VAT
+    public decimal ShippingCost { get; set; }
+    public decimal TotalAmount { get; set; }
+
+    // Document
+    public string InvoicePdfUrl { get; set; }
+
+    // Status
+    public InvoiceStatus Status { get; set; }
+
+    // Relationships
+    public Order Order { get; set; }
+}
+
+public enum InvoiceStatus
+{
+    Issued,      // Invoice created
+    Paid,        // Payment confirmed
+    Cancelled    // Invoice cancelled
+}
+```
+
+### 25. Daly Sales Report (DTO)
+
+```csharp
+public class DailySalesReportDto
+{
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public int TotalOrders { get; set; }
+    public decimal TotalSales { get; set; }
+    public decimal TotalTax { get; set; }
+    public decimal TotalShipping { get; set; }
+    public decimal AverageOrderValue { get; set; }
+    public List<DailySalesItemDto> DailyItems { get; set; }
+}
+```
+
+### 26. Daily Sales Item (DTO)
+
+```csharp
+public class DailySalesItemDto
+{
+    public DateTime Date { get; set; }
+    public int OrderCount { get; set; }
+    public decimal TotalSales { get; set; }
+    public decimal TotalTax { get; set; }
+    public decimal TotalShipping { get; set; }
+    public decimal AverageOrderValue { get; set; }
+}
+```
+
+### 27. Initial Seeding
 
 ```csharp
 public static class Permissions
@@ -463,14 +557,14 @@ public static class Permissions
 }
 ```
 
-### 23. Seed Data Configuration
+### 28. Seed Data Configuration
 
 ```csharp
 public static class DefaultRoles
 {
     public static readonly List<Role> Roles = new()
     {
-        new Role { Id = 1, Name = "Owner", DisplayName = "مالک", IsDefault = true, IsSystemProtected = true, Level = 100 },
+        new Role { Id = 1, Name = "SuperAdmin", DisplayName = "مدیر کل", IsDefault = true, IsSystemProtected = true, Level = 100 },
         new Role { Id = 2, Name = "Admin", DisplayName = "مدیر", IsDefault = true, IsSystemProtected = true, Level = 80 },
         new Role { Id = 3, Name = "ContentManager", DisplayName = "مدیر محتوا", IsDefault = true, IsSystemProtected = true, Level = 50 },
         new Role { Id = 4, Name = "Customer", DisplayName = "مشتری", IsDefault = true, IsSystemProtected = true, Level = 10 }

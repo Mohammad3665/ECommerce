@@ -23,7 +23,7 @@ A multi-role e-commerce platform with product management, brand management, cate
 
 | Role            | Responsibility                                    |
 | --------------- | ------------------------------------------------- |
-| Owner           | Full system access, user and role management      |
+| Super Admin     | Full system access, user and role management      |
 | Admin           | Product, brand, category, and order management    |
 | Content Manager | Article management, approve/reject comments       |
 | Customer        | Purchase products, submit comments, view products |
@@ -31,7 +31,7 @@ A multi-role e-commerce platform with product management, brand management, cate
 ## Constraints
 
 - Training project (No CI/CD, no unit testing required)
-- In-memory caching only (No Redis)
+- Caching with redis
 - Simulated payment gateway (No real payment integration)
 - Fixed shipping rate (Post service only)
 
@@ -41,7 +41,45 @@ A multi-role e-commerce platform with product management, brand management, cate
 - Each product belongs to exactly one brand and one category
 - Comments require approval by Content Manager before display
 - Stock quantity decreases automatically upon order placement
+- The system supports **unlimited depth** for category nesting using a self-referencing foreign key pattern.
 - Currency: Iranian Toman (Tomans)
+
+## Observability Stack (OpenTelemetry + Prometheus + Grafana)
+
+### Overview
+
+The project uses a complete observability stack for monitoring, tracing, and alerting:
+
+| Component                   | Purpose                                                   |
+| --------------------------- | --------------------------------------------------------- |
+| **OpenTelemetry SDK**       | Generate and collect telemetry data from .NET application |
+| **OpenTelemetry Collector** | Process, batch, and route telemetry data                  |
+| **Prometheus**              | Store and query metrics data                              |
+| **Jaeger**                  | Store and visualize distributed traces                    |
+| **Loki**                    | Store and query structured logs                           |
+| **Grafana**                 | Dashboards, visualization, and alerting                   |
+
+### Key Benefits
+
+1. **Vendor-neutral** - Not locked into any commercial vendor
+2. **Cost-effective** - Open-source, no licensing costs
+3. **Complete observability** - Metrics, traces, and logs in one place
+4. **Exemplars support** - Jump from metric spike to exact trace
+5. **Custom dashboards** - Tailored for e-commerce KPIs
+
+### Grafana Dashboards
+
+- **Business KPIs**: Daily sales, order count, revenue
+- **Technical Metrics**: Request rate, error rate, response time
+- **Infrastructure**: CPU, memory, GC, thread pool
+- **Custom Dashboards**: Per endpoint, per user, per product
+
+### Alert Rules
+
+- High error rate (>5% for 5 minutes)
+- Slow response time (p95 > 1000ms)
+- Low stock alert (<5 items)
+- Order failure rate spike
 
 ## Core Technologies
 
@@ -57,5 +95,6 @@ A multi-role e-commerce platform with product management, brand management, cate
 - OpenTelemetry
 - Docker + Docker Compose
 - Health Checks
-- Swagger
+- Scalar
+- Redis
 - Auto Mapper

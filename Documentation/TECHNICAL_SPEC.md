@@ -50,3 +50,106 @@ ECommerce/
 ├── Dockerfile
 └── README.md
 ```
+
+## OpenTelemetry & Observability Stack
+
+### Architecture Overview
+
+┌─────────────────────────────────────────────────────────────────┐
+│ ECommerce Application (.NET 10) │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ OpenTelemetry SDK │ │
+│ │ - Metrics (System.Diagnostics.Metrics) │ │
+│ │ - Traces (ActivitySource) │ │
+│ │ - Logs (Serilog + OpenTelemetry) │ │
+│ └─────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+│
+│ OTLP Protocol (gRPC/HTTP)
+▼
+┌─────────────────────────────────────────────────────────────────┐
+│ OpenTelemetry Collector │
+│ - Receive: OTLP │
+│ - Process: Batch, Filter, Enrich │
+│ - Export: Prometheus (Metrics), Jaeger (Traces), Loki (Logs) │
+└─────────────────────────────────────────────────────────────────┘
+│
+┌───────────────────────┼───────────────────────────┐
+│ │ │
+▼ ▼ ▼
+┌───────────────────┐ ┌───────────────────┐ ┌───────────────────┐
+│ Prometheus │ │ Jaeger │ │ Loki │
+│ (Metrics Store) │ │ (Traces Store) │ │ (Logs Store) │
+└───────────────────┘ └───────────────────┘ └───────────────────┘
+│ │ │
+└───────────────────────┼───────────────────────────┘
+│
+▼
+┌───────────────────────────────────┐
+│ Grafana │
+│ - Dashboards (Metrics, Traces) │
+│ - Exemplars (Metrics → Traces) │
+│ - Alerting │
+└───────────────────────────────────┘
+
+text
+
+### Components Overview
+
+| Component                   | Role                           | Data Type | Port (Default)           |
+| --------------------------- | ------------------------------ | --------- | ------------------------ |
+| **OpenTelemetry Collector** | Data collection and processing | All       | 4317 (gRPC), 4318 (HTTP) |
+| **Prometheus**              | Metrics storage                | Metrics   | 9090                     |
+| **Jaeger**                  | Traces storage                 | Traces    | 16686 (UI), 4317 (OTLP)  |
+| **Loki**                    | Logs storage                   | Logs      | 3100                     |
+| **Grafana**                 | Visualization and dashboards   | All       | 3000                     |
+
+### OpenTelemetry Configuration in .NET
+
+```csharp
+// Program.cs - OpenTelemetry Setup
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Logs;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// ========== Metrics ==========
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()      // HTTP requests metrics
+        .AddHttpClientInstrumentation()      // HttpClient metrics
+        .AddRuntimeInstrumentation()         // .NET runtime metrics (GC, memory)
+        .AddProcessInstrumentation()         // Process metrics (CPU, memory)
+        .AddMeter("Microsoft.AspNetCore.Hosting")
+        .AddMeter("System.Net.Http")
+        .AddPrometheusExporter());           // Export to Prometheus
+
+// ========== Traces ==========
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation(options =>
+        {
+            options.RecordException = true;
+            options.Filter = (httpContext) =>
+                !httpContext.Request.Path.StartsWithSegments("/health");
+        })
+        .AddHttpClientInstrumentation()
+        .AddSqlClientInstrumentation()       // SQL queries tracing
+        .AddSource("ECommerce.*")
+        .AddJaegerExporter());               // Export to Jaeger
+
+// ========== Logs ==========
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.IncludeFormattedMessage = true;
+    options.IncludeScopes = true;
+    options.AddConsoleExporter();
+    options.AddOtlpExporter();               // Export to Collector
+});
+
+var app = builder.Build();
+
+// ========== Expose Metrics Endpoint ==========
+app.UseOpenTelemetryPrometheusScrapingEndpoint();  // /metrics
+```

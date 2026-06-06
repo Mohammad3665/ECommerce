@@ -2,7 +2,7 @@
 
 ## Base URL
 
-Development: https://localhost:5162/api/v1
+Development: https://localhost:5000/api/v1
 
 ## 1. Authentication
 
@@ -43,15 +43,15 @@ Development: https://localhost:5162/api/v1
 
 **Base Path:** `/api/v1/Admin/Users`
 
-| Method | Endpoint                 | Description               | Access       |
-| ------ | ------------------------ | ------------------------- | ------------ |
-| GET    | /Admin/Users             | Get all users (paginated) | Admin, Owner |
-| GET    | /Admin/Users/{id}        | Get user by id            | Admin, Owner |
-| POST   | /Admin/Users             | Create user               | Admin, Owner |
-| PUT    | /Admin/Users/{id}        | Update user               | Admin, Owner |
-| DELETE | /Admin/Users/{id}        | Delete user               | Owner only   |
-| PATCH  | /Admin/Users/{id}/Status | Activate/deactivate user  | Admin, Owner |
-| PATCH  | /Admin/Users/{id}/Role   | Change user role          | Owner only   |
+| Method | Endpoint                   | Description               | Access             |
+| ------ | -------------------------- | ------------------------- | ------------------ |
+| GET    | `/Admin/Users`             | Get all users (paginated) | Admin, Super Admin |
+| GET    | `/Admin/Users/{id}`        | Get user by id            | Admin, Super Admin |
+| POST   | `/Admin/Users`             | Create user               | Admin, Super Admin |
+| PUT    | `/Admin/Users/{id}`        | Update user               | Admin, Super Admin |
+| DELETE | `/Admin/Users/{id}`        | Delete user               | Super Admin only   |
+| PATCH  | `/Admin/Users/{id}/Status` | Activate/deactivate user  | Admin, Super Admin |
+| PATCH  | `/Admin/Users/{id}/Role`   | Change user role          | Super Admin only   |
 
 **Sample Request (Create User):**
 
@@ -92,12 +92,12 @@ Development: https://localhost:5162/api/v1
 
 **Base Path:** `/api/v1/Profile`
 
-| Method | Endpoint          | Description       | Access    |
-| ------ | ----------------- | ----------------- | --------- |
-| GET    | /Profile          | Get my profile    | Customer+ |
-| PUT    | /Profile          | Update my profile | Customer+ |
-| GET    | /Profile/Orders   | Get my orders     | Customer+ |
-| GET    | /Profile/Comments | Get my comments   | Customer+ |
+| Method | Endpoint            | Description       | Access    |
+| ------ | ------------------- | ----------------- | --------- |
+| GET    | `/Profile`          | Get my profile    | Customer+ |
+| PUT    | `/Profile`          | Update my profile | Customer+ |
+| GET    | `/Profile/Orders`   | Get my orders     | Customer+ |
+| GET    | `/Profile/Comments` | Get my comments   | Customer+ |
 
 **Sample Request (Update Profile):**
 
@@ -126,16 +126,16 @@ Development: https://localhost:5162/api/v1
 
 ## 4. Brands
 
-| Method | Endpoint                  | Description               | Access       |
-| ------ | ------------------------- | ------------------------- | ------------ |
-| GET    | /Brands                   | Get all brands            | Public       |
-| GET    | /Brands/{id}              | Get brand by id           | Public       |
-| GET    | /Brands/{slug}            | Get brand by slug         | Public       |
-| GET    | /Brands/{id}/Products     | Get products by brand     | Public       |
-| POST   | /Admin/Brands             | Create brand              | Admin, Owner |
-| PUT    | /Admin/Brands/{id}        | Update brand              | Admin, Owner |
-| DELETE | /Admin/Brands/{id}        | Delete brand              | Admin, Owner |
-| PATCH  | /Admin/Brands/{id}/Status | Activate/deactivate brand | Admin, Owner |
+| Method | Endpoint                    | Description               | Access             |
+| ------ | --------------------------- | ------------------------- | ------------------ |
+| GET    | `/Brands`                   | Get all brands            | Public             |
+| GET    | `/Brands/{id}`              | Get brand by id           | Public             |
+| GET    | `/Brands/{slug}`            | Get brand by slug         | Public             |
+| GET    | `/Brands/{id}/Products`     | Get products by brand     | Public             |
+| POST   | `/Admin/Brands`             | Create brand              | Admin, Super Admin |
+| PUT    | `/Admin/Brands/{id}`        | Update brand              | Admin, Super Admin |
+| DELETE | `/Admin/Brands/{id}`        | Delete brand              | Admin, Super Admin |
+| PATCH  | `/Admin/Brands/{id}/Status` | Activate/deactivate brand | Admin, Super Admin |
 
 **Sample Request (Create Brand):**
 
@@ -168,16 +168,22 @@ Development: https://localhost:5162/api/v1
 
 ## 5. Categories
 
-| Method | Endpoint                      | Description                  | Access       |
-| ------ | ----------------------------- | ---------------------------- | ------------ |
-| GET    | /Categories                   | Get all categories           | Public       |
-| GET    | /Categories/{id}              | Get category by id           | Public       |
-| GET    | /Categories/{slug}            | Get category by slug         | Public       |
-| GET    | /Categories/{id}/Products     | Get products by category     | Public       |
-| POST   | /Admin/Categories             | Create category              | Admin, Owner |
-| PUT    | /Admin/Categories/{id}        | Update category              | Admin, Owner |
-| DELETE | /Admin/Categories/{id}        | Delete category              | Admin, Owner |
-| PATCH  | /Admin/Categories/{id}/Status | Activate/deactivate category | Admin, Owner |
+| Method | Endpoint                         | Description                                                     | Access             |
+| ------ | -------------------------------- | --------------------------------------------------------------- | ------------------ |
+| GET    | `/Categories`                    | Get all categories                                              | Public             |
+| GET    | `/Categories/{id}`               | Get category by id                                              | Public             |
+| GET    | `/Categories/{slug}`             | Get category by slug                                            | Public             |
+| GET    | `/Categories/{id}/Products`      | Get products by category                                        | Public             |
+| POST   | `/Admin/Categories`              | Create category                                                 | Admin, Super Admin |
+| PUT    | `/Admin/Categories/{id}`         | Update category                                                 | Admin, Super Admin |
+| DELETE | `/Admin/Categories/{id}`         | Delete category                                                 | Admin, Super Admin |
+| PATCH  | `/Admin/Categories/{id}/Status`  | Activate/deactivate category                                    | Admin, Super Admin |
+| GET    | `/Categories/Tree`               | Get full category tree with all nested subcategories            | Public             |
+| GET    | `/categories/{id}/Subcategories` | Get direct subcategories of a category                          | Public             |
+| GET    | `/Categories/{id}/Full-Path`     | Get breadcrumb path (e.g., Electronics > Mobiles > Smartphones) | Public             |
+| GET    | `/Categories/{id}/Descendants`   | Get all descendant categories (all levels below)                | Public             |
+| GET    | `/Categories/{id}/Ancestors`     | Get all ancestor categories (parents chain)                     | Public             |
+| POST   | `/Admin/Categories/{id}/Move`    | Move category to another parent category                        | Admin, Super Admin |
 
 **Sample Request (Create Category):**
 
@@ -208,24 +214,57 @@ Development: https://localhost:5162/api/v1
 }
 ```
 
+**Sample Response (Get Categories Tree):**
+
+```json
+{
+  "isSuccess": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "slug": "electronics",
+      "level": 0,
+      "subCategories": [
+        {
+          "id": 2,
+          "name": "Mobiles",
+          "slug": "mobiles",
+          "level": 1,
+          "subCategories": [
+            {
+              "id": 4,
+              "name": "Smartphones",
+              "slug": "smartphones",
+              "level": 2,
+              "subCategories": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## 6. Products
 
-| Method | Endpoint                                              | Description                 | Access       |
-| ------ | ----------------------------------------------------- | --------------------------- | ------------ |
-| GET    | /Products                                             | Get products with filters   | Public       |
-| GET    | /Products/{id}                                        | Get product by id           | Public       |
-| GET    | /Products/{slug}                                      | Get product by slug         | Public       |
-| GET    | /Products/{id}/Comments                               | Get product comments        | Public       |
-| POST   | /Admin/Products                                       | Create product              | Admin, Owner |
-| PUT    | /Admin/Products/{id}                                  | Update product              | Admin, Owner |
-| DELETE | /Admin/Products/{id}                                  | Delete product              | Admin, Owner |
-| PATCH  | /Admin/Products/{id}/Status                           | Activate/deactivate product | Admin, Owner |
-| POST   | /Admin/Products/{id}/Images                           | Upload product images       | Admin, Owner |
-| DELETE | /Admin/Products/{productId}/Images/{imageId}          | Delete product image        | Admin, Owner |
-| PATCH  | /Admin/Products/{productId}/Images/{imageId}/Set-main | Set main image              | Admin, Owner |
-| POST   | /Admin/Products/{id}/Specifications                   | Add specifications          | Admin, Owner |
-| PUT    | /Admin/Products/{productId}/Specifications/{specId}   | Update specification        | Admin, Owner |
-| DELETE | /Admin/Products/{productId}/Specifications/{specId}   | Delete specification        | Admin, Owner |
+| Method | Endpoint                                                | Description                 | Access             |
+| ------ | ------------------------------------------------------- | --------------------------- | ------------------ |
+| GET    | `/Products`                                             | Get products with filters   | Public             |
+| GET    | `/Products/{id}`                                        | Get product by id           | Public             |
+| GET    | `/Products/{slug}`                                      | Get product by slug         | Public             |
+| GET    | `/Products/{id}/Comments`                               | Get product comments        | Public             |
+| POST   | `/Admin/Products`                                       | Create product              | Admin, Super Admin |
+| PUT    | `/Admin/Products/{id}`                                  | Update product              | Admin, Super Admin |
+| DELETE | `/Admin/Products/{id}`                                  | Delete product              | Admin, Super Admin |
+| PATCH  | `/Admin/Products/{id}/Status`                           | Activate/deactivate product | Admin, Super Admin |
+| POST   | `/Admin/Products/{id}/Images`                           | Upload product images       | Admin, Super Admin |
+| DELETE | `/Admin/Products/{productId}/Images/{imageId}`          | Delete product image        | Admin, Super Admin |
+| PATCH  | `/Admin/Products/{productId}/Images/{imageId}/Set-main` | Set main image              | Admin, Super Admin |
+| POST   | `/Admin/Products/{id}/Specifications`                   | Add specifications          | Admin, Super Admin |
+| PUT    | `/Admin/Products/{productId}/Specifications/{specId}`   | Update specification        | Admin, Super Admin |
+| DELETE | `/Admin/Products/{productId}/Specifications/{specId}`   | Delete specification        | Admin, Super Admin |
 
 **Sample Request (Create Product):**
 
@@ -283,15 +322,15 @@ Development: https://localhost:5162/api/v1
 
 ## 7. Shopping Cart
 
-| Method | Endpoint                 | Description             | Access    |
-| ------ | ------------------------ | ----------------------- | --------- |
-| GET    | /Cart                    | Get my cart             | Customer+ |
-| POST   | /Cart/Items              | Add item to cart        | Customer+ |
-| PUT    | /Cart/Items/{cartItemId} | Update item quantity    | Customer+ |
-| DELETE | /Cart/Items/{cartItemId} | Remove item from cart   | Customer+ |
-| DELETE | /Cart/Clear              | Clear cart              | Customer+ |
-| POST   | /Cart/Apply-coupon       | Apply coupon to cart    | Customer+ |
-| DELETE | /Cart/Remove-coupon      | Remove coupon from cart | Customer+ |
+| Method | Endpoint                   | Description             | Access    |
+| ------ | -------------------------- | ----------------------- | --------- |
+| GET    | `/Cart`                    | Get my cart             | Customer+ |
+| POST   | `/Cart/Items`              | Add item to cart        | Customer+ |
+| PUT    | `/Cart/Items/{cartItemId}` | Update item quantity    | Customer+ |
+| DELETE | `/Cart/Items/{cartItemId}` | Remove item from cart   | Customer+ |
+| DELETE | `/Cart/Clear`              | Clear cart              | Customer+ |
+| POST   | `/Cart/Apply-coupon`       | Apply coupon to cart    | Customer+ |
+| DELETE | `/Cart/Remove-coupon`      | Remove coupon from cart | Customer+ |
 
 **Sample Request (Add To Cart):**
 
@@ -353,15 +392,15 @@ Development: https://localhost:5162/api/v1
 
 ## 8. Orders
 
-| Method | Endpoint                  | Description               | Access       |
-| ------ | ------------------------- | ------------------------- | ------------ |
-| POST   | /Orders                   | Place new order           | Customer+    |
-| GET    | /Orders                   | Get my orders             | Customer+    |
-| GET    | /Orders/{id}              | Get order details         | Customer+    |
-| GET    | /Admin/Orders             | Get all orders            | Admin, Owner |
-| GET    | /Admin/Orders/{id}        | Get order details (admin) | Admin, Owner |
-| PUT    | /Admin/Orders/{id}/Status | Update order status       | Admin, Owner |
-| PUT    | /Admin/Orders/{id}/Cancel | Cancel order              | Admin, Owner |
+| Method | Endpoint                    | Description               | Access             |
+| ------ | --------------------------- | ------------------------- | ------------------ |
+| POST   | `/Orders`                   | Place new order           | Customer+          |
+| GET    | `/Orders`                   | Get my orders             | Customer+          |
+| GET    | `/Orders/{id}`              | Get order details         | Customer+          |
+| GET    | `/Admin/Orders`             | Get all orders            | Admin, Super Admin |
+| GET    | `/Admin/Orders/{id}`        | Get order details (admin) | Admin, Super Admin |
+| PUT    | `/Admin/Orders/{id}/Status` | Update order status       | Admin, Super Admin |
+| PUT    | `/Admin/Orders/{id}/Cancel` | Cancel order              | Admin, Super Admin |
 
 **Sample Request (Place Order):**
 
@@ -426,10 +465,10 @@ Development: https://localhost:5162/api/v1
 
 ## 9. Payment
 
-| Method | Endpoint                  | Description               | Access    |
-| ------ | ------------------------- | ------------------------- | --------- |
-| POST   | /Payment/Verify           | Verify payment (callback) | Public    |
-| GET    | /Payment/Status/{orderId} | Check payment status      | Customer+ |
+| Method | Endpoint                    | Description               | Access    |
+| ------ | --------------------------- | ------------------------- | --------- |
+| POST   | `/Payment/Verify`           | Verify payment (callback) | Public    |
+| GET    | `/Payment/Status/{orderId}` | Check payment status      | Customer+ |
 
 **Sample Request (Veify Payment):**
 
@@ -459,13 +498,13 @@ Development: https://localhost:5162/api/v1
 
 **Base Path:** `/api/v1/Admin/Coupons`
 
-| Method | Endpoint            | Description      | Access       |
-| ------ | ------------------- | ---------------- | ------------ |
-| GET    | /Admin/Coupons      | Get all coupons  | Admin, Owner |
-| GET    | /Admin/Coupons/{id} | Get coupon by id | Admin, Owner |
-| POST   | /Admin/Coupons      | Create coupon    | Admin, Owner |
-| PUT    | /Admin/Coupons/{id} | Update coupon    | Admin, Owner |
-| DELETE | /Admin/Coupons/{id} | Delete coupon    | Admin, Owner |
+| Method | Endpoint              | Description      | Access             |
+| ------ | --------------------- | ---------------- | ------------------ |
+| GET    | `/Admin/Coupons`      | Get all coupons  | Admin, Super Admin |
+| GET    | `/Admin/Coupons/{id}` | Get coupon by id | Admin, Super Admin |
+| POST   | `/Admin/Coupons`      | Create coupon    | Admin, Super Admin |
+| PUT    | `/Admin/Coupons/{id}` | Update coupon    | Admin, Super Admin |
+| DELETE | `/Admin/Coupons/{id}` | Delete coupon    | Admin, Super Admin |
 
 **Sample Request (Create Coupon):**
 
@@ -503,16 +542,16 @@ Development: https://localhost:5162/api/v1
 
 ## 11. Comments
 
-| Method | Endpoint                       | Description            | Access          |
-| ------ | ------------------------------ | ---------------------- | --------------- |
-| POST   | /Products/{productId}/Comments | Add comment to product | Customer+       |
-| PUT    | /Comments/{id}                 | Edit my comment        | Customer+       |
-| DELETE | /Comments/{id}                 | Delete my comment      | Customer+       |
-| GET    | /Admin/Comments/Pending        | Get pending comments   | ContentManager+ |
-| GET    | /Admin/Comments/Approved       | Get approved comments  | ContentManager+ |
-| GET    | /Admin/Comments/Rejected       | Get rejected comments  | ContentManager+ |
-| PUT    | /Admin/Comments/{id}/Approve   | Approve comment        | ContentManager+ |
-| PUT    | /Admin/Comments/{id}/Reject    | Reject comment         | ContentManager+ |
+| Method | Endpoint                         | Description            | Access          |
+| ------ | -------------------------------- | ---------------------- | --------------- |
+| POST   | `/Products/{productId}/Comments` | Add comment to product | Customer+       |
+| PUT    | `/Comments/{id}`                 | Edit my comment        | Customer+       |
+| DELETE | `/Comments/{id}`                 | Delete my comment      | Customer+       |
+| GET    | `/Admin/Comments/Pending`        | Get pending comments   | ContentManager+ |
+| GET    | `/Admin/Comments/Approved`       | Get approved comments  | ContentManager+ |
+| GET    | `/Admin/Comments/Rejected`       | Get rejected comments  | ContentManager+ |
+| PUT    | `/Admin/Comments/{id}/Approve`   | Approve comment        | ContentManager+ |
+| PUT    | `/Admin/Comments/{id}/Reject`    | Reject comment         | ContentManager+ |
 
 **Sample Request (Add Comment):**
 
@@ -544,20 +583,20 @@ Development: https://localhost:5162/api/v1
 
 ## 12. Articles
 
-| Method | Endpoint                           | Description                   | Access          |
-| ------ | ---------------------------------- | ----------------------------- | --------------- |
-| GET    | /Articles                          | Get all articles              | Public          |
-| GET    | /Articles/{id}                     | Get article by id             | Public          |
-| GET    | /Articles/{slug}                   | Get article by slug           | Public          |
-| GET    | /Articles/Latest                   | Get latest articles (5 items) | Public          |
-| GET    | /Articles/Categories               | Get article categories        | Public          |
-| GET    | /Articles/Categories/{id}/Articles | Get articles by category      | Public          |
-| POST   | /Admin/Articles                    | Create article                | ContentManager+ |
-| PUT    | /Admin/Articles/{id}               | Update article                | ContentManager+ |
-| DELETE | /Admin/Articles/{id}               | Delete article                | ContentManager+ |
-| POST   | /Admin/Articles/Categories         | Create article category       | ContentManager+ |
-| PUT    | /Admin/Articles/Categories/{id}    | Update article category       | ContentManager+ |
-| DELETE | /Admin/Articles/Categories/{id}    | Delete article category       | ContentManager+ |
+| Method | Endpoint                             | Description                   | Access          |
+| ------ | ------------------------------------ | ----------------------------- | --------------- |
+| GET    | `/Articles`                          | Get all articles              | Public          |
+| GET    | `/Articles/{id}`                     | Get article by id             | Public          |
+| GET    | `/Articles/{slug}`                   | Get article by slug           | Public          |
+| GET    | `/Articles/Latest`                   | Get latest articles (5 items) | Public          |
+| GET    | `/Articles/Categories`               | Get article categories        | Public          |
+| GET    | `/Articles/Categories/{id}/Articles` | Get articles by category      | Public          |
+| POST   | `/Admin/Articles`                    | Create article                | ContentManager+ |
+| PUT    | `/Admin/Articles/{id}`               | Update article                | ContentManager+ |
+| DELETE | `/Admin/Articles/{id}`               | Delete article                | ContentManager+ |
+| POST   | `/Admin/Articles/Categories`         | Create article category       | ContentManager+ |
+| PUT    | `/Admin/Articles/Categories/{id}`    | Update article category       | ContentManager+ |
+| DELETE | `/Admin/Articles/Categories/{id}`    | Delete article category       | ContentManager+ |
 
 **Sample Request (Create Article):**
 
@@ -593,15 +632,15 @@ Development: https://localhost:5162/api/v1
 
 ## 13. Sliders
 
-| Method | Endpoint                   | Description                | Access       |
-| ------ | -------------------------- | -------------------------- | ------------ |
-| GET    | /Sliders                   | Get all active sliders     | Public       |
-| GET    | /Admin/Sliders             | Get all sliders (admin)    | Admin, Owner |
-| GET    | /Admin/Sliders/{id}        | Get slider by id           | Admin, Owner |
-| POST   | /Admin/Sliders             | Create slider              | Admin, Owner |
-| PUT    | /Admin/Sliders/{id}        | Update slider              | Admin, Owner |
-| DELETE | /Admin/Sliders/{id}        | Delete slider              | Admin, Owner |
-| PATCH  | /Admin/Sliders/{id}/Status | Activate/deactivate slider | Admin, Owner |
+| Method | Endpoint                     | Description                | Access             |
+| ------ | ---------------------------- | -------------------------- | ------------------ |
+| GET    | `/Sliders`                   | Get all active sliders     | Public             |
+| GET    | `/Admin/Sliders`             | Get all sliders (admin)    | Admin, Super Admin |
+| GET    | `/Admin/Sliders/{id}`        | Get slider by id           | Admin, Super Admin |
+| POST   | `/Admin/Sliders`             | Create slider              | Admin, Super Admin |
+| PUT    | `/Admin/Sliders/{id}`        | Update slider              | Admin, Super Admin |
+| DELETE | `/Admin/Sliders/{id}`        | Delete slider              | Admin, Super Admin |
+| PATCH  | `/Admin/Sliders/{id}/Status` | Activate/deactivate slider | Admin, Super Admin |
 
 **Sample Response (Create Slider):**
 
@@ -639,10 +678,10 @@ Development: https://localhost:5162/api/v1
 **Base Path:** `/api/v1/Admin/Dashboard`
 | Method | Endpoint | Description | Access |
 |----------|----------------------------------------|-----------------------------------|---------------------|
-| GET | /Admin/Dashboard/Statistics | Get overall statistics | Admin, Owner |
-| GET | /Admin/Dashboard/Sales | Get sales report | Admin, Owner |
-| GET | /Admin/Dashboard/Top-Products | Get most viewed products | Admin, Owner |
-| GET | /Admin/Dashboard/Orders-Status | Get orders by status | Admin, Owner |
+| GET | `/Admin/Dashboard/Statistics` | Get overall statistics | Admin, Super Admin |
+| GET | `/Admin/Dashboard/Sales` | Get sales report | Admin, Super Admin |
+| GET | `/Admin/Dashboard/Top-Products` | Get most viewed products | Admin, Super Admin |
+| GET | `/Admin/Dashboard/Orders-Status` | Get orders by status | Admin, Super Admin |
 
 **Sample Response (Dashboard Statistics):**
 
@@ -681,11 +720,11 @@ Development: https://localhost:5162/api/v1
 
 ## 15. Health & Monitoring
 
-| Method | Endpoint      | Description           | Access   |
-| ------ | ------------- | --------------------- | -------- |
-| GET    | /Health/Ready | Readiness probe       | Public   |
-| GET    | /Health/Live  | Liveness probe        | Public   |
-| GET    | /Metrics      | OpenTelemetry metrics | Internal |
+| Method | Endpoint        | Description           | Access   |
+| ------ | --------------- | --------------------- | -------- |
+| GET    | `/Health/Ready` | Readiness probe       | Public   |
+| GET    | `/Health/Live`  | Liveness probe        | Public   |
+| GET    | `/Metrics`      | OpenTelemetry metrics | Internal |
 
 **Sample Response (Health Check):**
 
@@ -712,28 +751,28 @@ Development: https://localhost:5162/api/v1
 
 ## Slug Support
 
-| Entity   | Example URL                         |
-| -------- | ----------------------------------- |
-| Product  | /api/v1/Products/iphone-15-pro      |
-| Category | /api/v1/Categories/smartphones      |
-| Brand    | /api/v1/Brands/apple                |
-| Article  | /api/v1/Articles/top-10-smartphones |
+| Entity   | Example URL                           |
+| -------- | ------------------------------------- |
+| Product  | `/api/v1/Products/iphone-15-pro`      |
+| Category | `/api/v1/Categories/smartphones`      |
+| Brand    | `/api/v1/Brands/apple`                |
+| Article  | `/api/v1/Articles/top-10-smartphones` |
 
-## 16. Role Management (Owner only)
+## 16. Role Management (Super Admin only)
 
-**Base Path:** `/api/v1/Owner/Roles`
+**Base Path:** `/api/v1/SuperAdmin/Roles`
 
-| Method | Endpoint                                       | Description                 | Access     |
-| ------ | ---------------------------------------------- | --------------------------- | ---------- |
-| GET    | `/Owner/Roles`                                 | Get all roles               | Owner only |
-| GET    | `/Owner/Roles/{id}`                            | Get role by id              | Owner only |
-| POST   | `/Owner/Roles`                                 | Create new role             | Owner only |
-| PUT    | `/Owner/Roles/{id}`                            | Update role                 | Owner only |
-| DELETE | `/Owner/Roles/{id}`                            | Delete role                 | Owner only |
-| GET    | `/Owner/Roles/{id}/Permissions`                | Get role permissions        | Owner only |
-| POST   | `/Owner/Roles/{id}/Permissions`                | Assign permissions to role  | Owner only |
-| DELETE | `/Owner/Roles/{id}/Permissions/{permissionId}` | Remove permission from role | Owner only |
-| GET    | `/Owner/Roles/{id}/Users`                      | Get users with this role    | Owner only |
+| Method | Endpoint                                            | Description                 | Access           |
+| ------ | --------------------------------------------------- | --------------------------- | ---------------- |
+| GET    | `/SuperAdmin/Roles`                                 | Get all roles               | Super Admin only |
+| GET    | `/SuperAdmin/Roles/{id}`                            | Get role by id              | Super Admin only |
+| POST   | `/SuperAdmin/Roles`                                 | Create new role             | Super Admin only |
+| PUT    | `/SuperAdmin/Roles/{id}`                            | Update role                 | Super Admin only |
+| DELETE | `/SuperAdmin/Roles/{id}`                            | Delete role                 | Super Admin only |
+| GET    | `/SuperAdmin/Roles/{id}/Permissions`                | Get role permissions        | Super Admin only |
+| POST   | `/SuperAdmin/Roles/{id}/Permissions`                | Assign permissions to role  | Super Admin only |
+| DELETE | `/SuperAdmin/Roles/{id}/Permissions/{permissionId}` | Remove permission from role | Super Admin only |
+| GET    | `/SuperAdmin/Roles/{id}/Users`                      | Get users with this role    | Super Admin only |
 
 **Sample Request (Create Role):**
 
@@ -762,8 +801,8 @@ Development: https://localhost:5162/api/v1
   "data": [
     {
       "id": 1,
-      "name": "Owner",
-      "displayName": "مالک",
+      "name": "SuperAdmin",
+      "displayName": "مدیر کل",
       "description": "Full system access",
       "isDefault": true,
       "isSystemProtected": true,
@@ -818,14 +857,14 @@ Development: https://localhost:5162/api/v1
 }
 ```
 
-## 17. Permission Management (Owner Only)
+## 17. Permission Management (Super Admin Only)
 
-**Base Path:** `/api/v1/Owner/Permissions`
+**Base Path:** `/api/v1/SuperAdmin/Permissions`
 
-| Method | Endpoint                   | Description                             | Access     |
-| ------ | -------------------------- | --------------------------------------- | ---------- |
-| GET    | /Owner/Permissions         | Get all permissions (grouped by module) | Owner only |
-| GET    | /Owner/Permissions/Modules | Get all permission modules              | Owner only |
+| Method | Endpoint                          | Description                             | Access           |
+| ------ | --------------------------------- | --------------------------------------- | ---------------- |
+| GET    | `/SuperAdmin/Permissions`         | Get all permissions (grouped by module) | Super Admin only |
+| GET    | `/SuperAdmin/Permissions/Modules` | Get all permission modules              | Super Admin only |
 
 **Sample Response (Get Permissions):**
 
@@ -857,15 +896,15 @@ Development: https://localhost:5162/api/v1
 }
 ```
 
-## 18. Assign Roles to Users (Admin/Owner)
+## 18. Assign Roles to Users (Admin/Super Admin)
 
 **Base Path:** `/api/v1/Admin/Users`
 
-| Method | Endpoint                             | Description           | Access       |
-| ------ | ------------------------------------ | --------------------- | ------------ |
-| POST   | /Admin/Users/{userId}/Roles          | Assign roles to user  | Admin, Owner |
-| GET    | /Admin/Users/{userId}/Roles          | Get user roles        | Admin, Owner |
-| DELETE | /Admin/Users/{userId}/Roles/{roleId} | Remove role from user | Admin, Owner |
+| Method | Endpoint                               | Description           | Access             |
+| ------ | -------------------------------------- | --------------------- | ------------------ |
+| POST   | `/Admin/Users/{userId}/Roles`          | Assign roles to user  | Admin, Super Admin |
+| GET    | `/Admin/Users/{userId}/Roles`          | Get user roles        | Admin, Super Admin |
+| DELETE | `/Admin/Users/{userId}/Roles/{roleId}` | Remove role from user | Admin, Super Admin |
 
 **Sample Request (Assign Roles):**
 
@@ -895,6 +934,128 @@ Development: https://localhost:5162/api/v1
         "displayName": "مدیر محصولات"
       }
     ]
+  }
+}
+```
+
+## 19. Assign Multiple Roles to User
+
+| Method | Endpoint                               | Description                       | Access             |
+| ------ | -------------------------------------- | --------------------------------- | ------------------ |
+| POST   | `/Admin/Users/{userId}/Roles`          | Assign multiple roles to user     | Admin, Super Admin |
+| GET    | `/Admin/Users/{userId}/Roles`          | Get all roles of a user           | Admin, Super Admin |
+| DELETE | `/Admin/Users/{userId}/Roles/{roleId}` | Remove a role from user           | Admin, Super Admin |
+| PUT    | `/Admin/Users/{userId}/Roles`          | Replace all roles (set new roles) | Admin, Super Admin |
+
+**Sample Request (Assign Multiple Roles):**
+
+```json
+{
+  "roleIds": [2, 5, 7] // Admin, ProductManager, CommentModerator
+}
+```
+
+## 20. Invoices
+
+**Base Path:** `/api/v1/invoices`
+
+| Method | Endpoint                       | Description                    | Access             |
+| ------ | ------------------------------ | ------------------------------ | ------------------ |
+| GET    | `/Invoices/{orderId}`          | Get invoice by order ID        | Customer+          |
+| GET    | `/Invoices/{id}/Pdf`           | Download invoice as PDF        | Customer+          |
+| POST   | `/Invoices/{orderId}/Generate` | Generate invoice for order     | Admin, Super Admin |
+| POST   | `/Invoices/{id}/Send-email`    | Send invoice to customer email | Customer+          |
+| GET    | `/Admin/Invoices`              | Get all invoices               | Admin, Super Admin |
+
+**Sample Response (Get Invoice):**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "id": 1,
+    "invoiceNumber": "INV-20250001",
+    "invoiceDate": "2025-01-15T10:30:00Z",
+    "subTotal": 1000000,
+    "discountAmount": 100000,
+    "taxAmount": 81000,
+    "shippingCost": 50000,
+    "totalAmount": 1031000,
+    "status": "Paid",
+    "invoicePdfUrl": "/storage/invoices/INV-20250001.pdf",
+    "orderId": 100
+  }
+}
+```
+
+## Daily Sales Report
+
+**Base Path:** `/api/v1/Admin/Reports`
+
+| Method | Endpoint                                  | Description                  | Access       |
+| ------ | ----------------------------------------- | ---------------------------- | ------------ |
+| GET    | `/Admin/Reports/Sales/Daily`              | Get daily sales report       | Admin, Owner |
+| GET    | `/Admin/Reports/Sales/Daily/Export/Excel` | Export daily report to Excel | Admin, Owner |
+| GET    | `/Admin/Reports/Sales/Daily/Export/Pdf`   | Export daily report to PDF   | Admin, Owner |
+
+**Sample Request:**
+GET `/admin/reports/sales/daily?startDate=2025-01-01&endDate=2025-01-31&sortBy=totalSales&sortDirection=desc`
+
+**Sample Response:**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-31",
+    "totalOrders": 45,
+    "totalSales": 125000000,
+    "totalTax": 11250000,
+    "totalShipping": 2250000,
+    "averageOrderValue": 2777777,
+    "dailyItems": [
+      {
+        "date": "2025-01-01",
+        "orderCount": 5,
+        "totalSales": 15000000,
+        "totalTax": 1350000,
+        "totalShipping": 250000,
+        "averageOrderValue": 3000000
+      },
+      {
+        "date": "2025-01-02",
+        "orderCount": 3,
+        "totalSales": 9000000,
+        "totalTax": 810000,
+        "totalShipping": 150000,
+        "averageOrderValue": 3000000
+      }
+    ]
+  }
+}
+```
+
+**Excel Export Response:**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "fileUrl": "/storage/reports/daily-sales-report-2025-01-01-to-2025-01-31.xlsx",
+    "message": "Report exported successfully"
+  }
+}
+```
+
+**PDF Export Response:**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "fileUrl": "/storage/reports/daily-sales-report-2025-01-01-to-2025-01-31.pdf",
+    "message": "Report exported successfully"
   }
 }
 ```

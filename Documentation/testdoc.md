@@ -1,1 +1,0 @@
-- [x] FR-001: User registration with default Customer role

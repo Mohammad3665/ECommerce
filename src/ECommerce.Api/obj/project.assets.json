@@ -947,11 +947,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\AspNetCore\\ECommerce\\src\\ecommerce.api\\ECommerce.Api.csproj",
+      "projectUniqueName": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Api\\ECommerce.Api.csproj",
       "projectName": "ECommerce.Api",
-      "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ecommerce.api\\ECommerce.Api.csproj",
+      "projectPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Api\\ECommerce.Api.csproj",
       "packagesPath": "C:\\Users\\0\\.nuget\\packages\\",
-      "outputPath": "E:\\AspNetCore\\ECommerce\\src\\ecommerce.api\\obj\\",
+      "outputPath": "E:\\AspNetCore\\ECommerce\\src\\ECommerce.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -967,7 +967,6 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Users\\0\\.nuget\\packages": {},
-        "E:\\nugetoffline": {},
         "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {

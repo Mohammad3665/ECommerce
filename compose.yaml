@@ -1,10 +1,41 @@
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
-
 services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: ecommerce-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ecommerceapi:
     image: ecommerceapi
     build:
       context: .
       dockerfile: src/ECommerce.Api/Dockerfile
     ports:
-      - "5000:5162"
+      - "5000:8080" # HTTP
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Redis__ConnectionString=redis:6379,abortConnect=false
+      - ASPNETCORE_URLS=http://+:8080;
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+
+volumes:
+  redis-data:
+
+networks:
+  ecommerce-network:
+    driver: bridge

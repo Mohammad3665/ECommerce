@@ -988,15 +988,15 @@ Development: https://localhost:5000/api/v1
 }
 ```
 
-## Daily Sales Report
+## 21. Daily Sales Report
 
 **Base Path:** `/api/v1/Admin/Reports`
 
-| Method | Endpoint                                  | Description                  | Access       |
-| ------ | ----------------------------------------- | ---------------------------- | ------------ |
-| GET    | `/Admin/Reports/Sales/Daily`              | Get daily sales report       | Admin, Owner |
-| GET    | `/Admin/Reports/Sales/Daily/Export/Excel` | Export daily report to Excel | Admin, Owner |
-| GET    | `/Admin/Reports/Sales/Daily/Export/Pdf`   | Export daily report to PDF   | Admin, Owner |
+| Method | Endpoint                                  | Description                  | Access             |
+| ------ | ----------------------------------------- | ---------------------------- | ------------------ |
+| GET    | `/Admin/Reports/Sales/Daily`              | Get daily sales report       | Admin, Super Admin |
+| GET    | `/Admin/Reports/Sales/Daily/Export/Excel` | Export daily report to Excel | Admin, Super Admin |
+| GET    | `/Admin/Reports/Sales/Daily/Export/Pdf`   | Export daily report to PDF   | Admin, Super Admin |
 
 **Sample Request:**
 GET `/admin/reports/sales/daily?startDate=2025-01-01&endDate=2025-01-31&sortBy=totalSales&sortDirection=desc`
@@ -1056,6 +1056,83 @@ GET `/admin/reports/sales/daily?startDate=2025-01-01&endDate=2025-01-31&sortBy=t
   "data": {
     "fileUrl": "/storage/reports/daily-sales-report-2025-01-01-to-2025-01-31.pdf",
     "message": "Report exported successfully"
+  }
+}
+```
+
+## 22. Email Verification & Password Reset Endpoints
+
+| Method | Endpoint                                         | Description                       | Access    |
+| ------ | ------------------------------------------------ | --------------------------------- | --------- |
+| POST   | `/Auth/Send-verification-email`                  | Send email verification link      | Customer+ |
+| GET    | `/Auth/Verify-email?userId={userId}&code={code}` | Verify email via link click       | Public    |
+| POST   | `/Auth/Resend-verification`                      | Resend verification code          | Customer+ |
+| POST   | `/Auth/Forgot-password`                          | Request password reset            | Public    |
+| POST   | `/Auth/Reset-password`                           | Reset password with security code | Public    |
+
+**Sample Request (Forgot Password):**
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+**Sample Request (Reset Password):**
+
+```json
+{
+  "email": "user@example.com",
+  "securityCode": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "newPassword": "NewP@ssw0rd123"
+}
+```
+
+**Sample Request (Send Verification Email):**
+
+```json
+{
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+```
+
+**Sample Response (Send Verification Email):**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "message": "Verification email sent successfully"
+  }
+}
+```
+
+**Sample Response (Email Verified):**
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "message": "Email verified successfully"
+  }
+}
+```
+
+## 23. Mapping Examples in API Responses
+
+All API responses use Mapster for entity-to-DTO transformation.
+
+### Sample Response Structure
+
+```json
+{
+  "isSuccess": true,
+  "data": {
+    "productId": 10,
+    "productName": "iPhone 15 Pro",
+    "price": 50000000,
+    "categoryName": "Smartphones",
+    "brandName": "Apple"
   }
 }
 ```

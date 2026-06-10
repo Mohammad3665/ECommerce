@@ -27,11 +27,16 @@ public class User : BaseEntity<Guid>
     public DateTime? LastLoginAt { get; set; }
     public bool IsActive { get; set; } = true;
 
+    // Security
+    public Guid? SecurityCode { get; set; }
+    public DateTime? SecurityCodeExpiry { get; set; }
+    public bool IsEmailConfirmed { get; set; }
+
     // Relationships
     public ICollection<Role> UserRoles { get; set; }
     public ICollection<Order> Orders { get; set; }
     public ICollection<Comment> Comments { get; set; }
-    public Cart Cart { get; set; }
+    // public Cart Cart { get; set; }
     public ICollection<Article> Articles { get; set; }
 
 }
@@ -45,7 +50,7 @@ public class Brand : BaseEntity<long>
     public string Name { get; set; }
     public string Slug { get; set; }
     public string Description { get; set; }
-    public string Logo { get; set; }
+    public string LogoImageUrl { get; set; }
     public bool IsActive { get; set; } = true;
 
     // Relationships
@@ -61,7 +66,7 @@ public class Category : BaseEntity<long>
     public string Name { get; set; }
     public string Slug { get; set; }
     public string Description { get; set; }
-    public string Image { get; set; }
+    public string ImageUrl { get; set; }
 
     //Self-Reference for sub category
     public long? ParentCategoryId { get; set; }
@@ -96,7 +101,7 @@ public class Product : BaseEntity<long>
     public ICollection<ProductImage> Images { get; set; }
     public ICollection<ProductSpecification> Specifications { get; set; }
     public ICollection<Comment> Comments { get; set; }
-    public ICollection<CartItem> CartItems { get; set; }
+    // public ICollection<CartItem> CartItems { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; }
 }
 ```
@@ -104,14 +109,12 @@ public class Product : BaseEntity<long>
 ### 6. Produact Image
 
 ```csharp
-public class ProductImage
+public class ProductImage : BaseEntity<long>
 {
-    public long Id { get; set; }
     public string ImageUrl { get; set; }
     public bool IsMain { get; set; }
     public int DisplayOrder { get; set; }
     public long ProductId { get; set; }
-    public DateTime CreatedAt { get; set; }
 
     // Relationships
     public Product Product { get; set; }
@@ -132,7 +135,7 @@ public class ProductSpecification : BaseEntity<long>
 }
 ```
 
-### 8. Cart
+<!-- ### 8. Cart
 
 ```csharp
 public class Cart : BaseEntity<long>
@@ -143,9 +146,9 @@ public class Cart : BaseEntity<long>
     public User User { get; set; }
     public ICollection<CartItem> Items { get; set; }
 }
-```
+``` -->
 
-### 9. CartItem
+<!-- ### 9. CartItem
 
 ```csharp
 public class CartItem : BaseEntity<long>
@@ -160,7 +163,7 @@ public class CartItem : BaseEntity<long>
     public Cart Cart { get; set; }
     public Product Product { get; set; }
 }
-```
+``` -->
 
 ### 10. Order
 
@@ -222,7 +225,7 @@ public class OrderHistory : BaseEntity<long>
     public OrderStatus Status { get; set; }
     public string Note { get; set; }
     public DateTime ChangedAt { get; set; }
-    public int? ChangedByUserId { get; set; }
+    public Guid? ChangedByUserId { get; set; }
 
     // Relationships
     public Order Order { get; set; }
@@ -291,8 +294,8 @@ public class Article : BaseEntity<long>
     public string Summary { get; set; }
     public string ImageUrl { get; set; }
     public int ViewCount { get; set; }
-    public int ArticleCategoryId { get; set; }
-    public int AuthorId { get; set; }
+    public long ArticleCategoryId { get; set; }
+    public Guid AuthorId { get; set; }
     public ArticleStatus Status { get; set; }
 
     // Relationships
@@ -424,12 +427,9 @@ public class RolePermission
 ### 24. Invoice
 
 ```csharp
-/// <summary>
-/// Invoice entity for billing
-/// </summary>
-public class Invoice : BaseEntity<int>
+public class Invoice : BaseEntity<long>
 {
-    public int OrderId { get; set; }
+    public long OrderId { get; set; }
     public string InvoiceNumber { get; set; }        // INV-20250001
     public DateTime InvoiceDate { get; set; }
 
@@ -488,7 +488,31 @@ public class DailySalesItemDto
 }
 ```
 
-### 27. Initial Seeding
+### 27. Redis Cart (DTO)
+```csharp
+public class RedisCartDto
+{
+    public Guid UserId { get; set; }
+    public List<RedisCartItemDto> Items { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public decimal TotalPrice { get; set; }
+}
+```
+
+### 28. Redis Cart Item (DTO)
+```csharp
+public class RedisCartItemDto
+{
+    public long ProductId { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+    public decimal TotalPrice => Quantity * UnitPrice;
+}
+```
+
+### 29. Initial Seeding
 
 ```csharp
 public static class Permissions
@@ -557,7 +581,7 @@ public static class Permissions
 }
 ```
 
-### 28. Seed Data Configuration
+### 30. Seed Data Configuration
 
 ```csharp
 public static class DefaultRoles

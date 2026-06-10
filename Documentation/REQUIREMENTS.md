@@ -247,6 +247,61 @@
 - [ ] FR-120: SQL queries must be included in traces
 - [ ] FR-121: Trace ID must be injected into logs for correlation
 
+## 17. Email Verification & Security
+
+### 17.1 Email Verification
+
+- [ ] FR-122: System must send verification email after user registration
+- [ ] FR-123: Verification link must contain a unique SecurityCode (GUID)
+- [ ] FR-124: SecurityCode must expire after 24 hours
+- [ ] FR-125: User cannot login until email is verified
+- [ ] FR-126: User can request resend verification email
+
+### 17.2 Password Recovery
+
+- [ ] FR-127: User can request password reset via email
+- [ ] FR-128: Password reset link must contain SecurityCode
+- [ ] FR-129: SecurityCode must expire after 1 hour for password reset
+- [ ] FR-130: User must enter new password after verification
+
+## 18. Object Mapping (Mapster)
+
+### 18.1 Requirements
+
+- [ ] FR-131: System must use Mapster as the primary object mapper
+- [ ] FR-132: Mapster must be configured in Application layer for DTO mapping
+- [ ] FR-133: Entity to DTO mapping must support custom field naming
+- [ ] FR-134: Mapping must support nested objects and collections
+- [ ] FR-135: ProjectToType must be used for EF Core query optimization
+- [ ] FR-136: Mapping configurations must be centralized in one location
+- [ ] FR-137: Unit tests must cover critical mappings
+
+### 18.2 Performance Requirements
+
+- [ ] FR-138: Mapping 10,000 objects must complete within 50ms
+- [ ] FR-139: Memory allocation per mapping must be minimal (< 50KB per 1000 objects)
+- [ ] FR-140: Cold start mapping must not exceed 100ms
+
+## 19. Shopping Cart - Redis Migration
+
+### 19.1 Storage Migration
+
+- [ ] FR-141: Shopping cart data must be stored in Redis instead of SQL Server
+- [ ] FR-142: Cart and CartItem entities must be removed from SQL Server
+- [ ] FR-143: Redis must be configured with AOF persistence
+- [ ] FR-144: Redis data must be stored on a Docker volume for durability
+
+### 19.2 Cart Lifecycle
+
+- [ ] FR-145: Cart must have infinite TTL (never auto-expire)
+- [ ] FR-146: Cart must be manually deleted after successful checkout
+- [ ] FR-147: Cart must persist across user sessions
+
+### 19.3 Performance Requirements
+
+- [ ] FR-148: Cart read/write operations must complete within 50ms
+- [ ] FR-149: Redis must handle at least 1000 concurrent cart operations
+
 ## Non-Functional Requirements
 
 ### Security
@@ -274,3 +329,7 @@
 ### Observability
 
 - [ ] NFR-013: OpenTelemetry for distributed tracing
+
+```
+
+```

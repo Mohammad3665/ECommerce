@@ -153,3 +153,60 @@ var app = builder.Build();
 // ========== Expose Metrics Endpoint ==========
 app.UseOpenTelemetryPrometheusScrapingEndpoint();  // /metrics
 ```
+
+## Object Mapping with Mapster
+
+### Why Mapster?
+
+Mapster is selected as the primary object mapper for the ECommerce project due to its superior performance, low memory allocation, and excellent compatibility with Clean Architecture and CQRS patterns.
+
+### Comparison Summary
+
+| Feature                     | Mapster                       | AutoMapper   |
+| --------------------------- | ----------------------------- | ------------ |
+| **Performance**             | 2-3x faster                   | Baseline     |
+| **Memory Allocation**       | Lower                         | Higher       |
+| **AOT / NativeAOT Support** | ✅ Yes (via Source Generator) | ❌ Limited   |
+| **Code Required**           | ~50% less                     | More verbose |
+| **Compile-time Validation** | ✅ (via Source Generator)     | ❌ Runtime   |
+| **Learning Curve**          | Gentle                        | Moderate     |
+
+### Installation
+
+```bash
+# Core packages
+dotnet add package Mapster
+dotnet add package Mapster.DependencyInjection
+
+# For Source Generator (optional, for AOT/compile-time validation)
+dotnet add package Mapster.Core
+```
+
+### Configuration
+
+```csharp
+// Program.cs
+using Mapster;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Configure Mapster (scan assemblies for mappings)
+TypeAdapterConfig.GlobalSettings.Scan(typeof(Program).Assembly);
+
+// Register Mapster
+builder.Services.AddMapster();
+
+var app = builder.Build();
+// ... rest of the app
+```
+
+# appsettings.json
+
+```json
+{
+  "Redis": {
+    "ConnectionString": "redis:6379,abortConnect=false",
+    "InstanceName": "ECommerce"
+  }
+}
+```

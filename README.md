@@ -70,19 +70,32 @@
 
 ## 📚 API Endpoints Overview
 
-| Module         | Base Path                 | Description                                    |
-| -------------- | ------------------------- | ---------------------------------------------- |
-| Authentication | `/api/v1/Auth`            | Register, login, token refresh                 |
-| Users          | `/api/v1/Admin/Users`     | User management (Admin/Super User)             |
-| Roles          | `/api/v1/Owner/Roles`     | Role & permission management (Super User only) |
-| Profile        | `/api/v1/Profile`         | User profile management                        |
-| Products       | `/api/v1/Products`        | Product catalog                                |
-| Categories     | `/api/v1/Categories`      | Category & subcategory management              |
-| Brands         | `/api/v1/Brands`          | Brand management                               |
-| Cart           | `/api/v1/Cart`            | Shopping cart operations                       |
-| Orders         | `/api/v1/Orders`          | Order placement & tracking                     |
-| Invoices       | `/api/v1/Invoices`        | Invoice generation & download                  |
-| Reports        | `/api/v1/Admin/Reports`   | Daily sales reports & exports                  |
-| Comments       | `/api/v1/Comments`        | Product comments                               |
-| Articles       | `/api/v1/Articles`        | Blog articles                                  |
-| Dashboard      | `/api/v1/Admin/Dashboard` | Admin statistics                               |
+| Module         | Base Path                 | Description                                     |
+| -------------- | ------------------------- | ----------------------------------------------- |
+| Authentication | `/api/v1/Auth`            | Register, login, token refresh                  |
+| Users          | `/api/v1/Admin/Users`     | User management (Admin / Super Admin)           |
+| Roles          | `/api/v1/Owner/Roles`     | Role & permission management (Super Admin only) |
+| Profile        | `/api/v1/Profile`         | User profile management                         |
+| Products       | `/api/v1/Products`        | Product catalog                                 |
+| Categories     | `/api/v1/Categories`      | Category & subcategory management               |
+| Brands         | `/api/v1/Brands`          | Brand management                                |
+| Cart           | `/api/v1/Cart`            | Shopping cart operations                        |
+| Orders         | `/api/v1/Orders`          | Order placement & tracking                      |
+| Invoices       | `/api/v1/Invoices`        | Invoice generation & download                   |
+| Reports        | `/api/v1/Admin/Reports`   | Daily sales reports & exports                   |
+| Comments       | `/api/v1/Comments`        | Product comments                                |
+| Articles       | `/api/v1/Articles`        | Blog articles                                   |
+| Dashboard      | `/api/v1/Admin/Dashboard` | Admin statistics                                |
+
+## 🛒 Shopping Cart Storage
+
+The shopping cart is stored in **Redis** (not SQL Server) for optimal performance.
+
+### Why Redis?
+
+- ⚡ **Sub-millisecond latency**
+- 🔄 **Infinite TTL** (cart never auto-expires)
+- 💾 **Persistent storage** with AOF
+- 🐳 **Docker-ready** configuration
+
+### Architecture

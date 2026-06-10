@@ -74,6 +74,35 @@ The project uses a complete observability stack for monitoring, tracing, and ale
 - **Infrastructure**: CPU, memory, GC, thread pool
 - **Custom Dashboards**: Per endpoint, per user, per product
 
+## Shopping Cart Storage
+
+### Technology: Redis
+
+The shopping cart has been migrated from SQL Server to Redis to achieve:
+
+- **Faster response times** for cart operations
+- **Reduced database load** (SQL Server handles orders only)
+- **Infinite TTL** (cart persists until user checks out)
+- **Simpler architecture** (no complex relationships)
+
+### Current Status
+
+| Component              | Status       |
+| ---------------------- | ------------ |
+| SQL Server Cart Tables | ❌ Removed   |
+| Redis Cart Storage     | ✅ Active    |
+| Cart API Endpoints     | ✅ Unchanged |
+
+### Data Persistence
+
+Redis is configured with:
+
+- **AOF (Append Only File)** for durability
+- **Docker Volume** for persistent storage
+- **No automatic expiration** (TTL = infinite)
+
+### Cart Lifecycle
+
 ### Alert Rules
 
 - High error rate (>5% for 5 minutes)
@@ -97,4 +126,4 @@ The project uses a complete observability stack for monitoring, tracing, and ale
 - Health Checks
 - Scalar
 - Redis
-- Auto Mapper
+- Mapster

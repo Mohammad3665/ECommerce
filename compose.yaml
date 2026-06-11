@@ -25,6 +25,7 @@ services:
       - "5000:8080" # HTTP
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=ECommerceDB;User Id=sa;Password=Password123;Encrypt=False;TrustServerCertificate=True;
       - Redis__ConnectionString=redis:6379,abortConnect=false
       - ASPNETCORE_URLS=http://+:8080;
     depends_on:

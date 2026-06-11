@@ -81,7 +81,7 @@ public class OrderItem : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="Product"/> entity representing the purchased product.
     /// </value>
-    public Product.Product? Product { get; set; }
+    public Product.Product Product { get; set; } = null!;
 
     #endregion
 }

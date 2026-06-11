@@ -1,5 +1,9 @@
 using Serilog;
 using Scalar.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using ECommerce.Domain.Common.Stores;
+using ECommerce.Infrastructure.DatabaseContext;
+using ECommerce.Infrastructure.Common.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
@@ -9,6 +13,10 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+var connectionString = builder.Configuration.GetConnectionString(StaticDataStore.DefaultSqlServerConnectionStringName);
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
 // Add services to the container.
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
@@ -16,6 +24,7 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 app.MapControllers();
 
+app.Services.ApplyMigrations();
 
 app.MapOpenApi();
 app.MapScalarApiReference();

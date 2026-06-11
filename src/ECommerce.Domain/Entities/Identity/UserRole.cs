@@ -48,7 +48,7 @@ public class UserRole
     ///     A nullable <see cref="Guid"/> referencing <see cref="User.Id"/>.
     ///     <c>null</c> indicates the assignment was done automatically by the system (e.g., default role on registration).
     /// </value>
-    [ForeignKey(nameof(User))]
+    [ForeignKey(nameof(AssignedBy))]
     public Guid? AssignedByUserId { get; set; }
 
     #endregion

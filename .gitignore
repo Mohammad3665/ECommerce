@@ -1,0 +1,28 @@
+# Build outputs
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# Database files
+DataBase/
+*.mdf
+*.ldf
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+
+# dotnet tools
+.dotnet/
+tools/
+
+# Others
+*.log
+*.tmp
+*.cache

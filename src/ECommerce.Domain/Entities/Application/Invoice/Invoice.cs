@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ECommerce.Domain.Entities.Base;
 using ECommerce.Domain.Enums;
 
 namespace ECommerce.Domain.Entities.Application.Invoice;

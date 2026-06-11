@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using ECommerce.Domain.Entities.Application.Role;
 using ECommerce.Domain.Entities.Identity;
 

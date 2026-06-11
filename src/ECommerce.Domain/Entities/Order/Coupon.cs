@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using ECommerce.Domain.Entities.Base;
 using ECommerce.Domain.Enums;
 
 namespace ECommerce.Domain.Entities.Order;

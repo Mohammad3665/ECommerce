@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ECommerce.Domain.Entities.Base;
-
 namespace ECommerce.Domain.Entities.Order;
 
 /// <summary>

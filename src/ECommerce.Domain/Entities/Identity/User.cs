@@ -1,7 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using ECommerce.Domain.Entities.Application.Article;
 using ECommerce.Domain.Entities.Application.Role;
-using ECommerce.Domain.Entities.Base;
 using ECommerce.Domain.Entities.Product;
 
 namespace ECommerce.Domain.Entities.Identity;

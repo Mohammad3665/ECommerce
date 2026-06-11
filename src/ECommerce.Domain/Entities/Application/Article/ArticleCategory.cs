@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using ECommerce.Domain.Entities.Base;
-
 namespace ECommerce.Domain.Entities.Application.Article;
 
 /// <summary>

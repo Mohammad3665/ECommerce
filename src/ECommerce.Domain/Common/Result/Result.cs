@@ -1,239 +1,97 @@
+using System.Diagnostics.CodeAnalysis;
 using ECommerce.Domain.Common.Enums;
 using ECommerce.Domain.Common.Filter;
 using ECommerce.Domain.Common.Result.Base;
 
 namespace ECommerce.Domain.Common.Result;
 
-#region Result (No data)
-
+#region Result (Without data)
 /// <summary>
-/// Represents the outcome of an operation without returning data.
-/// Provides factory methods for success, failure, not found, and warning results.
+/// Represents the outcome of an operation that either succeeds or fails, without a return value.
+/// Provides an implicit conversion from <see cref="Error"/> to allow direct error propagation.
 /// </summary>
-public class Result : BaseReault
+public class Result : BaseResult
 {
-    private Result(
-        bool succeeded,
-        ResultType type, 
-        string message, 
-        Exception? exception = null, 
-        List<string>? errors = null) : base(succeeded, type, message, exception){}
-
+    private Result(bool isSuccess, Error.Error error)
+        : base(isSuccess, error) { }
 
     /// <summary>
-    /// Creates a successful result.
+    /// Creates a successful result indicating that the operation completed without errors.
     /// </summary>
-    /// <param name="message">Optional success message.</param>
-    /// <returns>A success result object.</returns>
-    public static Result Success(string message = "")
-        => new(true, ResultType.Success, message);
-
+    /// <returns>A new <see cref="Result"/> representing success.</returns>
+    public static Result Success() => new(true, Common.Error.Error.None);
 
     /// <summary>
-    /// Creates a failed result with an error message.
+    /// Creates a failure result with the specified error.
     /// </summary>
-    /// <param name="message">Error message.</param>
-    /// <param name="exception">Optional exception that caused the error.</param>
-    /// <returns>A failure result object.</returns>
-    public static Result Failure(string message, Exception? exception)
-        => new(false, ResultType.Error, message, exception);
-
+    /// <param name="error">The error describing the failure. Must not be <see cref="Common.Error.Error.None"/>.</param>
+    /// <returns>A new <see cref="Result"/> representing failure.</returns>
+    public static Result Failure(Error.Error error) => new(false, error);
 
     /// <summary>
-    /// Creates a failed result with validation errors.
+    /// Enables implicit conversion of an <see cref="Error"/> to a failure result,
+    /// allowing a method to return an error directly where a <see cref="Result"/> is expected.
     /// </summary>
-    /// <param name="errors">List of validation errors.</param>
-    /// <param name="message">Error message.</param>
-    /// <returns>A failure result object.</returns>
-    public static Result Failure(List<string> errors, string message = "Validation Failed.")
-        => new(false, ResultType.Error, message, null, errors);
-
-
-    /// <summary>
-    /// Creates a "Not Found" result, typically used when data is missing.
-    /// </summary>
-    /// <param name="message">Optional message explaining what was not found.</param>
-    /// <returns>A not found result object.</returns>
-    public static Result NotFound(string message = "")
-        => new(false, ResultType.NotFound, message);
-
-
-    /// <summary>
-    /// Creates a warning result, indicating a non-critical issue.
-    /// </summary>
-    /// <param name="message">Optional warning message.</param>
-    /// <returns>A warning result object.</returns>
-    public static Result Warning(string message = "")
-        => new(true, ResultType.Warning, message);
+    /// <param name="error">The error to convert.</param>
+    public static implicit operator Result(Error.Error error) => Failure(error);
 }
-
 #endregion
 
-#region Result(With Data)
-
+#region Result (With data)
 /// <summary>
-/// Represents the outcome of an operation that returns data.
-/// Provides factory methods for success, failure, not found, and warning results.
+/// Represents the outcome of an operation that either succeeds and returns data,
+/// or fails with an error. Implicit conversions from both the success data and an error are provided.
 /// </summary>
-/// <typeparam name="TData">Type of data returned by the operation.</typeparam>
-public class Result<TData> : BaseReault
+/// <typeparam name="TData">The type of data returned on success.</typeparam>
+public class Result<TData> : BaseResult
 {
-    /// <summary>
-    /// The data returned by the operation.
-    /// </summary>
-    public TData Data { get; }
-
-    private Result(
-        bool succeeded,
-        ResultType type,
-        string message,
-        TData data = default!,
-        Exception? exception = null,
-        List<string>? errors = null) : base(succeeded, type, message, exception, errors)
+    private Result(TData? data, bool isSuccess, Error.Error error) : base(isSuccess, error)
     {
         Data = data;
+        IsSuccess = isSuccess;
     }
 
+    /// <summary>
+    /// Gets the data produced by a successful operation.
+    /// When <see cref="IsSuccess"/> is <c>true</c>, this value is guaranteed non‑null (enforced by
+    /// <see cref="System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute"/>).
+    /// </summary>
+    public TData? Data { get; }
 
     /// <summary>
-    /// Creates a successful result with data.
+    /// Indicates whether the operation succeeded. Overrides the base property to carry the
+    /// <see cref="MemberNotNullWhenAttribute"/> that makes <see cref="Data"/> non‑null after a <c>true</c> check.
     /// </summary>
-    /// <param name="data">Returned data.</param>
-    /// <param name="message">Optional success message.</param>
-    /// <returns>A success result object containing data.</returns>
-    public static Result<TData> Success(TData data, string message = "")
-        => new(true, ResultType.Success, message, data);
-
+    [MemberNotNullWhen(true, nameof(Data))]
+    public override bool IsSuccess { get; }
 
     /// <summary>
-    /// Creates a failed result with an error message.
+    /// Creates a successful result containing the provided data.
     /// </summary>
-    /// <param name="message">Error message.</param>
-    /// <param name="exception">Optional exception that caused the error.</param>
-    /// <returns>A failure result object.</returns>
-    public static Result<TData> Failure(string message, Exception? exception)
-        => new(false, ResultType.Error, message, default!, exception);
-
+    /// <param name="data">The data to return with the success result.</param>
+    /// <returns>A new <see cref="Result{TData}"/> instance representing success.</returns>
+    public static Result<TData> Success(TData data) => new(data, true, Common.Error.Error.None);
 
     /// <summary>
-    /// Creates a failed result with validation errors.
+    /// Creates a failure result with the specified error.
     /// </summary>
-    /// <param name="errors">List of validation errors.</param>
-    /// <param name="message">Error message.</param>
-    /// <returns>A failure result object.</returns>
-    public static Result<TData> Failure(List<string> errors, string message = "Validation Failed.")
-        => new(false, ResultType.Error, message, default!, null, errors);
-
+    /// <param name="error">The error describing the failure. Must not be <see cref="Common.Error.Error.None"/>.</param>
+    /// <returns>A new <see cref="Result{TData}"/> instance representing failure.</returns>
+    public static Result<TData> Failure(Error.Error error) => new(default, false, error);
 
     /// <summary>
-    /// Creates a "Not Found" result when expected data could not be found.
+    /// Enables implicit conversion of a data value to a successful result,
+    /// allowing a method to return a value directly where a <see cref="Result{TData}"/> is expected.
     /// </summary>
-    /// <param name="message">Optional message explaining what was not found.</param>
-    /// <returns>A not found result object.</returns>
-    public static Result<TData> NotFound(string message = "")
-        => new(false, ResultType.NotFound, message);
-
+    /// <param name="data">The data to convert.</param>
+    public static implicit operator Result<TData>(TData data) => Success(data);
 
     /// <summary>
-    /// Creates a warning result with data, used for partial successes or recoverable issues.
+    /// Enables implicit conversion of an <see cref="Error"/> to a failure result,
+    /// allowing a method to return an error directly where a <see cref="Result{TData}"/> is expected.
     /// </summary>
-    /// <param name="data">Returned data.</param>
-    /// <param name="message">Optional warning message.</param>
-    /// <returns>A warning result object containing data.</returns>
-    public static Result<TData> Warning(string message = "")
-        => new(true, ResultType.Warning, message);
-    
-}
-
-#endregion
-
-#region Result (With Data And State)
-
-/// <summary>
-/// Represents the outcome of an operation that returns both data and a custom state.
-/// Useful for commands or domain operations with specific result states.
-/// </summary>
-/// <typeparam name="TData">Type of data returned by the operation.</typeparam>
-/// <typeparam name="TState">Custom enum representing domain-specific states.</typeparam>
-public class Result<TData, TState> : BaseReault where TState : Enum
-{
-    /// <summary>
-    /// The data returned by the operation.
-    /// </summary>
-    public TData Data { get; }
-
-    /// <summary>
-    /// Custom state representing a specific condition or reason for the result.
-    /// </summary>
-    public TState State { get; }
-
-    private Result(
-        bool succeeded,
-        ResultType type,
-        string message,
-        TData data,
-        TState state,
-        Exception? exception = null,
-        List<string>? errors = null) : base(succeeded, type, message, exception, errors)
-    {
-        Data = data;
-        State = state;
-    }
-
-
-    /// <summary>
-    /// Creates a successful result with data and a custom state.
-    /// </summary>
-    /// <param name="data">Returned data.</param>
-    /// <param name="state">Custom state representing the result context.</param>
-    /// <param name="message">Optional success message.</param>
-    /// <returns>A success result object containing data and state.</returns>
-    public static Result<TData, TState> Success(TData data, TState state, string message = "")
-        => new(true, ResultType.Success, message, data, state);
-
-
-    /// <summary>
-    /// Creates a failed result with a custom state and message.
-    /// </summary>
-    /// <param name="state">Custom state representing the failure reason.</param>
-    /// <param name="message">Error message.</param>
-    /// <param name="exception">Optional exception that caused the error.</param>
-    /// <returns>A failure result object containing state information.</returns>
-    public static Result<TData, TState> Failure(TState state, string message, Exception? exception = null)
-        => new(false, ResultType.Error, message, default!, state, exception);
-
-
-    /// <summary>
-    /// Creates a failed result with validation errors and custom state.
-    /// </summary>
-    /// <param name="state">Custom state representing the failure reason.</param>
-    /// <param name="errors">List of validation errors.</param>
-    /// <param name="message">Error message.</param>
-    /// <returns>A failure result object containing state information and errors.</returns>
-    public static Result<TData, TState> Failure(TState state, List<string> errors, string message = "Validation Failed.")
-        => new(false, ResultType.Error, message, default!, state, null, errors);
-
-
-    /// <summary>
-    /// Creates a "Not Found" result with a custom state.
-    /// </summary>
-    /// <param name="state">Custom state representing what was not found.</param>
-    /// <param name="message">Optional message explaining what was not found.</param>
-    /// <returns>A not found result object containing state information.</returns>
-    public static Result<TData, TState> NotFound(TState state, string message = "")
-        => new(false, ResultType.NotFound, message, default!, state);
-
-    
-    /// <summary>
-    /// Creates a warning result with data and a custom state.
-    /// </summary>
-    /// <param name="data">Returned data.</param>
-    /// <param name="state">Custom state representing the warning context.</param>
-    /// <param name="message">Optional warning message.</param>
-    /// <returns>A warning result object containing data and state.</returns>
-    public static Result<TData, TState> Warning(TData data, TState state, string message = "")
-        => new(true, ResultType.Warning, message, data, state);
-
+    /// <param name="error">The error to convert.</param>
+    public static implicit operator Result<TData>(Error.Error error) => Failure(error);
 }
 #endregion
 
@@ -315,6 +173,30 @@ public class QueryResult<T>(
     /// Returns true if CurrentPage is greater than 1.
     /// </summary>
     public bool HasPrev => CurrentPage > 1;
+
+    /// <summary>
+    /// Transforms the collection items of the current query result into another type 
+    /// using the specified mapper function, while preserving all pagination, sorting, and filtering metadata.
+    /// </summary>
+    /// <typeparam name="TTarget">The destination type to convert the items into.</typeparam>
+    /// <param name="mapper">A delegate function that defines how to map each item from <typeparamref name="T"/> to <typeparamref name="TTarget"/>.</param>
+    /// <returns>A new <see cref="QueryResult{TTarget}"/> instance containing the transformed items and the original query metadata.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="mapper"/> function is null.</exception>
+    public QueryResult<TTarget> Map<TTarget>(Func<T, TTarget> mapper)
+    {
+        if (mapper == null) throw new ArgumentNullException(nameof(mapper));
+        var mappedItems = Items.Select(mapper).ToList();
+
+        return new QueryResult<TTarget>(
+            mappedItems,
+            CurrentPage,
+            PageSize,
+            TotalCount,
+            SortBy,
+            Sort,
+            AppliedFilters
+        );
+    }
 }
 
 #endregion

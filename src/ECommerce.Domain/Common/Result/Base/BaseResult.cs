@@ -3,63 +3,43 @@ using ECommerce.Domain.Common.Enums;
 namespace ECommerce.Domain.Common.Result.Base;
 
 /// <summary>
-/// Represents the base structure for all operation results.
-/// Stores shared information about success, message, result type, and exceptions.
+/// Serves as the base class for result types that indicate success or failure
+/// and carry an associated error when unsuccessful.
 /// </summary>
-/// <remarks>
-/// This class is abstract and should not be instantiated directly.  
-/// Use <see cref="Result{TData}"/>, <see cref="Result{TData}"/>,  
-/// or <see cref="Result{TData}"/> instead.
-/// </remarks>
-public abstract class BaseReault
+public abstract class BaseResult
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseResult"/> class.
+    /// Ensures a consistent state: success must be paired with <see cref="Common.Error.Error.None"/>
+    /// and failure must be paired with an actual error.
     /// </summary>
-    /// <param name="succeeded">Indicates whether the operation succeeded.</param>
-    /// <param name="type">The general result type (Success, Error, NotFound, etc.).</param>
-    /// <param name="message">A descriptive message about the result.</param>
-    /// <param name="exception">Optional exception associated with the result.</param>
-    /// <param name="errors">List of validation errors.</param>
-    protected BaseReault(bool succeeded, ResultType type, string message, Exception? exception = null, List<string>? errors = null)
+    /// <param name="isSuccess"><c>true</c> if the operation succeeded; otherwise <c>false</c>.</param>
+    /// <param name="error">The error associated with the result. Must be <see cref="Common.Error.Error.None"/> when <paramref name="isSuccess"/> is <c>true</c> and must not be <see cref="Common.Error.Error.None"/> when <paramref name="isSuccess"/> is <c>false</c>.</param>
+    /// <exception cref="ArgumentException">Thrown when the combination of <paramref name="isSuccess"/> and <paramref name="error"/> is invalid.</exception>
+    protected BaseResult(bool isSuccess, Error.Error error)
     {
-        Succeeded = succeeded;
-        Type = type;
-        Message = message;
-        Exception = exception;
-        Errors = errors;
+        if ((isSuccess && error != Common.Error.Error.None) || (!isSuccess && error == Common.Error.Error.None))
+            throw new ArgumentException("Invalid error.", nameof(error));
+        IsSuccess = isSuccess;
+        Error = error;
     }
 
     /// <summary>
-    /// Gets a value indicating whether the operation was successful.
+    /// Indicates whether the operation represented by this result was successful.
+    /// This property is virtual to allow derived classes to compute success dynamically,
+    /// but overriding it must remain consistent with the <see cref="Error"/> property.
     /// </summary>
-    public bool Succeeded { get; }
+    public virtual bool IsSuccess { get; }
 
     /// <summary>
-    /// Gets the type of result (Success, Error, NotFound, Warning, etc.).
+    /// Indicates whether the operation represented by this result failed.
+    /// This is the logical negation of <see cref="IsSuccess"/>.
     /// </summary>
-    public ResultType Type { get; }
+    public bool IsFailure => !IsSuccess;
 
     /// <summary>
-    /// Gets a descriptive message about the result.
+    /// The error that occurred during the operation when <see cref="IsSuccess"/> is <c>false</c>;
+    /// otherwise <see cref="Abstractions.Error.Error.None"/>.
     /// </summary>
-    /// <example>
-    /// "User created successfully."  
-    /// or  
-    /// "Unable to connect to database."
-    /// </example>
-    public string Message { get; }
-
-    /// <summary>
-    /// Gets the exception that caused the operation to fail, if any.
-    /// </summary>
-    /// <remarks>
-    /// This is typically null for successful or warning results.
-    /// </remarks>
-    public Exception? Exception { get; }
-
-    /// <summary>
-    /// Gets the list of validation errors. Only populated for validation failures.
-    /// </summary>
-    public List<string>? Errors { get; } = null!;
+    public Error.Error Error { get; }
 }

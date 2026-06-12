@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ECommerce.Domain.Common.Stores;
 using ECommerce.Infrastructure.DatabaseContext;
 using ECommerce.Infrastructure.Common.Extensions;
+using Mapster;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
@@ -16,6 +17,8 @@ builder.Host.UseSerilog();
 var connectionString = builder.Configuration.GetConnectionString(StaticDataStore.DefaultSqlServerConnectionStringName);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddMapster();
 
 // Add services to the container.
 builder.Services.AddOpenApi();

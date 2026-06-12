@@ -25,16 +25,39 @@ services:
       - "5000:8080" # HTTP
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=ECommerceDB;User Id=sa;Password=Password123;Encrypt=False;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User Id=sa;Password=Password123;TrustServerCertificate=True;
       - Redis__ConnectionString=redis:6379,abortConnect=false
       - ASPNETCORE_URLS=http://+:8080;
     depends_on:
       redis:
         condition: service_healthy
+      ecommerce_db:
+        condition: service_healthy
+
     networks:
       - ecommerce-network
+    restart: on-failure
+
+  ecommerce_db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password123
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "Password123" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
 volumes:
+  mssql_data:
   redis-data:
 
 networks:

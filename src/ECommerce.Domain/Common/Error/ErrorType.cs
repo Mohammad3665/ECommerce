@@ -36,6 +36,11 @@ public enum ErrorType
     Forbidden,
 
     /// <summary>
+    /// Operation canceled by the user.
+    /// </summary>
+    Canceled,
+
+    /// <summary>
     /// An unexpected internal error occurred, typically indicating a bug or infrastructure issue.
     /// </summary>
     Unexpected,

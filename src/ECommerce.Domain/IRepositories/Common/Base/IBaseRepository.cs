@@ -3,7 +3,7 @@ using ECommerce.Domain.Common.Filter;
 using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Specifications.Common;
 
-namespace ECommerce.Domain.IRepositories.Common;
+namespace ECommerce.Domain.IRepositories.Common.Base;
 
 /// <summary>
 /// Defines the base repository contract for entities of type <typeparamref name="TEntity"/>

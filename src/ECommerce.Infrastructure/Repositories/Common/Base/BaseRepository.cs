@@ -2,12 +2,12 @@ using System.Linq.Expressions;
 using ECommerce.Domain.Common.Filter;
 using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Entities.Base;
-using ECommerce.Domain.IRepositories.Common;
+using ECommerce.Domain.IRepositories.Common.Base;
 using ECommerce.Domain.Specifications.Common;
 using ECommerce.Infrastructure.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Infrastructure.Repositories.Common;
+namespace ECommerce.Infrastructure.Repositories.Common.Base;
 
 public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
 {

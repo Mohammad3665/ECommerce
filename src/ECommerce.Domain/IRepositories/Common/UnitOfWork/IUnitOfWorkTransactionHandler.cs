@@ -12,5 +12,5 @@ public interface IUnitOfWorkTransactionHandler : IAsyncDisposable
     /// <summary>
     /// Executes multiple operations that return <see cref="Result{T}"/>.
     /// </summary>
-    Task<Result<T>> ExecuteAsync<T>(Func<IUnitOfWork, CancellationToken, Task<Result<T>>> action, CancellationToken cancellationToken =default);
+    Task<Result<T>> ExecuteAsync<T>(Func<IUnitOfWork, CancellationToken, Task<Result<T>>> action, CancellationToken cancellationToken = default);
 }

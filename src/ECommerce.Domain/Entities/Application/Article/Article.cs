@@ -22,6 +22,16 @@ public class Article : BaseEntity<long>
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the english title of the article.
+    /// </summary>
+    /// <value>
+    ///     A string containing the article's english title. Should be descriptive and engaging.
+    /// </value>
+    [Required]
+    [MaxLength(150)]
+    public string EnglishTitle { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Gets or sets the URL-friendly identifier for the article.
     /// </summary>
     /// <value>

@@ -18,6 +18,16 @@ public class Brand : BaseEntity<long>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the english name of the brand.
+    /// </summary>
+    /// <value>
+    ///     A string containing the brand's english name (e.g., "Nike", "Apple"). Defaults to empty string.
+    /// </value>
+    [Required]
+    [MaxLength(100)]
+    public string EnglishName { get; set; } = string.Empty;
+
+    /// <summary>
         ///     Gets or sets the URL-friendly unique identifier for the brand.
         /// </summary>
         /// <value>

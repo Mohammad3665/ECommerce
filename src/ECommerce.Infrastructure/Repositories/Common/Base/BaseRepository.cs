@@ -116,10 +116,11 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
         if (count == 0)
             return new Pagination<TResult>([], current, 0, take);
         
-        int skip = (current -1 ) * take;
-        if (skip == 0)
+        int skip = (current - 1) * take;
+        if (skip <= count)
         {
             current = (int)Math.Ceiling(count / (decimal)take);
+            current = current <= 0 ? 1 : current;
             skip = (current -1 ) * take;
         }
 

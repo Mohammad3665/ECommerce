@@ -18,6 +18,16 @@ public class Category : BaseEntity<long>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the english name of the category.
+    /// </summary>
+    /// <value>
+    ///     A string containing the category's english title as shown to users. Defaults to empty string.
+    /// </value>
+    [Required]
+    [MaxLength(150)]
+    public string EnglishName { get; set; } = string.Empty;
+
+    /// <summary>
         ///     Gets or sets the URL-friendly unique identifier for the category.
         /// </summary>
         /// <value>
@@ -33,9 +43,8 @@ public class Category : BaseEntity<long>
         /// <value>
         ///     A string containing category information, SEO meta description, or user guidance. Defaults to empty string.
         /// </value>
-    [Required]
     [MaxLength(1500)]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     /// <summary>
         ///     Gets or sets the URL of the category's representative image or banner.
@@ -43,9 +52,8 @@ public class Category : BaseEntity<long>
         /// <value>
         ///     A string representing the path to the category image. Defaults to empty string.
         /// </value>
-    [Required]
     [MaxLength(300)]
-    public string ImageUrl { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
 
     #endregion
 
@@ -79,7 +87,7 @@ public class Category : BaseEntity<long>
         /// <value>
         ///     A collection of <see cref="Category"/> entities representing direct children. Defaults to an empty list.
         /// </value>
-    public ICollection<Category> SubCategpries { get; set; } = [];
+    public ICollection<Category> SubCategories { get; set; } = [];
 
     /// <summary>
         ///     Gets or sets the collection of products belonging to this category.

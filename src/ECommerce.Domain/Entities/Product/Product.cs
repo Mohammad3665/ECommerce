@@ -20,6 +20,16 @@ public class Product : BaseEntity<long>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
+        ///     Gets or sets the english name of the product.
+        /// </summary>
+        /// <value>
+        ///     A string containing the product's english title. Defaults to empty string.
+        /// </value>
+    [Required]
+    [MaxLength(150)]
+    public string EnglishName { get; set; } = string.Empty;
+
+    /// <summary>
         ///     Gets or sets the URL-friendly unique identifier for the product.
         /// </summary>
         /// <value>

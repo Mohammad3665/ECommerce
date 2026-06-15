@@ -7,7 +7,7 @@ try
     app.UseApplicationMiddlewares();
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException)
 {
     Log.Fatal(ex, "Unexpected error occurred. Application is shutting down.");
     throw;

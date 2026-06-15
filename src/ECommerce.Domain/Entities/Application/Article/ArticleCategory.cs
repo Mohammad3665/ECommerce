@@ -18,6 +18,16 @@ public class ArticleCategory : BaseEntity<long>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the english name of the article category.
+    /// </summary>
+    /// <value>
+    ///     A string containing the category's english title. Defaults to empty string.
+    /// </value>
+    [Required]
+    [MaxLength(150)]
+    public string EnglishName { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Gets or sets the URL-friendly identifier for the category.
     /// </summary>
     /// <value>

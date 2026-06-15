@@ -45,7 +45,7 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Category>()
             .HasOne(c => c.ParentCategory)
-            .WithMany(c => c.SubCategpries)
+            .WithMany(c => c.SubCategories)
             .HasForeignKey(c => c.ParentCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 

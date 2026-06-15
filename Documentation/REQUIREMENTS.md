@@ -41,11 +41,11 @@
 ### 5. Product Search & Filtering
 
 - [ ] FR-025: Keyword search
-- [ ] FR-026: Filter by brand and category
-- [ ] FR-027: Price range filter (from-to)
+- [x] FR-026: Filter by brand and category
+- [x] FR-027: Price range filter (from-to)
 - [ ] FR-028: Stock filter (in-stock/out-of-stock)
-- [ ] FR-029: Sorting (most expensive, cheapest, most viewed, newest)
-- [ ] FR-030: Pagination
+- [x] FR-029: Sorting (most expensive, cheapest, most viewed, newest)
+- [x] FR-030: Pagination
 
 ### 6. Shopping Cart & Orders
 
@@ -155,8 +155,8 @@
 
 ### 13.6 Assign Roles to Users
 
-- [ ] FR-078: Admin/Super Admin must be able to assign multiple roles to a user
-- [ ] FR-079: Admin/Super Admin must be able to remove roles from users
+- [x] FR-078: Admin/Super Admin must be able to assign multiple roles to a user
+- [x] FR-079: Admin/Super Admin must be able to remove roles from users
 - [ ] FR-080: Admin cannot assign Super Admin role to any user
 
 ### 13.7 Permission Checking
@@ -317,14 +317,14 @@
 
 ### Maintainability
 
-- [ ] NFR-008: Clean Architecture implementation
-- [ ] NFR-009: Design patterns (Repository, UnitOfWork, CQRS, MediatR)
-- [ ] NFR-010: API documentation with Scalar
+- [x] NFR-008: Clean Architecture implementation
+- [x] NFR-009: Design patterns (Repository, UnitOfWork, CQRS, MediatR)
+- [x] NFR-010: API documentation with Scalar
 
 ### Scalability
 
-- [ ] NFR-011: Containerization with Docker
-- [ ] NFR-012: Docker Compose for easy deployment
+- [x] NFR-011: Containerization with Docker
+- [x] NFR-012: Docker Compose for easy deployment
 
 ### Observability
 

@@ -1,3 +1,4 @@
+using ECommerce.Application;
 using ECommerce.Infrastructure;
 using Mapster;
 
@@ -8,8 +9,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);
-
-        services.AddMapster();
+        services.AddApplication();
         services.AddOpenApi();
         services.AddControllers();
 

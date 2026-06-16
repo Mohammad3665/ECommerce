@@ -16,10 +16,9 @@ public class LoginQueryHandler(
 {
     public async Task<Result<TokenResponseDto>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.UserRepository.GetAsync(
-            expression: u => u.Email == request.Email,
-            cancellationToken: cancellationToken,
-            includes: ur => ur.UserRoles
+        var user = await unitOfWork.UserRepository.GetUserWithRolesByEmailAsync(
+            request.Email,
+            cancellationToken
         );
 
         if (user is null)
@@ -53,7 +52,7 @@ public class LoginQueryHandler(
             return Result<TokenResponseDto>.Failure(error);
         }
 
-        var roles = user.UserRoles.Select(r => r.Name).ToList();
+        var roles = user.UserRoles.Where(ur => ur.Role is not null).Select(r => r.Role.Name).ToList();
         var token = jwtProvider.GenerateToken(user.Id, user.Email, roles);
         var expiration = DateTime.UtcNow.AddMinutes(60);
 

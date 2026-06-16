@@ -60,7 +60,7 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(ur => new { ur.UserId, ur.RoleId});
 
             entity.HasOne(ur => ur.User)
-                .WithMany()
+                .WithMany(u => u.UserRoles)
                 .HasForeignKey(ur => ur.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 

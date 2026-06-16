@@ -11,10 +11,6 @@ public static class ApplicationBuilderExtensions
     {
         var isInDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
         app.UseSerilogRequestLogging();
-        app.Services.ApplyMigrations();
-        
-        await app.Services.SeedDatabaseAsync();
-
 
         if (!isInDocker)
         {
@@ -31,6 +27,7 @@ public static class ApplicationBuilderExtensions
 
         app.MapControllers();
 
+        await app.Services.InitializeDatabaseAsync();
 
         return app;
     }

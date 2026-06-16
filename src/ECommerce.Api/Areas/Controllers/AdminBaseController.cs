@@ -8,5 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ECommerce.Api.Areas.Controllers;
 
 [ApiController]
+[Area("Admin")]
 [Authorize(Policy = "AdminAndAbove")]
+[Route(template: "Api/[area]/[controller]/[action]")]
 public abstract class AdminBaseController : ControllerBase {}

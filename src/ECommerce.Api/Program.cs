@@ -4,7 +4,7 @@ using ECommerce.Api.Common.Extensions;
 try
 {
     var app = StartupHost.Build(args);
-    app.UseApplicationMiddlewares();
+    await app.UseApplicationMiddlewares();
     app.Run();
 }
 catch (Exception ex) when (ex is not HostAbortedException)

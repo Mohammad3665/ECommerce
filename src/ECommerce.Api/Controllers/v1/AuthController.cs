@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 
-[Route(template: "Api/V{V:apiVersion}/[controller]/[action]")]
 public class AuthController(ISender sender, ILogger<AuthController> logger) : BaseController
 {
     [HttpPost]
@@ -31,7 +30,7 @@ public class AuthController(ISender sender, ILogger<AuthController> logger) : Ba
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromQuery] LoginQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
         return result.ToActionResult(logger);

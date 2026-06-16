@@ -16,7 +16,6 @@ using Serilog;
 
 namespace ECommerce.Api.Areas.Controllers;
 
-[Route(template: "Api/Admin/[controller]/[action]")] 
 public class CategoriesController(ILogger<CategoriesController> logger, ISender sender) : AdminBaseController
 {
     [HttpGet]

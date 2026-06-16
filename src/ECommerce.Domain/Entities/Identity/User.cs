@@ -106,7 +106,7 @@ public class User : BaseEntity<Guid>
     /// <value>
     ///     A collection of <see cref="Role" /> entities. Defaults to an empty list.
     /// </value>
-    public ICollection<Role> UserRoles { get; set; } = [];
+    public ICollection<UserRole> UserRoles { get; set; } = [];
 
     /// <summary>
         ///     Gets or sets the collection of orders placed by this user.

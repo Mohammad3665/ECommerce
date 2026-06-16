@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 
-[Route(template: "Api/V{V:apiVersion}/[controller]/[action]")]
 public class CategoriesController(ISender sender, ILogger<CategoriesController> logger) : BaseController
 {
     [HttpGet]

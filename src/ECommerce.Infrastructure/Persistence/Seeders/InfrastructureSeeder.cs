@@ -1,17 +1,12 @@
 using ECommerce.Domain.Entities.Application.Role;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Infrastructure.Persistence.Seeders;
 
 public static class InfrastructureSeeder
 {
-    public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider)
+    public static async Task SeedDatabaseAsync(this ApplicationDbContext context)
     {
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-
         if (!await context.Roles.AnyAsync())
         {
             var defaultRoles = new List<Role>

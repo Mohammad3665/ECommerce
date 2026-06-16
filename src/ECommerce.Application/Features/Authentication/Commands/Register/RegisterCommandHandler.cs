@@ -46,7 +46,17 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         var user = request.Adapt<User>();
         user.Id = Guid.NewGuid();
         user.PasswordHash = passwordService.Hash(request.Password);
-        user.UserRoles = new List<Role> { role };
+        user.UserRoles = new List<UserRole>
+        {
+            new UserRole
+            {
+                UserId = user.Id,
+                RoleId = role.Id,
+                AssignedAt = DateTime.UtcNow,
+                AssignedByUserId = null
+            }
+        };
+        // user.UserRoles = new List<Role> { role };
         user.IsActive = true;
         user.IsEmailConfirmed = request.Role != null;
         user.SecurityCode = Guid.NewGuid();

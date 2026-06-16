@@ -47,9 +47,9 @@ Development: https://localhost:5000/api/v1
 | ------ | -------------------------- | ------------------------- | ------------------ |
 | GET    | `/Admin/Users`             | Get all users (paginated) | Admin, Super Admin |
 | GET    | `/Admin/Users/{id}`        | Get user by id            | Admin, Super Admin |
-| POST   | `/Admin/Users`             | Create user               | Admin, Super Admin |
-| PUT    | `/Admin/Users/{id}`        | Update user               | Admin, Super Admin |
-| DELETE | `/Admin/Users/{id}`        | Delete user               | Super Admin only   |
+| POST   | `/Admin/Users/Create`      | Create user               | Admin, Super Admin |
+| PUT    | `/Admin/Users/Edit/{id}`   | Update user               | Admin, Super Admin |
+| DELETE | `/Admin/Users/Delete/{id}` | Delete user               | Super Admin only   |
 | PATCH  | `/Admin/Users/{id}/Status` | Activate/deactivate user  | Admin, Super Admin |
 | PATCH  | `/Admin/Users/{id}/Role`   | Change user role          | Super Admin only   |
 

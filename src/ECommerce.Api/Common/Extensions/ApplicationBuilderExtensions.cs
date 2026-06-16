@@ -1,4 +1,5 @@
 using ECommerce.Infrastructure.Common.Extensions;
+using ECommerce.Infrastructure.Persistence.Seeders;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -6,12 +7,14 @@ namespace ECommerce.Api.Common.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    public static IApplicationBuilder UseApplicationMiddlewares(this WebApplication app)
+    public static async Task<IApplicationBuilder> UseApplicationMiddlewares(this WebApplication app)
     {
         var isInDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
         app.UseSerilogRequestLogging();
-
         app.Services.ApplyMigrations();
+        
+        await app.Services.SeedDatabaseAsync();
+
 
         if (!isInDocker)
         {

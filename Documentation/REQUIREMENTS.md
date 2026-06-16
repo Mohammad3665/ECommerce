@@ -25,7 +25,7 @@
 
 ### 3. Category Management
 
-- [ ] FR-016: Complete CRUD operations for categories
+- [x] FR-016: Complete CRUD operations for categories
 - [ ] FR-017: Activate/deactivate category
 - [ ] FR-018: View products by category
 
@@ -99,13 +99,13 @@
 
 ### 13. Slug & SEO Friendly URLs
 
-- [ ] FR-058: All entities displayed in URLs must have a Slug
-- [ ] FR-059: Slug must be automatically generated from the entity name
-- [ ] FR-060: Slug must be unique across the entire table
-- [ ] FR-061: Slug must contain only ASCII characters (English letters and numbers)
-- [ ] FR-062: Slug must support automatic conversion from Persian/Farsi names to English
-- [ ] FR-063: Admin must be able to manually edit the Slug
-- [ ] FR-064: If Slug is duplicate, append version number (e.g., iphone-15-pro-2)
+- [x] FR-058: All entities displayed in URLs must have a Slug
+- [x] FR-059: Slug must be automatically generated from the entity english name
+- [x] FR-060: Slug must be unique across the entire table
+- [x] FR-061: Slug must contain only ASCII characters (English letters and numbers)
+<!-- - [ ] FR-062: Slug must support automatic conversion from Persian/Farsi names to English -->
+- [x] FR-063: Admin must be able to manually edit the Slug
+- [x] FR-064: If Slug is duplicate, append version number (e.g., iphone-15-pro-2)
 
 ### Entities with Slug Support
 

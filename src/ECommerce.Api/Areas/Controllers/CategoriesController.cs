@@ -9,12 +9,14 @@ using ECommerce.Application.Features.Categories.Commands.DeleteCategory;
 using ECommerce.Application.Features.Categories.Commands.EditCategory;
 using ECommerce.Application.Features.Categories.Queries.GetPagedCategories;
 using ECommerce.Domain.Specifications.Common;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 namespace ECommerce.Api.Areas.Controllers;
 
+[Route(template: "Api/Admin/[controller]/[action]")] 
 public class CategoriesController(ILogger<CategoriesController> logger, ISender sender) : AdminBaseController
 {
     [HttpGet]
@@ -25,15 +27,17 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken)
     {
+        var command = dto.Adapt<CreateCategoryCommand>();
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }
 
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Edit(long id, [FromBody] EditCategoryCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> Edit(long id, [FromBody] EditCategoryDto dto, CancellationToken cancellationToken)
     {
+        var command = dto.Adapt<EditCategoryCommand>();
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

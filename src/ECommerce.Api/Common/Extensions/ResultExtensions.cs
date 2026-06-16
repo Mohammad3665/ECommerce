@@ -20,8 +20,16 @@ public static class ResultExtensions
     /// <param name="result">The <see cref="Result"/> to convert.</param>
     /// <returns>An <see cref="OkObjectResult"/> on success, or an <see cref="ObjectResult"/> containing
     /// <see cref="ApiProblemDetails"/> on failure.</returns>
-    public static IActionResult ToActionResult(this Result result)
-        => result.IsSuccess ? new OkObjectResult(ApiResponse.Success()) : CreateProblemDetails(result.Error);
+    public static IActionResult ToActionResult(this Result result, ILogger logger)
+    {
+        if (!result.IsSuccess)
+        {
+            logger.LogError("API Error occurred. Code: {ErrorCode}, Description: {ErrorDescription}", 
+                result.Error.Code, result.Error.Description);
+        }
+        
+        return result.IsSuccess ? new OkObjectResult(ApiResponse.Success()) : CreateProblemDetails(result.Error);
+    }
 
     /// <summary>
     /// Extends <see cref="Result{T}"/> with conversion methods to produce <see cref="IActionResult"/> responses.
@@ -37,8 +45,16 @@ public static class ResultExtensions
         /// </summary>
         /// <returns>An <see cref="OkObjectResult"/> containing <see cref="ApiResponse{T}"/> on success,
         /// or an <see cref="ObjectResult"/> with problem details on failure.</returns>
-        public IActionResult ToActionResult()
-            => result.IsSuccess ? new OkObjectResult(ApiResponse<T>.Success(result.Data)) : CreateProblemDetails(result.Error);
+        public IActionResult ToActionResult(ILogger logger)
+        {
+            if (!result.IsSuccess)
+            {
+                logger.LogError("API Generic Error occurred. Code: {ErrorCode}, Description: {ErrorDescription}", 
+                    result.Error.Code, result.Error.Description);
+            }
+
+            return result.IsSuccess ? new OkObjectResult(ApiResponse<T>.Success(result.Data)) : CreateProblemDetails(result.Error);
+        }
     
         /// <summary>
         /// Converts the current <see cref="Result{T}"/> to an <see cref="IActionResult"/>,
@@ -66,11 +82,16 @@ public static class ResultExtensions
     private static ObjectResult CreateProblemDetails(Error error)
     {
         var statusCode = error.GetStatusCode();
-        return new OkObjectResult(new ApiProblemDetails
+        var problemDetails = new ApiProblemDetails
         {
             Title = error.Code,
             Detail = error.Description,
             Status = statusCode
-        });
+        };
+
+        return new ObjectResult(problemDetails)
+        {
+            StatusCode = statusCode
+        };
     }
 }

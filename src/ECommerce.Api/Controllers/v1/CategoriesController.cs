@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Asp.Versioning;
 using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Features.Categories.Queries.GetAllCategories;
 using ECommerce.Application.Features.Categories.Queries.GetCategoryById;
@@ -10,9 +11,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
-
-[Route("Api/V1/[controller]")]
-public class CategoriesController(ISender sender, ILogger<CategoriesController> logger) : ControllerBase
+[ApiVersion(1)]
+[Route("Api/V{V:apiVersion}/[controller]/[action]")]
+public class CategoriesController(ISender sender, ILogger<CategoriesController> logger) : BaseController
 {
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)

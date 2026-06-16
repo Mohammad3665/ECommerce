@@ -10,10 +10,14 @@ public static class ApplicationBuilderExtensions
     {
         var isInDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
         app.UseSerilogRequestLogging();
-        app.MapControllers();
 
         app.Services.ApplyMigrations();
 
+        if (!isInDocker)
+        {
+            app.UseHsts();
+            app.UseHttpsRedirection();
+        }
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
@@ -22,11 +26,8 @@ public static class ApplicationBuilderExtensions
             app.MapGet("/", () => Results.Redirect("/scalar"));
         }
 
-        if (!isInDocker)
-        {
-            app.UseHsts();
-            app.UseHttpsRedirection();
-        }
+        app.MapControllers();
+
 
         return app;
     }

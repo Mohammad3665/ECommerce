@@ -54,7 +54,7 @@ public static class ServiceCollectionExtensions
                 LifetimeValidator = (notBefore, expires, tokenToValidate, param) =>
                 {
                     if (expires == null) return false;
-                    return DateTime.Now < expires.Value.ToLocalTime();
+                    return DateTime.Now < expires.Value.ToUniversalTime();
                 }
             };
         });

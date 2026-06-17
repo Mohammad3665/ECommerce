@@ -28,7 +28,7 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
 
         var expiryMinutes = double.Parse(configuration["JwtSettings:ExpiryInMinutes"] ?? "10");
 
-        var currentTime = DateTime.Now;
+        var currentTime = DateTime.UtcNow;
         var token = new JwtSecurityToken(
             issuer: configuration["JwtSettings:Issuer"],
             audience: configuration["JwtSettings:Audience"],

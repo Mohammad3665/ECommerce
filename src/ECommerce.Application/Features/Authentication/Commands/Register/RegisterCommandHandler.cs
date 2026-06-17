@@ -59,8 +59,8 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         // user.UserRoles = new List<Role> { role };
         user.IsActive = true;
         user.IsEmailConfirmed = request.Role != null;
-        user.SecurityCode = Guid.NewGuid();
-        user.SecurityCodeExpiry = DateTime.UtcNow.AddMinutes(15);
+        user.SecurityCode = null;
+        user.SecurityCodeExpiry = null;
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
         await unitOfWork.SaveAsync(cancellationToken);

@@ -54,10 +54,10 @@ public class LoginQueryHandler(
 
         var roles = user.UserRoles.Where(ur => ur.Role is not null).Select(r => r.Role.Name).ToList();
         var token = jwtProvider.GenerateToken(user.Id, user.Email, roles);
-        var localNow = DateTimeOffset.Now.DateTime;
-        var expiration = localNow.AddMinutes(10);
+        var currentTime = DateTime.Now;
+        var expiration = currentTime.AddMinutes(10);
 
-        user.LastLoginAt = localNow;
+        user.LastLoginAt = currentTime;
         unitOfWork.UserRepository.Update(user);
         await unitOfWork.SaveAsync(cancellationToken);
 

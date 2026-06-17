@@ -54,14 +54,20 @@ public class LoginQueryHandler(
 
         var roles = user.UserRoles.Where(ur => ur.Role is not null).Select(r => r.Role.Name).ToList();
         var token = jwtProvider.GenerateToken(user.Id, user.Email, roles);
-        var currentTime = DateTime.Now;
+        var currentTime = DateTime.UtcNow;
         var expiration = currentTime.AddMinutes(10);
 
         user.LastLoginAt = currentTime;
+
+        var newRefreshToken = jwtProvider.GenerateRefreshToken();
+
+        user.RefreshToken = newRefreshToken;
+        user.RefreshTokenExpiryTime = currentTime.AddDays(7);
+
         unitOfWork.UserRepository.Update(user);
         await unitOfWork.SaveAsync(cancellationToken);
 
-        var result = new TokenResponseDto(token, expiration);
+        var result = new TokenResponseDto(token, newRefreshToken, expiration);
         return Result<TokenResponseDto>.Success(result);
     }
 }

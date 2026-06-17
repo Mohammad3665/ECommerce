@@ -6,6 +6,7 @@ using Asp.Versioning;
 using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Dtos.Authentication;
 using ECommerce.Application.Features.Authentication.Commands;
+using ECommerce.Application.Features.Authentication.Commands.RefreshToken;
 using ECommerce.Application.Features.Authentication.Commands.Register;
 using ECommerce.Application.Features.Authentication.Queries;
 using MediatR;
@@ -33,6 +34,14 @@ public class AuthController(ISender sender, ILogger<AuthController> logger) : Ba
     public async Task<IActionResult> Login([FromBody] LoginQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequestDto dto, CancellationToken cancellationToken)
+    {
+        var command = new RefreshTokenCommand(dto.AccessToken, dto.RefreshToken);
+        var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }
 }

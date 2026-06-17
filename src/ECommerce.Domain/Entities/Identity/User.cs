@@ -95,6 +95,23 @@ public class User : BaseEntity<Guid>
         /// </value>
     public bool IsEmailConfirmed { get; set; } = false;
 
+    /// <summary>
+    /// Gets or sets  a value indicating whether the refresh token.
+    /// </summary>
+    /// <value>
+    /// A nullable <see cref="string" /> indicating when token refreshed.
+    /// </value>
+    [MaxLength(256)]
+    public string? RefreshToken { get; set; }
+    
+    /// <summary>
+    /// Gets or sets  a value indicating whether the refresh token expiry time.
+    /// </summary>
+    /// <value>
+    /// A nullable <see cref="DateTime" /> indicating when token refreshed.
+    /// </value>
+    public DateTime? RefreshTokenExpiryTime { get; set; }
+
     #endregion
 
     #region Relations

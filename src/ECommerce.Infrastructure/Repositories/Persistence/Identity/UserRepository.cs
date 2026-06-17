@@ -14,7 +14,6 @@ public class UserRepository(ApplicationDbContext context)
         return await Context.Users
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 }

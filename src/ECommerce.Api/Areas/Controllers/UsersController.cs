@@ -8,6 +8,7 @@ namespace ECommerce.Api.Areas.Controllers;
 
 public class UsersController(ISender sender, ILogger<UsersController> logger) : AdminBaseController
 {
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] AdminCreateUserRequestDto request, CancellationToken cancellationToken)
     {
         var command = new RegisterCommand(

@@ -1,8 +1,11 @@
+using System.Security.Claims;
+using System.Text;
 using Asp.Versioning;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce.Api.Common.Extensions;
 
@@ -37,6 +40,23 @@ public static class ServiceCollectionExtensions
         })
         .AddJwtBearer(options =>
         {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["JwtSettings:Issuer"],
+                ValidAudience = configuration["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Secret"]!)),
+                RoleClaimType = ClaimTypes.Role,
+                ClockSkew = TimeSpan.Zero,
+                LifetimeValidator = (notBefore, expires, tokenToValidate, param) =>
+                {
+                    if (expires == null) return false;
+                    return DateTime.Now < expires.Value.ToLocalTime();
+                }
+            };
         });
 
         services.AddAuthorization(options =>

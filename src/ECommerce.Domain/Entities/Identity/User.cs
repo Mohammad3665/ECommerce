@@ -77,7 +77,6 @@ public class User : BaseEntity<Guid>
         /// <value>
         ///     A nullable <see cref="Guid" /> representing the one-time security token.
         /// </value>
-    [Required]
     public Guid? SecurityCode { get; set; }
 
     /// <summary>

@@ -26,13 +26,15 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var expiryMinutes = double.Parse(configuration["JwtSettings:ExpiryInMinutes"] ?? "60");
+        var expiryMinutes = double.Parse(configuration["JwtSettings:ExpiryInMinutes"] ?? "10");
 
+        var currentTime = DateTime.Now;
         var token = new JwtSecurityToken(
             issuer: configuration["JwtSettings:Issuer"],
             audience: configuration["JwtSettings:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+            notBefore: currentTime,
+            expires: currentTime.AddMinutes(expiryMinutes),
             signingCredentials: creds
         );
 

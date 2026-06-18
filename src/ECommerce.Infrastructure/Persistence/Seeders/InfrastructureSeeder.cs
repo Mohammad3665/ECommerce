@@ -34,7 +34,8 @@ public static class InfrastructureSeeder
                 PhoneNumber = "09024251396",
                 Id = Guid.NewGuid(),
                 Email = superAdminEmail,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                IsEmailConfirmed = true
             };
 
             superAdmin.PasswordHash = passwordHasher.Hash("SuperSecurePassword123!");

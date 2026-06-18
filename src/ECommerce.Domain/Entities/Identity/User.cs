@@ -75,9 +75,10 @@ public class User : BaseEntity<Guid>
         ///     Gets or sets the security code for two-factor authentication or account verification.
         /// </summary>
         /// <value>
-        ///     A nullable <see cref="Guid" /> representing the one-time security token.
+        ///     A nullable <see cref="string" /> representing the one-time security token.
         /// </value>
-    public Guid? SecurityCode { get; set; }
+    [MaxLength(6)]
+    public string? SecurityCode { get; set; }
 
     /// <summary>
         ///     Gets or sets the expiration time for the <see cref="SecurityCode" />.

@@ -58,9 +58,12 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         };
         // user.UserRoles = new List<Role> { role };
         user.IsActive = true;
-        user.IsEmailConfirmed = request.Role != null;
+        user.IsEmailConfirmed = request.Role == "SuperAdmin" || request.Role == "Admin" || request.Role == "ContentManager";
         user.SecurityCode = null;
         user.SecurityCodeExpiry = null;
+        var random = new Random();
+        user.SecurityCode = random.Next(100000, 999999).ToString();
+        user.SecurityCodeExpiry = DateTime.UtcNow.AddMinutes(5);
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
         await unitOfWork.SaveAsync(cancellationToken);

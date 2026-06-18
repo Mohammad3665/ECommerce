@@ -31,11 +31,11 @@ public class LoginQueryHandler(
             return Result<TokenResponseDto>.Failure(error);
         }
 
-        if (!user.IsActive)
+        if (!user.IsActive && !user.IsEmailConfirmed)
         {
             var error = new Error(
                 "Auth.UserInactive",
-                "Your account is deactived.",
+                "Your account is not active.",
                 ErrorType.Forbidden
             );
             return Result<TokenResponseDto>.Failure(error);

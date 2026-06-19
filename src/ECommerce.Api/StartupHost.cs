@@ -16,6 +16,7 @@ public class StartupHost
 
         builder.Host.UseSerilog();
         builder.Services.AddApplicationServices(builder.Configuration);
+        builder.Services.AddHttpContextAccessor();
         return builder.Build();
     }
 }

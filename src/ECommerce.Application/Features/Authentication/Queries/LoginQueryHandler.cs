@@ -31,7 +31,7 @@ public class LoginQueryHandler(
             return Result<TokenResponseDto>.Failure(error);
         }
 
-        if (!user.IsActive && !user.IsEmailConfirmed)
+        if (!user.IsActive || !user.IsEmailConfirmed)
         {
             var error = new Error(
                 "Auth.UserInactive",

@@ -4,37 +4,35 @@ using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using MediatR;
 
-namespace ECommerce.Application.Features.Authentication.Commands.ResetPassword;
+namespace ECommerce.Application.Features.Authentication.Commands.ResetForgotedPassword;
 
-public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService, ICurrentUserService currentUserService) : IRequestHandler<ResetPasswordCommand, Result>
+public class ResetForgotedPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService) : IRequestHandler<ResetForgotedPasswordCommand, Result>
 {
-    public async Task<Result> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ResetForgotedPasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await unitOfWork.UserRepository.GetUserWithRolesByEmailAsync(request.Email, cancellationToken);
         if (user is null)
         {
             var error = new Error(
-                "Auth.UserNotFound",
-                "User not found.",
-                ErrorType.NotFound
+                "Auth.InvalidResetRequest", 
+                "Invalid email or security code.", 
+                ErrorType.Validation
             );
             return Result.Failure(error);
         }
 
-        var isCurrentPasswordValid = passwordService.Verify(request.CurrentPassword, user.PasswordHash);
-        if (!isCurrentPasswordValid)
+        if (user.SecurityCode is null || user.SecurityCode != request.SecurityCode || user.SecurityCodeExpiry <= DateTime.UtcNow)
         {
             var error = new Error(
-                "Auth.InvalidCurrentPassword", 
-                "The current password you entered is incorrect.", 
+                "Auth.InvalidOrExpiredCode", 
+                "The security code is invalid or has expired.", 
                 ErrorType.Validation);
-            
             return Result.Failure(error);
         }
-        
-        var newHashedPassword = passwordService.Hash(request.NewPassword);
 
+        var newHashedPassword = passwordService.Hash(request.NewPassword);
         user.PasswordHash = newHashedPassword;
+
         user.SecurityCode = null;
         user.SecurityCodeExpiry = null;
 
@@ -43,4 +41,5 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
 
         return Result.Success();
     }
+
 }

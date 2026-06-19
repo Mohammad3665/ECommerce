@@ -23,6 +23,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWorkTransactionHandler, UnitOfWorkTransactionHandler>();
         services.AddScoped<IPasswordService, BCryptPasswordService>();
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<ICurrentUserService, CurrenUserService>();
+        services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
         return services;
     }
 }

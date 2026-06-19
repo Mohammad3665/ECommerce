@@ -9,7 +9,7 @@ using ECommerce.Domain.Entities.Application.Role;
 
 namespace ECommerce.Application.Features.Authentication.Commands.Register;
 
-public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService)
+public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService, IEmailService emailService)
     : IRequestHandler<RegisterCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -56,17 +56,34 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
                 AssignedByUserId = null
             }
         };
-        // user.UserRoles = new List<Role> { role };
-        user.IsActive = true;
-        user.IsEmailConfirmed = request.Role == "SuperAdmin" || request.Role == "Admin" || request.Role == "ContentManager";
+        user.IsActive = false;
+        user.IsEmailConfirmed = false;
         user.SecurityCode = null;
         user.SecurityCodeExpiry = null;
-        var random = new Random();
-        user.SecurityCode = random.Next(100000, 999999).ToString();
-        user.SecurityCodeExpiry = DateTime.UtcNow.AddMinutes(5);
+        user.SecurityCode = Random.Shared.Next(100000, 999999).ToString();
+        user.SecurityCodeExpiry = DateTime.UtcNow.AddHours(1);
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
         await unitOfWork.SaveAsync(cancellationToken);
+
+        var emailBody = $@"
+            <div dir='rtl' style='font-family: Tahoma, Arial; text-align: right; line-height: 1.6;'>
+                <h3>سلام {request.FullName} عزیز،</h3>
+                <p>به فروشگاه ما خوش آمدید! جهت فعال‌سازی حساب کاربری و تایید ایمیل خود، لطفاً از کد تایید زیر استفاده کنید:</p>
+                <div style='text-align: center; margin: 25px 0;'>
+                    <span style='background-color: #f8f9fa; border: 2px dashed #007bff; padding: 10px 30px; font-size: 26px; font-weight: bold; letter-spacing: 5px; color: #007bff; border-radius: 5px;'>
+                        {user.SecurityCode}
+                    </span>
+                </div>
+                <p style='color: #dc3545; font-size: 13px;'>⚠️ این کد به مدت <strong>۱ ساعت</strong> معتبر است.</p>
+            </div>
+        ";
+
+        await emailService.SendEmailAsync(
+            request.Email, 
+            "کد تایید ثبت‌نام در فروشگاه", 
+            emailBody);
+
         return Result<Guid>.Success(user.Id);
     }
 

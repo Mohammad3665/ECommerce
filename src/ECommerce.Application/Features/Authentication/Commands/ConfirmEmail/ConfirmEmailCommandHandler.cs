@@ -29,6 +29,7 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
             );
             return Result.Failure(error);
         }
+        user.IsActive = true;
         user.IsEmailConfirmed = true;
 
         user.SecurityCode = null;

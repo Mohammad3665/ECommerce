@@ -6,7 +6,7 @@ using MediatR;
 namespace ECommerce.Application.Features.Categories.Queries.GetPagedCategories;
 
 public record GetPagedCategoriesQuery(
-    int PageNumber, 
-    int PageSize, 
+    int PageNumber,
+    int PageSize,
     string? SearchTerm
-) : IRequest<Result<Pagination<PagedCategoryDto>>>;
+) : IRequest<Result<Pagination<PagedCategoriesDto>>>;

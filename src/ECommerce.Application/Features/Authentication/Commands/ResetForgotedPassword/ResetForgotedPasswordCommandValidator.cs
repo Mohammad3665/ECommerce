@@ -7,18 +7,18 @@ public class ResetForgotedPasswordCommandValidator : AbstractValidator<ResetForg
 {
     public ResetForgotedPasswordCommandValidator()
     {
-        RuleFor (x => x.Email)
+        RuleFor(x => x.Email)
             .NotEmpty()
             .WithName("ایمیل")
             .EmailAddress();
-        
-        RuleFor (x => x.SecurityCode)
+
+        RuleFor(x => x.SecurityCode)
             .NotEmpty()
             .WithName("کد امنیتی")
             .Matches(@"[0-9]").WithMessage("فیلد '{PropertyName}' نباید شامل حروف باشد.")
             .MaximumLength(6);
-        
-        RuleFor (x => x.NewPassword)
+
+        RuleFor(x => x.NewPassword)
             .NotEmpty()
             .WithName("رمز عبور جدید")
             .MinimumLength(6)

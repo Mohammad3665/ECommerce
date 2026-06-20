@@ -21,7 +21,7 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
         {
             var error = new Error(
                 "Auth.EmailTaken",
-                "This email aleardy exists.", 
+                "این ایمیل قبلا ثبت شده است.", 
                 ErrorType.Conflict
             );
             return Result<Guid>.Failure(error);
@@ -36,7 +36,7 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
         {
             var error = new Error(
                 "Auth.NotFound",
-                $"{roleName} role not found in system", 
+                $"نقش {roleName} در سیستم یافت نشد.", 
                 ErrorType.NotFound
             );
             return Result<Guid>.Failure(error);

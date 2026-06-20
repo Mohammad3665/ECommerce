@@ -14,7 +14,7 @@ public class LogoutCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<Logo
         {
             var error = new Error(
                 "Auth.UserNotFound",
-                "User not found.",
+                "کاربر یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);

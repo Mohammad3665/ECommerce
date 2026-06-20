@@ -14,7 +14,7 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
         {
             var error = new Error(
                 "Auth.UserNotFound",
-                "No user found with this email address.",
+                "کاربری با این ایمیل یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
@@ -24,7 +24,7 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
         {
             var error = new Error(
                 "Auth.InvalidSecurityCode", 
-                "Refresh token is invalid or expired.", 
+                "رفرش توکن منقضی شده یا نامعتبر است.", 
                 ErrorType.Forbidden
             );
             return Result.Failure(error);

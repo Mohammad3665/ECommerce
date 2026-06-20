@@ -2,6 +2,6 @@ using ECommerce.Application.Dtos.Authentication;
 using ECommerce.Domain.Common.Result;
 using MediatR;
 
-namespace ECommerce.Application.Features.Authentication.Queries;
+namespace ECommerce.Application.Features.Authentication.Queries.Login;
 
 public record LoginQuery(string Email, string Password) : IRequest<Result<TokenResponseDto>>;

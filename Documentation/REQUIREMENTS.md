@@ -4,14 +4,14 @@
 
 ### 1. User Management & Authentication
 
-- [ ] FR-001: User registration with default Customer role
-- [ ] FR-002: Login with JWT token
-- [ ] FR-003: User creation by Admin/Super Admin with custom role assignment
-- [ ] FR-004: User profile editing
-- [ ] FR-005: Password change functionality
-- [ ] FR-006: User list display for Admin/Super Admin
-- [ ] FR-007: Enable/disable user accounts
-- [ ] FR-008: Default role management (Super Admin, Admin, ContentManager, Customer)
+- [x] FR-001: User registration with default Customer role
+- [x] FR-002: Login with JWT token
+- [x] FR-003: User creation by Admin/Super Admin with custom role assignment
+- [x] FR-004: User profile editing
+- [x] FR-005: Password change functionality
+- [x] FR-006: User list display for Admin/Super Admin
+- [x] FR-007: Enable/disable user accounts
+- [x] FR-008: Default role management (Super Admin, Admin, ContentManager, Customer)
 
 ### 2. Brand Management
 
@@ -183,15 +183,15 @@
 
 ### 14. Subcategory Management
 
-- [ ] FR-084: The system must support multi-level category hierarchy
-- [ ] FR-085: Each category can have multiple subcategories
-- [ ] FR-086: Subcategories can have their own nested subcategories (unlimited depth)
+- [x] FR-084: The system must support multi-level category hierarchy
+- [x] FR-085: Each category can have multiple subcategories
+- [x] FR-086: Subcategories can have their own nested subcategories (unlimited depth)
 - [ ] FR-087: Display full category tree structure in the frontend
 - [ ] FR-088: Generate breadcrumb navigation showing the full category path
-- [ ] FR-089: Products can be assigned to any category (main or subcategory)
+- [x] FR-089: Products can be assigned to any category (main or subcategory)
 - [ ] FR-090: Admin can move categories between different parent categories
-- [ ] FR-091: System must prevent circular references (a category cannot be its own ancestor)
-- [ ] FR-092: Deleting a parent category must handle subcategories (option: delete all, move to another parent, or prevent deletion)
+- [x] FR-091: System must prevent circular references (a category cannot be its own ancestor)
+- [x] FR-092: Deleting a parent category must handle subcategories (option: delete all, move to another parent, or prevent deletion)
 
 ## 15. Reporting & Invoice System
 
@@ -251,36 +251,36 @@
 
 ### 17.1 Email Verification
 
-- [ ] FR-122: System must send verification email after user registration
-- [ ] FR-123: Verification link must contain a unique SecurityCode (GUID)
-- [ ] FR-124: SecurityCode must expire after 24 hours
-- [ ] FR-125: User cannot login until email is verified
+- [x] FR-122: System must send verification email after user registration
+- [x] FR-123: Verification link must contain a unique SecurityCode
+- [x] FR-124: SecurityCode must expire after 1 hour
+- [x] FR-125: User cannot login until email is verified
 - [ ] FR-126: User can request resend verification email
 
 ### 17.2 Password Recovery
 
-- [ ] FR-127: User can request password reset via email
-- [ ] FR-128: Password reset link must contain SecurityCode
-- [ ] FR-129: SecurityCode must expire after 1 hour for password reset
-- [ ] FR-130: User must enter new password after verification
+- [x] FR-127: User can request password reset via email
+- [x] FR-128: Password reset link must contain SecurityCode
+- [x] FR-129: SecurityCode must expire after 1 hour for password reset
+- [x] FR-130: User must enter new password after verification
 
 ## 18. Object Mapping (Mapster)
 
 ### 18.1 Requirements
 
-- [ ] FR-131: System must use Mapster as the primary object mapper
-- [ ] FR-132: Mapster must be configured in Application layer for DTO mapping
-- [ ] FR-133: Entity to DTO mapping must support custom field naming
-- [ ] FR-134: Mapping must support nested objects and collections
-- [ ] FR-135: ProjectToType must be used for EF Core query optimization
-- [ ] FR-136: Mapping configurations must be centralized in one location
+- [x] FR-131: System must use Mapster as the primary object mapper
+- [x] FR-132: Mapster must be configured in Application layer for DTO mapping
+- [x] FR-133: Entity to DTO mapping must support custom field naming
+- [x] FR-134: Mapping must support nested objects and collections
+- [x] FR-135: ProjectToType must be used for EF Core query optimization
+- [x] FR-136: Mapping configurations must be centralized in one location
 - [ ] FR-137: Unit tests must cover critical mappings
 
 ### 18.2 Performance Requirements
 
-- [ ] FR-138: Mapping 10,000 objects must complete within 50ms
-- [ ] FR-139: Memory allocation per mapping must be minimal (< 50KB per 1000 objects)
-- [ ] FR-140: Cold start mapping must not exceed 100ms
+- [x] FR-138: Mapping 10,000 objects must complete within 50ms
+- [x] FR-139: Memory allocation per mapping must be minimal (< 50KB per 1000 objects)
+- [x] FR-140: Cold start mapping must not exceed 100ms
 
 ## 19. Shopping Cart - Redis Migration
 

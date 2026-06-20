@@ -7,7 +7,7 @@ using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using MediatR;
 
-namespace ECommerce.Application.Features.Authentication.Queries;
+namespace ECommerce.Application.Features.Authentication.Queries.Login;
 
 public class LoginQueryHandler(
     IUnitOfWork unitOfWork,
@@ -46,7 +46,7 @@ public class LoginQueryHandler(
         {
             var error = new Error(
                 "Auth.InvalidCredentials",
-                "Email or password is wrong.",
+                "ایمیل یا رمز عبور اشتباه است.",
                 ErrorType.Validation
             );
             return Result<TokenResponseDto>.Failure(error);

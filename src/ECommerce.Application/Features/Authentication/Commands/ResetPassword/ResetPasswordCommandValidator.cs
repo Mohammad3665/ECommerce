@@ -6,12 +6,12 @@ public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordComm
 {
     public ResetPasswordCommandValidator()
     {
-        RuleFor (x => x.Email)
+        RuleFor(x => x.Email)
             .NotEmpty()
             .WithName("ایمیل")
             .EmailAddress();
-        
-        RuleFor (x => x.CurrentPassword)
+
+        RuleFor(x => x.CurrentPassword)
             .NotEmpty()
             .WithName("رمز عبور فعلی")
             .MinimumLength(6)
@@ -19,7 +19,7 @@ public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordComm
             .Matches(@"[a-z]").WithMessage("فیلد '{PropertyName}' باید حداقل شامل یک حرف کوچک باشد.")
             .Matches(@"[0-9]").WithMessage("فیلد '{PropertyName}' باید حداقل شامل یک عدد باشد.");
 
-        RuleFor (x => x.NewPassword)
+        RuleFor(x => x.NewPassword)
             .NotEmpty()
             .WithName("رمز عبور جدید")
             .MinimumLength(6)

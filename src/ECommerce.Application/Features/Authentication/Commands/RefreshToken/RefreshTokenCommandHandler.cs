@@ -17,8 +17,8 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
         if (principal is null)
         {
             var error = new Error(
-                "Auth.InvalidToken", 
-                "Invalid access token structure.", 
+                "Auth.InvalidToken",
+                "ساختار توکن دسترسی نامعتبر است.",
                 ErrorType.Validation
             );
             return Result<TokenResponseDto>.Failure(error);
@@ -28,8 +28,8 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
         if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
         {
             var error = new Error(
-                "Auth.InvalidClaims", 
-                "User metadata missing from token.", 
+                "Auth.InvalidClaims",
+                "اطلاعات کاربر در توکن یافت نشد.",
                 ErrorType.Validation
             );
             return Result<TokenResponseDto>.Failure(error);
@@ -39,8 +39,8 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
         if (user is null || user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
         {
             var error = new Error(
-                "Auth.InvalidRefreshToken", 
-                "Refresh token is invalid or expired.", 
+                "Auth.InvalidRefreshToken",
+                "رفرش توکن منقضی شده یا نامعتبر است.",
                 ErrorType.Forbidden
             );
             return Result<TokenResponseDto>.Failure(error);

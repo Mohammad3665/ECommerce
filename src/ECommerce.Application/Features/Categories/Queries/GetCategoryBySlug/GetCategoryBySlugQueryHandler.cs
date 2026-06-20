@@ -20,7 +20,7 @@ public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
         {
             var error = new Error(
                 "Category.NotFound", 
-                "Category not found.", 
+                "دسته‌بندی مورد نظر یافت نشد.", 
                 ErrorType.NotFound
             );
             return Result<CategoryDto>.Failure(error);

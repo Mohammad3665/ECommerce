@@ -6,7 +6,7 @@ public class GetCategoryBySlugQueryValidator : AbstractValidator<GetCategoryBySl
 {
     public GetCategoryBySlugQueryValidator()
     {
-        RuleFor (x => x.Slug)
+        RuleFor(x => x.Slug)
             .NotEmpty()
             .WithName("اسلاگ");
     }

@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace ECommerce.Application.Features.Categories.Queries.GetPagedCategories;
+namespace ECommerce.Application.Features.Users.Queries.GetUsersList;
 
-public class GetPagedCategoriesQueryValidator : AbstractValidator<GetPagedCategoriesQuery>
+public class GetPagedUsersQueryValidator : AbstractValidator<GetPagedUsersQuery>
 {
-    public GetPagedCategoriesQueryValidator()
+    public GetPagedUsersQueryValidator()
     {
         RuleFor(x => x.PageNumber)
             .GreaterThan(0)

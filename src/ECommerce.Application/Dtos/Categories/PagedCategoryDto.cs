@@ -3,5 +3,5 @@ using ECommerce.Domain.Entities.Product;
 
 namespace ECommerce.Application.Dtos.Categories;
 
-public record PagedCategoryDto(long Id, string Name, string EnglishName, string Slug, string? ImageUrl)
+public record PagedCategoriesDto(long Id, string Name, string EnglishName, string Slug, string? ImageUrl)
     : IMapFrom<Category>;

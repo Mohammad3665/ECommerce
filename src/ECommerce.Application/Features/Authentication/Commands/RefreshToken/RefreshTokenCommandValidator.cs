@@ -6,11 +6,11 @@ public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenComman
 {
     public RefreshTokenCommandValidator()
     {
-        RuleFor (x => x.AccessToken)
+        RuleFor(x => x.AccessToken)
             .NotEmpty()
             .WithName("توکن دسترسی");
 
-        RuleFor (x => x.RefreshToken)
+        RuleFor(x => x.RefreshToken)
             .NotEmpty()
             .WithName("رفرش توکن");
     }

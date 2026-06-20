@@ -15,7 +15,7 @@ public class ForgotPasswordCommandHandler(IUnitOfWork unitOfWork, IEmailService 
         {
             var error = new Error(
                 "Auth.UserNotFound",
-                "No user found with this email address.",
+                "کاربری با این ایمیل یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);

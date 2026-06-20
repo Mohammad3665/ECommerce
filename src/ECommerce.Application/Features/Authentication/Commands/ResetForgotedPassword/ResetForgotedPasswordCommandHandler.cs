@@ -15,7 +15,7 @@ public class ResetForgotedPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswo
         {
             var error = new Error(
                 "Auth.InvalidResetRequest", 
-                "Invalid email or security code.", 
+                "ایمیل یا کد امنیتی نامعتبر است.", 
                 ErrorType.Validation
             );
             return Result.Failure(error);
@@ -25,7 +25,7 @@ public class ResetForgotedPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswo
         {
             var error = new Error(
                 "Auth.InvalidOrExpiredCode", 
-                "The security code is invalid or has expired.", 
+                "کد امنیتی منفضی شده یا نامعتبر است.", 
                 ErrorType.Validation);
             return Result.Failure(error);
         }

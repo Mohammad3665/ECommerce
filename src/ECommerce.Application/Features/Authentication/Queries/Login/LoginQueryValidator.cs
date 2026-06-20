@@ -1,17 +1,17 @@
 using FluentValidation;
 
-namespace ECommerce.Application.Features.Authentication.Queries;
+namespace ECommerce.Application.Features.Authentication.Queries.Login;
 
 public class LoginQueryValidator : AbstractValidator<LoginQuery>
 {
     public LoginQueryValidator()
     {
-        RuleFor (x => x.Email)
+        RuleFor(x => x.Email)
             .NotEmpty()
             .WithName("ایمیل")
             .EmailAddress();
 
-        RuleFor (x => x.Password)
+        RuleFor(x => x.Password)
             .NotEmpty()
             .WithName("رمز عبور")
             .MinimumLength(6)

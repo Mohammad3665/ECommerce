@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Authentication.Commands.ResetPassword;
 
-public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService, ICurrentUserService currentUserService) : IRequestHandler<ResetPasswordCommand, Result>
+public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService) : IRequestHandler<ResetPasswordCommand, Result>
 {
     public async Task<Result> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
@@ -15,7 +15,7 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
         {
             var error = new Error(
                 "Auth.UserNotFound",
-                "User not found.",
+                "کاربر یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
@@ -26,7 +26,7 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
         {
             var error = new Error(
                 "Auth.InvalidCurrentPassword", 
-                "The current password you entered is incorrect.", 
+                "پسورد فعلی وارد شده صحیح نیست.", 
                 ErrorType.Validation);
             
             return Result.Failure(error);

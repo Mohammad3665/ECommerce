@@ -21,7 +21,7 @@ public class GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
         {
             var error = new Error(
                 "Category.NotFound", 
-                "Category not found.", 
+                "دسته‌بندی مورد نظر یافت نشد.", 
                 ErrorType.NotFound
             );
             return Result<CategoryDto>.Failure(error);

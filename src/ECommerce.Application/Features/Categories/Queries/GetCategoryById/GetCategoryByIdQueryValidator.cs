@@ -6,7 +6,7 @@ public class GetCategoryByIdQueryValidator : AbstractValidator<GetCategoryByIdQu
 {
     public GetCategoryByIdQueryValidator()
     {
-        RuleFor (x => x.Id)
+        RuleFor(x => x.Id)
             .NotEmpty()
             .GreaterThan(0)
             .WithName("شناسه دسته‌بندی");

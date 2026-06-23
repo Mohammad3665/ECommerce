@@ -12,7 +12,7 @@ namespace ECommerce.Api.Areas.Controllers;
 public class RolesController(ISender sender, ILogger<RolesController> logger) : AdminBaseController
 {
     [HttpPost]
-    // [HasPermission("roles.create")]
+    [HasPermission("roles.create")]
     public async Task<IActionResult> Create([FromBody] CreateRoleRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<CreateRoleCommand>();

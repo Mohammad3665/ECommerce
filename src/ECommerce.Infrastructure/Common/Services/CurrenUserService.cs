@@ -6,7 +6,7 @@ namespace ECommerce.Infrastructure.Common.Services;
 
 public class CurrenUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    public Guid? UserId 
+    public Guid? UserId
     {
         get
         {
@@ -15,4 +15,15 @@ public class CurrenUserService(IHttpContextAccessor httpContextAccessor) : ICurr
         }
     }
 
+    public int GetMaxRoleLevel()
+    {
+        var levelClaim = httpContextAccessor.HttpContext?.User?.FindFirst("RoleLevel")?.Value;
+
+        if (string.IsNullOrEmpty(levelClaim) || !int.TryParse(levelClaim, out int level))
+        {
+            return 0;
+        }
+
+        return level;
+    }
 }

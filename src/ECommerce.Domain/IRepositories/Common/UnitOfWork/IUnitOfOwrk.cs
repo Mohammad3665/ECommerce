@@ -115,11 +115,6 @@ public interface IUnitOfWork : IAsyncDisposable
     IPerimssionRepository PerimssionRepository { get; }
 
     /// <summary>
-    /// Repository for working with role permissions.
-    /// </summary>
-    IRolePermissionRepository RolePermissionRepository { get; }
-
-    /// <summary>
     /// Repository for working with slides.
     /// </summary>
     ISlideRepository SlideRepository { get; }

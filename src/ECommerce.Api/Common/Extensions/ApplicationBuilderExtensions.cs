@@ -27,8 +27,6 @@ public static class ApplicationBuilderExtensions
 
         app.MapControllers();
 
-        await app.Services.InitializeDatabaseAsync();
-
         return app;
     }
 }

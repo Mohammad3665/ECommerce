@@ -117,10 +117,6 @@ public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
     private IPerimssionRepository? _perimssionRepository;
     public IPerimssionRepository PerimssionRepository => _perimssionRepository ??= new PermissionRepository(context);
 
-    // Role permission repository
-    private IRolePermissionRepository? _rolePermissionRepository;
-    public IRolePermissionRepository RolePermissionRepository => _rolePermissionRepository ??= new RolePermissionRepository(context);
-
     // Silde repository
     private ISlideRepository? _slideRepository;
     public ISlideRepository SlideRepository => _slideRepository ??= new SlideRepository(context);

@@ -1,3 +1,3 @@
 namespace ECommerce.Application.Dtos.Authentication;
 
-public record ConfirmEmailRequestDto();
+public record ConfirmEmailRequestDto(string Email, string SecurityCode);

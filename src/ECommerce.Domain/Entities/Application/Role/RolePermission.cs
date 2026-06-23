@@ -3,7 +3,7 @@ namespace ECommerce.Domain.Entities.Application.Role;
 /// <summary>
 ///     Represents the junction (many-to-many) relationship between roles and permissions in the RBAC system.
 /// </summary>
-public class RolePermission : BaseEntity<long>
+public class RolePermission
 {
     #region Foreign Keys
 

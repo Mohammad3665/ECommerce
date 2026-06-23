@@ -130,9 +130,9 @@
 
 ### 13.2 Permission Management
 
-- [ ] FR-065: System must support granular permissions (Create, Read, Update, Delete)
-- [ ] FR-066: Each permission must be assignable to any role
-- [ ] FR-067: Permissions must be grouped by module (Product, Order, User, etc.)
+- [x] FR-065: System must support granular permissions (Create, Read, Update, Delete)
+- [x] FR-066: Each permission must be assignable to any role
+- [x] FR-067: Permissions must be grouped by module (Product, Order, User, etc.)
 
 ### 13.3 Create New Role (Super Admin only)
 
@@ -255,7 +255,7 @@
 - [x] FR-123: Verification link must contain a unique SecurityCode
 - [x] FR-124: SecurityCode must expire after 1 hour
 - [x] FR-125: User cannot login until email is verified
-- [ ] FR-126: User can request resend verification email
+- [x] FR-126: User can request resend verification email
 
 ### 17.2 Password Recovery
 

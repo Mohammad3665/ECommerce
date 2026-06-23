@@ -6,6 +6,7 @@ using ECommerce.Application.Features.Authentication.Commands.ForgotPassword;
 using ECommerce.Application.Features.Authentication.Commands.Logout;
 using ECommerce.Application.Features.Authentication.Commands.RefreshToken;
 using ECommerce.Application.Features.Authentication.Commands.Register;
+using ECommerce.Application.Features.Authentication.Commands.ResendVerificationEmailCommand;
 using ECommerce.Application.Features.Authentication.Commands.ResetForgotedPassword;
 using ECommerce.Application.Features.Authentication.Commands.ResetPassword;
 using ECommerce.Application.Features.Authentication.Queries.Login;
@@ -85,6 +86,14 @@ public class AuthController(ISender sender, ILogger<AuthController> logger) : Ba
     public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<ConfirmEmailCommand>();
+        var result = await sender.Send(command, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResendEmail([FromBody] ResendVerificationEmailRequestDto dto, CancellationToken cancellationToken)
+    {
+        var command = dto.Adapt<ResendVerificationEmailCommand>();
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

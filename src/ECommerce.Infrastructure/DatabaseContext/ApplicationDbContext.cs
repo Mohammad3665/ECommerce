@@ -11,7 +11,7 @@ namespace ECommerce.Infrastructure.DatabaseContext;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     #region Db Sets
 
@@ -19,6 +19,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<UserRole> UserRoles { get; set; } = null!;
     public DbSet<Permission> Permissions { get; set; } = null!;
+    public DbSet<RolePermission> RolePermissions { get; set; }
     public DbSet<Brand> Brands { get; set; } = null!;
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
@@ -58,7 +59,7 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(ur => new { ur.UserId, ur.RoleId});
+            entity.HasKey(ur => new { ur.UserId, ur.RoleId });
 
             entity.HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
@@ -76,6 +77,21 @@ public class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<RolePermission>(entity =>
+        {
+            entity.ToTable("RolePermission").HasKey(rp => new { rp.RoleId, rp.PermissionId });
+
+            entity.HasOne(rp => rp.Role)
+                .WithMany(rp => rp.RolePermissions)
+                .HasForeignKey(rp => rp.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(rp => rp.Permission)
+                .WithMany(p => p.RolePermissions)
+                .HasForeignKey(rp => rp.PermissionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         modelBuilder.Entity<Invoice>(entity =>
         {
             entity.HasOne(i => i.Order)
@@ -89,7 +105,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasIndex(o => o.OrderNumber).IsUnique();
-        
+
             entity.HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)

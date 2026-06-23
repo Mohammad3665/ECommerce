@@ -1,6 +1,6 @@
-using ECommerce.Domain.Entities.Application.Role;
-using ECommerce.Domain.IRepositories.Common.Base;
+// using ECommerce.Domain.Entities.Application.Role;
+// using ECommerce.Domain.IRepositories.Common.Base;
 
-namespace ECommerce.Domain.IRepositories.Persistence.Application.Role;
+// namespace ECommerce.Domain.IRepositories.Persistence.Application.Role;
 
-public interface IRolePermissionRepository : IBaseRepository<long, RolePermission>;
+// public interface IRolePermissionRepository : IBaseRepository<long, RolePermission>;

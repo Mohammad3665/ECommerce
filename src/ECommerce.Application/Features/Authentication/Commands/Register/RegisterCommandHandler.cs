@@ -9,7 +9,7 @@ using ECommerce.Domain.Entities.Application.Role;
 
 namespace ECommerce.Application.Features.Authentication.Commands.Register;
 
-public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService, IEmailService emailService)
+public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService, IEmailService emailService, ICodeGeneratorService codeGenerator)
     : IRequestHandler<RegisterCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         {
             var error = new Error(
                 "Auth.EmailTaken",
-                "ایمیل قبلا ثبت شده است.", 
+                "ایمیل قبلا ثبت شده است.",
                 ErrorType.Conflict
             );
             return Result<Guid>.Failure(error);
@@ -38,7 +38,7 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         {
             var error = new Error(
                 "Auth.NotFound",
-                $"نقش {roleName} در سیستم یافت نشد.", 
+                $"نقش {roleName} در سیستم یافت نشد.",
                 ErrorType.NotFound
             );
             return Result<Guid>.Failure(error);
@@ -60,7 +60,7 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         user.IsEmailConfirmed = false;
         user.SecurityCode = null;
         user.SecurityCodeExpiry = null;
-        user.SecurityCode = Random.Shared.Next(100000, 999999).ToString();
+        user.SecurityCode = codeGenerator.Generate();
         user.SecurityCodeExpiry = DateTime.UtcNow.AddHours(1);
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
@@ -80,8 +80,8 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         ";
 
         await emailService.SendEmailAsync(
-            request.Email, 
-            "کد تایید ثبت‌نام در فروشگاه", 
+            request.Email,
+            "کد تایید ثبت‌نام در فروشگاه",
             emailBody);
 
         return Result<Guid>.Success(user.Id);

@@ -11,7 +11,7 @@ public static class DatabaseInitializer
 
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        serviceProvider.ApplyMigrations();
+        scope.ServiceProvider.ApplyMigrations();
 
         await context.SeedDatabaseAsync();
     }

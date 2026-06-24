@@ -47,7 +47,11 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
         }
 
         var roles = user.UserRoles.Where(r => r.Role is not null).Select(r => r.Role.Name).ToList();
-        var newAccessToken = jwtProvider.GenerateToken(user.Id, user.Email, roles);
+        var permissions = user.UserRoles
+            .SelectMany(ur => ur.Role.RolePermissions)
+            .Select(rp => rp.Permission.Name)
+            .Distinct();
+        var newAccessToken = jwtProvider.GenerateToken(user.Id, user.Email, roles, permissions);
         var newRefreshToken = jwtProvider.GenerateRefreshToken();
         var currentTime = DateTime.UtcNow;
         user.RefreshToken = newRefreshToken;

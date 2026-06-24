@@ -17,11 +17,12 @@ public interface IJwtProvider
     /// <param name="userId">The unique identifier of the user</param>
     /// <param name="email">The email address of the user</param>
     /// <param name="roles">The collection of roles assigned to the user</param>
+    /// <param name="permissions">The collection of permissions assigned to the user</param>
     /// <returns>
     /// A JWT string that can be used for API authentication
     /// </returns>
-    string GenerateToken(Guid userId, string email, IEnumerable<string> roles);
-    
+    string GenerateToken(Guid userId, string email, IEnumerable<string> roles, IEnumerable<string> permissions);
+
     /// <summary>
     /// Generates a cryptographically secure refresh token for session renewal
     /// </summary>

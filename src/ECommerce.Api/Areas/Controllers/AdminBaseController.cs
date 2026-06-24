@@ -9,6 +9,6 @@ namespace ECommerce.Api.Areas.Controllers;
 
 [ApiController]
 [Area("Admin")]
-[Authorize(Policy = "AdminAndAbove")]
+[Authorize(Policy = "AdminPanelAccess")]
 [Route(template: "Api/[area]/[controller]/[action]")]
-public abstract class AdminBaseController : ControllerBase {}
+public abstract class AdminBaseController : ControllerBase { }

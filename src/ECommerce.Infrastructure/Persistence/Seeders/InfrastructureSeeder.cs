@@ -31,71 +31,57 @@ public static class InfrastructureSeeder
         }
 
         var superAdminEmail = "mashmammad876@gmail.com";
-        var hasSuperAdmin = await context.Users.AnyAsync(sa => sa.Email == superAdminEmail);
-        if (!hasSuperAdmin)
+        var superAdmin = await context.Users.FirstOrDefaultAsync(sa => sa.Email == superAdminEmail);
+
+        if (superAdmin is null)
         {
             var passwordHasher = new BCryptPasswordService();
-            var superAdmin = new User
+            superAdmin = new User
             {
                 FullName = "SuperAdmin",
                 PhoneNumber = "09024251396",
                 Id = Guid.NewGuid(),
                 Email = superAdminEmail,
                 CreatedAt = DateTime.UtcNow,
-                IsEmailConfirmed = true
+                IsEmailConfirmed = true,
+                IsActive = true
             };
 
             superAdmin.PasswordHash = passwordHasher.Hash("SuperSecurePassword123!");
 
             await context.Users.AddAsync(superAdmin);
             await context.SaveChangesAsync();
+        }
 
-            var superAdminRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "SuperAdmin");
-            if (superAdminRole is not null)
+        var superAdminRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "SuperAdmin");
+        if (superAdminRole is not null)
+        {
+            var hasRoleAssigned = await context.UserRoles.AnyAsync(ur => ur.UserId == superAdmin.Id && ur.RoleId == superAdminRole.Id);
+            if (!hasRoleAssigned)
             {
-                var hasAnyPermissionsMapped = await context.RolePermissions.AnyAsync(rp => rp.RoleId == superAdminRole.Id);
-                if (!hasAnyPermissionsMapped)
+                await context.UserRoles.AddAsync(new UserRole
                 {
-                    var allPermissionIds = await context.Permissions.Select(p => p.Id).ToListAsync();
-
-                    var rolePermissions = allPermissionIds.Select(pId => new RolePermission
-                    {
-                        RoleId = superAdminRole.Id,
-                        PermissionId = pId
-                    }).ToList();
-
-                    await context.RolePermissions.AddRangeAsync(rolePermissions);
-                    await context.SaveChangesAsync();
-                }
+                    UserId = superAdmin.Id,
+                    RoleId = superAdminRole.Id,
+                    AssignedAt = DateTime.UtcNow
+                });
+                await context.SaveChangesAsync();
             }
+            
+            var hasAnyPermissionsMapped = await context.RolePermissions.AnyAsync(rp => rp.RoleId == superAdminRole.Id);
+            if (!hasAnyPermissionsMapped)
+            {
+                var allPermissionIds = await context.Permissions.Select(p => p.Id).ToListAsync();
 
-            // var superAdminRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "SuperAdmin");
-            // if (superAdminRole is not null)
-            // {
-            //     var hasRoleAssigned = await context.UserRoles.AnyAsync(ur => ur.UserId == superAdmin.Id && ur.RoleId == superAdminRole.Id);
-            //     if (!hasRoleAssigned)
-            //     {
-            //         await context.UserRoles.AddAsync(new UserRole
-            //         {
-            //             UserId = superAdmin.Id,
-            //             RoleId = superAdminRole.Id
-            //         });
-            //         await context.SaveChangesAsync();
-            //     }
-            //     var hasAnyPermissionsMapped = await context.RolePermissions.AnyAsync(rp => rp.RoleId == superAdminRole.Id);
-            //     if (!hasAnyPermissionsMapped)
-            //     {
-            //         var allPermissionIds = await context.Permissions.Select(p => (long)p.Id).ToListAsync();
-            //         var rolePermissions = allPermissionIds.Select(pId => new RolePermission
-            //         {
-            //             RoleId = (long)superAdminRole.Id,
-            //             PermissionId = pId
-            //         }).ToList();
+                var rolePermissions = allPermissionIds.Select(pId => new RolePermission
+                {
+                    RoleId = superAdminRole.Id,
+                    PermissionId = pId
+                }).ToList();
 
-            //         await context.RolePermissions.AddRangeAsync(rolePermissions);
-            //         await context.SaveChangesAsync();
-            //     }
-            // }
+                await context.RolePermissions.AddRangeAsync(rolePermissions);
+                await context.SaveChangesAsync();
+            }
         }
     }
 

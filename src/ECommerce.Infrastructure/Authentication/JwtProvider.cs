@@ -18,7 +18,7 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
         return Convert.ToBase64String(randomNumber);
     }
 
-    public string GenerateToken(Guid userId, string email, IEnumerable<string> roles)
+    public string GenerateToken(Guid userId, string email, IEnumerable<string> roles, IEnumerable<string> permissions)
     {
         var secretKey = configuration["JwtSettings:Secret"]
             ?? throw new InvalidOperationException("JWT Secret key is missing.");
@@ -33,7 +33,9 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        claims.AddRange(roles.Select(role => new Claim("role", role)));
+
+        claims.AddRange(permissions.Select(permission => new Claim("permissions", permission)));
 
         var expiryMinutes = double.Parse(configuration["JwtSettings:ExpiryInMinutes"] ?? "10");
 

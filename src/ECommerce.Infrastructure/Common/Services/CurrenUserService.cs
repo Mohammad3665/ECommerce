@@ -17,13 +17,25 @@ public class CurrenUserService(IHttpContextAccessor httpContextAccessor) : ICurr
 
     public int GetMaxRoleLevel()
     {
-        var levelClaim = httpContextAccessor.HttpContext?.User?.FindFirst("RoleLevel")?.Value;
+        var roleClaim = httpContextAccessor.HttpContext?.User?.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-        if (string.IsNullOrEmpty(levelClaim) || !int.TryParse(levelClaim, out int level))
+        if (string.IsNullOrEmpty(roleClaim))
+        {
+            roleClaim = httpContextAccessor.HttpContext?.User?.FindFirst("role")?.Value;
+        }
+
+        if (string.IsNullOrEmpty(roleClaim))
         {
             return 0;
         }
 
-        return level;
+        return roleClaim switch
+        {
+            "SuperAdmin" => 100,
+            "Admin" => 80,
+            "ContentManager" => 50,
+            "Customer" => 10,
+            _ => 0
+        };
     }
 }

@@ -13,7 +13,9 @@ public class UserRepository(ApplicationDbContext context)
     {
         return await Context.Users
             .Include(u => u.UserRoles)
-            .ThenInclude(ur => ur.Role)
+                .ThenInclude(ur => ur.Role)
+                    .ThenInclude(r => r.RolePermissions)
+                        .ThenInclude(rp => rp.Permission)
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
@@ -21,7 +23,9 @@ public class UserRepository(ApplicationDbContext context)
     {
         return await Context.Users
             .Include(u => u.UserRoles)
-            .ThenInclude(ur => ur.Role)
+                .ThenInclude(ur => ur.Role)
+                    .ThenInclude(r => r.RolePermissions)
+                        .ThenInclude(rp => rp.Permission)
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 }

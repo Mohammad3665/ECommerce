@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using ECommerce.Api.Common.Extensions;
 using Mapster;
 using Serilog;
@@ -14,6 +15,7 @@ public class StartupHost
             .Enrich.FromLogContext()
             .CreateLogger();
 
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         builder.Host.UseSerilog();
         builder.Services.AddApplicationServices(builder.Configuration);
         builder.Services.AddHttpContextAccessor();

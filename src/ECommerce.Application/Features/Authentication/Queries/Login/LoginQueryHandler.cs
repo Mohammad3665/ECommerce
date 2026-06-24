@@ -53,7 +53,12 @@ public class LoginQueryHandler(
         }
 
         var roles = user.UserRoles.Where(ur => ur.Role is not null).Select(r => r.Role.Name).ToList();
-        var token = jwtProvider.GenerateToken(user.Id, user.Email, roles);
+        var permissions = user.UserRoles
+            .SelectMany(ur => ur.Role.RolePermissions)
+            .Select(rp => rp.Permission.Name)
+            .Distinct();
+        Console.WriteLine($"DEBUG: Roles Count = {roles.Count}, Permissions Count = {permissions.Count()}");
+        var token = jwtProvider.GenerateToken(user.Id, user.Email, roles, permissions);
         var currentTime = DateTime.UtcNow;
         var expiration = currentTime.AddMinutes(10);
 

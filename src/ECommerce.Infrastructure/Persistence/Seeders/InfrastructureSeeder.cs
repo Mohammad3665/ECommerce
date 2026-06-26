@@ -13,10 +13,10 @@ public static class InfrastructureSeeder
         {
             var defaultRoles = new List<Role>
             {
-                new Role { Name = "SuperAdmin", DisplayName = "مدیر کل", IsDefault = true, IsSystemProtected = true, Level = 100 },
-                new Role { Name = "Admin", DisplayName = "مدیر", IsDefault = true, IsSystemProtected = true, Level = 80 },
-                new Role { Name = "ContentManager", DisplayName = "مدیر محتوا", IsDefault = true, IsSystemProtected = true, Level = 50 },
-                new Role { Name = "Customer", DisplayName = "مشتری", IsDefault = true, IsSystemProtected = true, Level = 10 }
+                new Role { Name = "SuperAdmin", DisplayName = "مدیر کل", Slug = "super-admin", IsDefault = true, IsSystemProtected = true, Level = 100 },
+                new Role { Name = "Admin", DisplayName = "مدیر", Slug = "admin", IsDefault = true, IsSystemProtected = true, Level = 80 },
+                new Role { Name = "ContentManager", DisplayName = "مدیر محتوا", Slug = "content-manager", IsDefault = true, IsSystemProtected = true, Level = 50 },
+                new Role { Name = "Customer", DisplayName = "مشتری", Slug = "customer", IsDefault = true, IsSystemProtected = true, Level = 10 }
             };
 
             await context.Roles.AddRangeAsync(defaultRoles);
@@ -67,7 +67,7 @@ public static class InfrastructureSeeder
                 });
                 await context.SaveChangesAsync();
             }
-            
+
             var hasAnyPermissionsMapped = await context.RolePermissions.AnyAsync(rp => rp.RoleId == superAdminRole.Id);
             if (!hasAnyPermissionsMapped)
             {

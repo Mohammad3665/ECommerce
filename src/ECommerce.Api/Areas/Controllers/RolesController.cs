@@ -2,6 +2,7 @@ using ECommerce.Api.Common.Extensions;
 using ECommerce.Api.Controllers.v1;
 using ECommerce.Application.Dtos.Roles;
 using ECommerce.Application.Features.Roles.Commands.CreateRole;
+using ECommerce.Application.Features.Roles.Commands.EditRole;
 using ECommerce.Infrastructure.Identity.Attributes;
 using Mapster;
 using MediatR;
@@ -16,6 +17,15 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     public async Task<IActionResult> Create([FromBody] CreateRoleRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<CreateRoleCommand>();
+        var result = await sender.Send(command, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpPut("{slug}")]
+    [HasPermission("roles.update")]
+    public async Task<IActionResult> Edit(string slug, [FromBody] EditRoleRequestDto dto, CancellationToken cancellationToken)
+    {
+        var command = new EditRoleCommand(slug, dto.DisplayName, dto.Description, dto.level, dto.PermissionIds);
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

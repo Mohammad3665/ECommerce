@@ -136,15 +136,15 @@
 
 ### 13.3 Create New Role (Super Admin only)
 
-- [ ] FR-068: Super Admin must be able to create new custom roles
-- [ ] FR-069: Super Admin must be able to set role name and description
-- [ ] FR-070: Super Admin must be able to assign permissions to new roles
+- [x] FR-068: Super Admin must be able to create new custom roles
+- [x] FR-069: Super Admin must be able to set role name and description
+- [x] FR-070: Super Admin must be able to assign permissions to new roles
 
 ### 13.4 Edit Role
 
-- [ ] FR-071: Super Admin must be able to edit role information (name, description)
-- [ ] FR-072: Super Admin must be able to add/remove permissions from existing roles
-- [ ] FR-073: Super Admin must NOT be able to delete or modify Super Admin role permissions
+- [x] FR-071: Super Admin must be able to edit role information (name, description)
+- [x] FR-072: Super Admin must be able to add/remove permissions from existing roles
+- [x] FR-073: Super Admin must NOT be able to delete or modify Super Admin role permissions
 
 ### 13.5 Delete Role
 

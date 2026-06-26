@@ -30,6 +30,16 @@ public class Role : BaseEntity<long>
     public string DisplayName { get; set; } = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the URL-friendly unique identifier for the category.
+    /// </summary>
+    /// <value>
+    ///     A SEO-friendly string derived from <see cref="Name"/> (e.g., "electronics", "gaming-laptops"). Defaults to empty string.
+    /// </value>
+    [Required]
+    [MaxLength(1000)]
+    public string Slug { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Gets or sets the detailed description of the role's responsibilities and permissions.
     /// </summary>
     /// <value>

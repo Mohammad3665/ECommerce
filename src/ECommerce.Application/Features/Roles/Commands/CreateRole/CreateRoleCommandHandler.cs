@@ -1,3 +1,4 @@
+using ECommerce.Application.Common.Extensions;
 using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Result;
@@ -65,6 +66,8 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
                 PermissionId = permissionId
             });
         }
+
+        newRole.Slug = request.Name.ToSlug();
 
         await unitOfWork.RoleRepository.AddAsync(newRole);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);

@@ -26,7 +26,7 @@
 ### 3. Category Management
 
 - [x] FR-016: Complete CRUD operations for categories
-- [ ] FR-017: Activate/deactivate category
+- [x] FR-017: Activate/deactivate category
 - [ ] FR-018: View products by category
 
 ### 4. Product Management
@@ -186,10 +186,10 @@
 - [x] FR-084: The system must support multi-level category hierarchy
 - [x] FR-085: Each category can have multiple subcategories
 - [x] FR-086: Subcategories can have their own nested subcategories (unlimited depth)
-- [ ] FR-087: Display full category tree structure in the frontend
-- [ ] FR-088: Generate breadcrumb navigation showing the full category path
+- [x] FR-087: Display full category tree structure in the frontend
+- [x] FR-088: Generate breadcrumb navigation showing the full category path
 - [x] FR-089: Products can be assigned to any category (main or subcategory)
-- [ ] FR-090: Admin can move categories between different parent categories
+- [x] FR-090: Admin can move categories between different parent categories
 - [x] FR-091: System must prevent circular references (a category cannot be its own ancestor)
 - [x] FR-092: Deleting a parent category must handle subcategories (option: delete all, move to another parent, or prevent deletion)
 
@@ -306,8 +306,8 @@
 
 ### Security
 
-- [ ] NFR-001: Password encryption with BCrypt
-- [ ] NFR-002: Input validation with FluentValidation
+- [x] NFR-001: Password encryption with BCrypt
+- [x] NFR-002: Input validation with FluentValidation
 - [ ] NFR-003: Protection against XSS, CSRF, SQL Injection
 
 ### Reliability

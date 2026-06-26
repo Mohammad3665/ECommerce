@@ -1,0 +1,93 @@
+using ECommerce.Domain.Common.Error;
+using ECommerce.Domain.Common.Result;
+using ECommerce.Domain.IRepositories.Common.UnitOfWork;
+using MediatR;
+using Microsoft.Extensions.Options;
+
+namespace ECommerce.Application.Features.Categories.Commands.MoveCategory;
+
+public class MoveCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<MoveCategoryCommand, Result>
+{
+    public async Task<Result> Handle(MoveCategoryCommand request, CancellationToken cancellationToken)
+    {
+        var category = await unitOfWork.CategoryRepository.GetAsync(
+            expression: c => c.Slug == request.Slug.Trim().ToLower(),
+            cancellationToken: cancellationToken
+        );
+        if (category is null)
+        {
+            var error = new Error(
+                "Category.NotFound",
+                "دسته‌بندی مورد نظر یافت نشد.",
+                ErrorType.NotFound
+            );
+            return Result.Failure(error);
+        }
+
+        if (request.NewParentId.HasValue)
+        {
+            var newParentId = request.NewParentId.Value;
+
+            if (category.Id == newParentId)
+            {
+                var error = new Error(
+                    "Category.SelfParenting",
+                    "یک دسته‌بندی نمی‌تواند به عنوان والد خودش انتخاب شود.",
+                    ErrorType.Validation
+                );
+                return Result.Failure(error);
+            }
+
+            var parentExists = await unitOfWork.CategoryRepository.IsExistAsync(
+                expression: c => c.Id == newParentId,
+                cancellationToken: cancellationToken
+            );
+
+            var isDecendant = await IsTargetParentADescendantAsync(category.Id, newParentId, cancellationToken);
+            if (isDecendant)
+            {
+                var error = new Error(
+                    "Category.CircularReference",
+                    "انتقال دسته‌بندی به زیرمجموعه‌های خودش غیرمجاز است، چون باعث ایجاد حلقه بی‌انتها می‌شود.",
+                    ErrorType.Validation
+                );
+            }
+        }
+        category.ParentCategoryId = request.NewParentId;
+
+        unitOfWork.CategoryRepository.Update(category);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Category.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
+        return Result.Success();
+    }
+
+    private async Task<bool> IsTargetParentADescendantAsync(long currentCategoryId, long targetParentId, CancellationToken cancellationToken = default)
+    {
+        var checkCategory = await unitOfWork.CategoryRepository.GetAsync(
+            expression: c => c.Id == targetParentId,
+            cancellationToken: cancellationToken
+        );
+
+        while (checkCategory is not null)
+        {
+            if (checkCategory.ParentCategoryId == currentCategoryId)
+                return true;
+
+            if (checkCategory.ParentCategoryId is null)
+                break;
+            checkCategory = await unitOfWork.CategoryRepository.GetAsync(
+                expression: c => c.Id == checkCategory.ParentCategoryId,
+                cancellationToken: cancellationToken
+            );
+        }
+        return false;
+    }
+}

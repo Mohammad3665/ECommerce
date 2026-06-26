@@ -8,10 +8,12 @@ public class EditRoleCommandValidator : AbstractValidator<EditRoleCommand>
     {
         RuleFor(x => x.DisplayName)
             .NotEmpty()
+            .WithName("نام نمایشی")
             .MaximumLength(100);
 
         RuleFor(x => x.Description)
             .NotEmpty()
+            .WithName("توضیحات")
             .MaximumLength(300);
 
         RuleFor(x => x.PermissionIds)

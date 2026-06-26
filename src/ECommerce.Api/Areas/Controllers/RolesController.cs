@@ -41,7 +41,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
         return result.ToActionResult(logger);
     }
 
-    [HttpPost("Assign/{userId:Guid}")]
+    [HttpPost("{userId:Guid}")]
     [HasPermission("roles.update")]
     public async Task<IActionResult> AssignRoles(Guid userId, [FromBody] AssignUserRolesRequestDto dto, CancellationToken cancellationToken)
     {

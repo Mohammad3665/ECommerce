@@ -55,6 +55,15 @@ public class Category : BaseEntity<long>
     [MaxLength(300)]
     public string? ImageUrl { get; set; }
 
+    /// <summary>
+        ///     Gets or sets a value indicating whether the category is visible and active in the store.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if the categroy is displayed on the website and available for product association;
+        ///     otherwise, <c>false</c>. Default is <c>true</c>.
+        /// </value>
+    public bool IsActive { get; set; } = true;
+
     #endregion
 
     #region Foreign Key

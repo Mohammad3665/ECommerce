@@ -32,7 +32,7 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         {
             var error = new Error(
                 "Category.CannotDeleteWithProducts",
-                "This category has products and cannot be deleted. First, move or delete the products.",
+                "این دسته‌بندی شامل محصول است و قابل حذف نیست. ابتدا محصولات را حذف نموده یا به دسته‌بندی دیگری انتقال دهید.",
                 ErrorType.Validation
             );
             return Result.Failure(error);
@@ -43,8 +43,8 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         if (saveResult.IsFailure)
         {
             var error = new Error(
-                "Operation failed.",
-                "An unexpected error occurred while deleting the category.",
+                "Category.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
                 ErrorType.Unexpected
             );
             return Result.Failure(error);

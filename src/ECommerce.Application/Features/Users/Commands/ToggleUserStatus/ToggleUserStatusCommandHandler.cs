@@ -16,8 +16,8 @@ public class ToggleUserStatusCommandHandler(IUnitOfWork unitOfWork) : IRequestHa
         if (user is null)
         {
             var error = new Error(
-                "User.NotFound", 
-                "کاربر مورد نظر یافت نشد.", 
+                "User.NotFound",
+                "کاربر مورد نظر یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
@@ -26,7 +26,16 @@ public class ToggleUserStatusCommandHandler(IUnitOfWork unitOfWork) : IRequestHa
         user.IsActive = request.IsActive;
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "User.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         return Result.Success();
     }

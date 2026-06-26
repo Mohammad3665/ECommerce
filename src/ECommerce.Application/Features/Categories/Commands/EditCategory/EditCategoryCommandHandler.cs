@@ -13,14 +13,14 @@ public class EditCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
     public async Task<Result> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await unitOfWork.CategoryRepository.GetAsync(
-            expression: c => c.Id == request.Id,
+            expression: c => c.Slug == request.Slug.Trim().ToLower(),
             cancellationToken: cancellationToken);
-        
+
         if (category is null)
         {
             var error = new Error(
                 "Category.NotFound",
-                $"دسته‌بندی با شناسه {request.Id} یافت نشد.",
+                $"دسته‌بندی یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
@@ -37,8 +37,8 @@ public class EditCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
         if (saveResult.IsFailure)
         {
             var error = new Error(
-                "Operation failed.",
-                "An unexpected error occurred while updating the category.",
+                "Category.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
                 ErrorType.Unexpected
             );
             return Result.Failure(error);

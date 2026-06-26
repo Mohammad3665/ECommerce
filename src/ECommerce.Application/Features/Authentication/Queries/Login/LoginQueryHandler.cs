@@ -70,7 +70,16 @@ public class LoginQueryHandler(
         user.RefreshTokenExpiryTime = currentTime.AddDays(7);
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result<TokenResponseDto>.Failure(error);
+        }
 
         var result = new TokenResponseDto(token, newRefreshToken, expiration);
         return Result<TokenResponseDto>.Success(result);

@@ -25,13 +25,13 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
         if (!isCurrentPasswordValid)
         {
             var error = new Error(
-                "Auth.InvalidCurrentPassword", 
-                "پسورد فعلی وارد شده صحیح نیست.", 
+                "Auth.InvalidCurrentPassword",
+                "پسورد فعلی وارد شده صحیح نیست.",
                 ErrorType.Validation);
-            
+
             return Result.Failure(error);
         }
-        
+
         var newHashedPassword = passwordService.Hash(request.NewPassword);
 
         user.PasswordHash = newHashedPassword;
@@ -39,7 +39,16 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
         user.SecurityCodeExpiry = null;
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         return Result.Success();
     }

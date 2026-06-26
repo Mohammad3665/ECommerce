@@ -14,8 +14,8 @@ public class ResetForgotedPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswo
         if (user is null)
         {
             var error = new Error(
-                "Auth.InvalidResetRequest", 
-                "ایمیل یا کد امنیتی نامعتبر است.", 
+                "Auth.InvalidResetRequest",
+                "ایمیل یا کد امنیتی نامعتبر است.",
                 ErrorType.Validation
             );
             return Result.Failure(error);
@@ -24,8 +24,8 @@ public class ResetForgotedPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswo
         if (user.SecurityCode is null || user.SecurityCode != request.SecurityCode || user.SecurityCodeExpiry <= DateTime.UtcNow)
         {
             var error = new Error(
-                "Auth.InvalidOrExpiredCode", 
-                "کد امنیتی منفضی شده یا نامعتبر است.", 
+                "Auth.InvalidOrExpiredCode",
+                "کد امنیتی منفضی شده یا نامعتبر است.",
                 ErrorType.Validation);
             return Result.Failure(error);
         }
@@ -37,7 +37,16 @@ public class ResetForgotedPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswo
         user.SecurityCodeExpiry = null;
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         return Result.Success();
     }

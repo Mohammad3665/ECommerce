@@ -21,8 +21,8 @@ public class CreateCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         if (saveResult.IsFailure)
         {
             var error = new Error(
-                "Operation failed.",
-                "خطای ناخواسته‌ای هنگام ساخت دسته‌بندی پیش آمد.",
+                "Category.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
                 ErrorType.Unexpected
             );
             return Result<long>.Failure(error);

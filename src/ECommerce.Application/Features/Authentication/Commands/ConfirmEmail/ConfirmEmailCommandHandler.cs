@@ -23,8 +23,8 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
         if (user.SecurityCode != request.SecurityCode || user.SecurityCodeExpiry <= DateTime.UtcNow)
         {
             var error = new Error(
-                "Auth.InvalidSecurityCode", 
-                "رفرش توکن منقضی شده یا نامعتبر است.", 
+                "Auth.InvalidSecurityCode",
+                "رفرش توکن منقضی شده یا نامعتبر است.",
                 ErrorType.Forbidden
             );
             return Result.Failure(error);
@@ -36,7 +36,16 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
         user.SecurityCodeExpiry = null;
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         return Result.Success();
     }

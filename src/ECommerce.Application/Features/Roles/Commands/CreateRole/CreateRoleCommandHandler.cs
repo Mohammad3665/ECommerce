@@ -74,8 +74,8 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
         if (saveResult.IsFailure)
         {
             var error = new Error(
-                "Role.CreateFailed",
-                "خطایی در ذخیره‌سازی نقش جدید رخ داد.",
+                "Role.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
                 ErrorType.Unexpected
             );
             return Result<long>.Failure(error);

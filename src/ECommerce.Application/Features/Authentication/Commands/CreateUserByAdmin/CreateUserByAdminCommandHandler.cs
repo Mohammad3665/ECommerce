@@ -63,7 +63,17 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
         user.IsEmailConfirmed = true;
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای ناخواسته‌ای هنگام افزودن کاربر رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result<Guid>.Failure(error);
+        }
+
         var loginLink = "http://localhost:5000/Api/V1/Auth/Login";
         var emailBody = $@"
             <div dir='rtl' style='font-family: Tahoma, Arial; text-align: right;'>

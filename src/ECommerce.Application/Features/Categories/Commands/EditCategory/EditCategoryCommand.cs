@@ -4,7 +4,7 @@ using MediatR;
 namespace ECommerce.Application.Features.Categories.Commands.EditCategory;
 
 public record EditCategoryCommand(
-    long Id,
+    string Slug,
     string Name,
     string EnglishName,
     string? Description,

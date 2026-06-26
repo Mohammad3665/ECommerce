@@ -24,7 +24,16 @@ public class LogoutCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<Logo
         user.RefreshTokenExpiryTime = null;
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         return Result.Success();
     }

@@ -27,7 +27,16 @@ public class ForgotPasswordCommandHandler(IUnitOfWork unitOfWork, IEmailService 
         user.SecurityCodeExpiry = DateTime.UtcNow.AddHours(1);
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         var subject = "بازیابی رمز عبور - فروشگاه من";
         var emailBody = $"<h3>کد تایید شما:</h3><h1 style='color:blue;'>{securityCode}</h1><p>این کد تا 60 دقیقه دیگر معتبر است.</p>";

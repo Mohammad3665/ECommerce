@@ -80,7 +80,16 @@ public class EditRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService 
         request.Adapt(role, config);
 
         unitOfWork.RoleRepository.Update(role);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Role.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         return Result.Success();
     }

@@ -64,7 +64,16 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
         user.SecurityCodeExpiry = DateTime.UtcNow.AddHours(1);
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Falied",
+                "خطای ناخواسته‌ای هنگام ذخیره اطلاعات رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result<Guid>.Failure(error);
+        }
 
         var emailBody = $@"
             <div dir='rtl' style='font-family: Tahoma, Arial; text-align: right; line-height: 1.6;'>

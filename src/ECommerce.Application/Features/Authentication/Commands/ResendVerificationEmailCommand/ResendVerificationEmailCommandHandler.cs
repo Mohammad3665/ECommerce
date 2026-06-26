@@ -33,7 +33,16 @@ public class ResendVerificationEmailCommandHandler(IUnitOfWork unitOfWork, IEmai
         user.SecurityCodeExpiry = DateTime.UtcNow.AddHours(1);
 
         unitOfWork.UserRepository.Update(user);
-        await unitOfWork.SaveAsync(cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Auth.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result.Failure(error);
+        }
 
         var emailBody = $@"
             <div dir='rtl' style='font-family: Tahoma, Arial; text-align: right; line-height: 1.6;'>

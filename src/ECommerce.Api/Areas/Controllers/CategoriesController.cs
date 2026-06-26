@@ -33,10 +33,10 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
         return result.ToActionResult(logger);
     }
 
-    [HttpPut("{id:long}")]
-    public async Task<IActionResult> Edit(long id, [FromBody] EditCategoryDto dto, CancellationToken cancellationToken)
+    [HttpPut("{slug}")]
+    public async Task<IActionResult> Edit(string slug, [FromBody] EditCategoryDto dto, CancellationToken cancellationToken)
     {
-        var command = dto.Adapt<EditCategoryCommand>();
+        var command = new EditCategoryCommand(slug, dto.Name, dto.EnglishName, dto.Description, dto.ImageUrl);
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

@@ -10,7 +10,7 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
     public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await unitOfWork.CategoryRepository.GetAsync(
-                expression: c => c.Id == request.Id,
+                expression: c => c.Slug == request.Slug.Trim().ToLower(),
                 cancellationToken: cancellationToken
             );
 
@@ -18,14 +18,14 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         {
             var error = new Error(
                 "Category.NotFound",
-                $"دسته‌بندی با شناسه {request.Id} یافت نشد.",
+                $"دسته‌بندی یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
         }
 
         var product = await unitOfWork.ProductRepository.GetAsync(
-            expression: p => p.CategoryId == request.Id,
+            expression: p => p.CategoryId == category.Id,
             cancellationToken: cancellationToken
         );
         if (product is not null)

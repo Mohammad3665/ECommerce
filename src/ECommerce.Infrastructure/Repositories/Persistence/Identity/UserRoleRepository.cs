@@ -8,22 +8,22 @@ public class UserRoleRepository(ApplicationDbContext context) : IUserRoleReposit
 {
     public async Task AddAsync(UserRole userRole, CancellationToken cancellationToken = default)
     {
-        await context.Set<UserRole>().AddAsync(userRole, cancellationToken);
+        await context.UserRoles.AddAsync(userRole, cancellationToken);
     }
-    
+
     public async void Remove(UserRole userRole)
     {
-        context.Set<UserRole>().Remove(userRole);
+        context.UserRoles.Remove(userRole);
     }
 
     public async Task<UserRole?> GetAsync(Guid userId, long roleId, CancellationToken cancellationToken = default)
     {
-        return await context.Set<UserRole>().FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId, cancellationToken);
+        return await context.UserRoles.FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId, cancellationToken);
     }
 
     public async Task<List<UserRole>> GetByUserId(Guid userId, CancellationToken cancellationToken = default)
     {
-        return await context.Set<UserRole>()
+        return await context.UserRoles
             .Include(ur => ur.Role)
             .Where(ur => ur.UserId == userId)
             .ToListAsync(cancellationToken);
@@ -31,7 +31,18 @@ public class UserRoleRepository(ApplicationDbContext context) : IUserRoleReposit
 
     public async Task<bool> IsUserInRoleAsync(Guid userId, long roleId, CancellationToken cancellationToken = default)
     {
-        return await context.Set<UserRole>()
+        return await context.UserRoles
             .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId, cancellationToken);
+    }
+
+    public async Task<bool> HasAssignedUsersAsync(long roleId, CancellationToken cancellationToken = default)
+    {
+        return await context.UserRoles.AnyAsync(r => r.RoleId == roleId, cancellationToken);
+    }
+
+    public async Task MigrateUsersToRoleAsync(long sourceRoleId, long targetRoleId, CancellationToken cancellationToken)
+    {
+        await context.UserRoles.Where(ur => ur.RoleId == sourceRoleId)
+            .ExecuteUpdateAsync(s => s.SetProperty(ur => ur.RoleId, targetRoleId), cancellationToken);
     }
 }

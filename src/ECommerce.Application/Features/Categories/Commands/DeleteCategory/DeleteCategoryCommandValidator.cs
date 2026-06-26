@@ -7,7 +7,6 @@ public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCo
 {
     public DeleteCategoryCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0);
+       
     }
 }

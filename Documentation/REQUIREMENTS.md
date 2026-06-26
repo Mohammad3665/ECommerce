@@ -148,10 +148,10 @@
 
 ### 13.5 Delete Role
 
-- [ ] FR-074: Super Admin must be able to delete custom roles
-- [ ] FR-075: System must prevent deletion of default roles (Super Admin, Admin, ContentManager, Customer)
-- [ ] FR-076: System must check if role has assigned users before deletion
-- [ ] FR-077: System must prompt confirmation when deleting role with assigned users
+- [x] FR-074: Super Admin must be able to delete custom roles
+- [x] FR-075: System must prevent deletion of default roles (Super Admin, Admin, ContentManager, Customer)
+- [x] FR-076: System must check if role has assigned users before deletion
+- [x] FR-077: System must prompt confirmation when deleting role with assigned users
 
 ### 13.6 Assign Roles to Users
 
@@ -161,8 +161,8 @@
 
 ### 13.7 Permission Checking
 
-- [ ] FR-081: System must check user permissions before every operation
-- [ ] FR-082: System must return 403 Forbidden if user lacks required permission
+- [x] FR-081: System must check user permissions before every operation
+- [x] FR-082: System must return 403 Forbidden if user lacks required permission
 - [ ] FR-083: Permissions must be cached for performance
 
 ### 13.8 Permission Groups (Modules)

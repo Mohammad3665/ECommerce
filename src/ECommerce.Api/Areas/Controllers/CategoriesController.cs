@@ -41,10 +41,10 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
         return result.ToActionResult(logger);
     }
 
-    [HttpDelete("{id:long}")]
-    public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
+    [HttpDelete("{slug}")]
+    public async Task<IActionResult> Delete(string slug, CancellationToken cancellationToken)
     {
-        var command = new DeleteCategoryCommand(id);
+        var command = new DeleteCategoryCommand(slug);
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

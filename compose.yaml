@@ -7,22 +7,23 @@ services:
       - "8025:8025"
     networks:
       - ecommerce-network
-  redis:
-    image: redis:7.2-alpine
-    container_name: ecommerce-redis
-    command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    restart: unless-stopped
-    networks:
-      - ecommerce-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+
+  # redis:
+  #   image: redis:7.2-alpine
+  #   container_name: ecommerce-redis
+  #   command: redis-server --appendonly yes
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis-data:/data
+  #   restart: unless-stopped
+  #   networks:
+  #     - ecommerce-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   ecommerceapi:
     image: ecommerceapi
@@ -34,11 +35,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User Id=sa;Password=Password123;TrustServerCertificate=True;
-      - Redis__ConnectionString=redis:6379,abortConnect=false
+      # - Redis__ConnectionString=redis:6379,abortConnect=false
       - ASPNETCORE_URLS=http://+:8080;
     depends_on:
-      redis:
-        condition: service_healthy
+      # redis:
+      #   condition: service_healthy
       ecommerce_db:
         condition: service_healthy
 
@@ -66,7 +67,7 @@ services:
 
 volumes:
   mssql_data:
-  redis-data:
+  # redis-data:
 
 networks:
   ecommerce-network:

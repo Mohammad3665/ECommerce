@@ -3,4 +3,4 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Commands.DeleteCategory;
 
-public record DeleteCategoryCommand(long Id) : IRequest<Result>;
+public record DeleteCategoryCommand(string Slug) : IRequest<Result>;

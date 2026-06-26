@@ -65,4 +65,36 @@ public interface IUserRoleRepository
     /// </returns>
     /// <exception cref="OperationCanceledException">Thrown when the operation is canceled via <paramref name="cancellationToken"/>.</exception>
     Task<bool> IsUserInRoleAsync(Guid userId, long roleId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Checks whether the specified role has any assigned users asynchronously.
+    /// </summary>
+    /// <param name="roleId">The unique identifier of the role.</param>
+    /// <param name="cancellationToken">
+    ///     A token to cancel the asynchronous operation. Default is <see cref="CancellationToken.None"/>.
+    /// </param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation.
+    ///     The task result is <c>true</c> if the role has at least one assigned user; otherwise, <c>false</c>.
+    /// </returns>
+    /// <exception cref="OperationCanceledException">
+    ///     Thrown when the operation is canceled via <paramref name="cancellationToken"/>.
+    /// </exception>
+    Task<bool> HasAssignedUsersAsync(long roleId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Migrates all users from a source role to a target role asynchronously.
+    /// </summary>
+    /// <param name="sourceRoleId">The unique identifier of the source role to migrate users from.</param>
+    /// <param name="targetRoleId">The unique identifier of the target role to migrate users to.</param>
+    /// <param name="cancellationToken">
+    ///     A token to cancel the asynchronous operation. Default is <see cref="CancellationToken.None"/>.
+    /// </param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation.
+    /// </returns>
+    /// <exception cref="OperationCanceledException">
+    ///     Thrown when the operation is canceled via <paramref name="cancellationToken"/>.
+    /// </exception>
+    Task MigrateUsersToRoleAsync(long sourceRoleId, long targetRoleId, CancellationToken cancellationToken = default);
 }

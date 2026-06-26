@@ -157,7 +157,7 @@
 
 - [x] FR-078: Admin/Super Admin must be able to assign multiple roles to a user
 - [x] FR-079: Admin/Super Admin must be able to remove roles from users
-- [ ] FR-080: Admin cannot assign Super Admin role to any user
+- [x] FR-080: Admin cannot assign Super Admin role to any user
 
 ### 13.7 Permission Checking
 

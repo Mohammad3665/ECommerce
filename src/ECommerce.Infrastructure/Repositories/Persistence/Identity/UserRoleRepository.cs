@@ -45,4 +45,15 @@ public class UserRoleRepository(ApplicationDbContext context) : IUserRoleReposit
         await context.UserRoles.Where(ur => ur.RoleId == sourceRoleId)
             .ExecuteUpdateAsync(s => s.SetProperty(ur => ur.RoleId, targetRoleId), cancellationToken);
     }
+
+    public async Task DeleteUserRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        await context.UserRoles.Where(ur => ur.UserId == userId).ExecuteDeleteAsync(cancellationToken);
+    }
+
+    public async Task AddRangeAsync(List<UserRole> userRoles, CancellationToken cancellationToken)
+    {
+        await context.UserRoles.AddRangeAsync(userRoles, cancellationToken);
+    }
+
 }

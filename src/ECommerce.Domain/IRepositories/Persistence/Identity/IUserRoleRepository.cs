@@ -97,4 +97,36 @@ public interface IUserRoleRepository
     ///     Thrown when the operation is canceled via <paramref name="cancellationToken"/>.
     /// </exception>
     Task MigrateUsersToRoleAsync(long sourceRoleId, long targetRoleId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Deletes all role assignments for a specific user asynchronously.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="cancellationToken">
+    ///     A token to cancel the asynchronous operation. Default is <see cref="CancellationToken.None"/>.
+    /// </param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation.
+    /// </returns>
+    /// <exception cref="OperationCanceledException">
+    ///     Thrown when the operation is canceled via <paramref name="cancellationToken"/>.
+    /// </exception>
+    Task DeleteUserRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Adds a collection of user-role assignments to the database asynchronously.
+    /// </summary>
+    /// <param name="userRoles">
+    ///     A list of <see cref="IdentityUserRole{long}"/> entities representing the user-role assignments to add.
+    /// </param>
+    /// <param name="cancellationToken">
+    ///     A token to cancel the asynchronous operation. Default is <see cref="CancellationToken.None"/>.
+    /// </param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation.
+    /// </returns>
+    /// <exception cref="OperationCanceledException">
+    ///     Thrown when the operation is canceled via <paramref name="cancellationToken"/>.
+    /// </exception>
+    Task AddRangeAsync(List<UserRole> userRoles, CancellationToken cancellationToken = default);
 }

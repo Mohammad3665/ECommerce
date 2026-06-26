@@ -1,6 +1,7 @@
 using ECommerce.Api.Common.Extensions;
 using ECommerce.Api.Controllers.v1;
 using ECommerce.Application.Dtos.Roles;
+using ECommerce.Application.Features.Roles.Commands.AssignUserRoles;
 using ECommerce.Application.Features.Roles.Commands.CreateRole;
 using ECommerce.Application.Features.Roles.Commands.DeleteRole;
 using ECommerce.Application.Features.Roles.Commands.EditRole;
@@ -36,6 +37,15 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     public async Task<IActionResult> Delete(string slug, [FromQuery] bool forceDelete, CancellationToken cancellationToken)
     {
         var command = new DeleteRoleCommand(slug, forceDelete);
+        var result = await sender.Send(command, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpPost("Assign/{userId:Guid}")]
+    [HasPermission("roles.update")]
+    public async Task<IActionResult> AssignRoles(Guid userId, [FromBody] AssignUserRolesRequestDto dto, CancellationToken cancellationToken)
+    {
+        var command = new AssignUserRolesCommand(userId, dto.RoleSlugs);
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

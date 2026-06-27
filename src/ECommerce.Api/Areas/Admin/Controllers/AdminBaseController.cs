@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.Api.Areas.Controllers;
+namespace ECommerce.Api.Areas.Admin.Controllers;
 
 [ApiController]
 [Area("Admin")]

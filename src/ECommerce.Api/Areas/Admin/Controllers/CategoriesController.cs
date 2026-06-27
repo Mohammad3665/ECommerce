@@ -11,7 +11,7 @@ using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.Api.Areas.Controllers;
+namespace ECommerce.Api.Areas.Admin.Controllers;
 
 public class CategoriesController(ILogger<CategoriesController> logger, ISender sender) : AdminBaseController
 {
@@ -25,7 +25,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
 
     [HttpPost]
     [HasPermission("categories.create")]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<CreateCategoryCommand>();
         var result = await sender.Send(command, cancellationToken);
@@ -34,7 +34,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
 
     [HttpPut("{slug}")]
     [HasPermission("categories.update")]
-    public async Task<IActionResult> Edit(string slug, [FromBody] EditCategoryDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Edit(string slug, [FromBody] EditCategoryRequestDto dto, CancellationToken cancellationToken)
     {
         var command = new EditCategoryCommand(slug, dto.Name, dto.EnglishName, dto.Description, dto.ImageUrl);
         var result = await sender.Send(command, cancellationToken);

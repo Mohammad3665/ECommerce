@@ -15,10 +15,10 @@
 
 ### 2. Brand Management
 
-- [ ] FR-009: Create new brand
-- [ ] FR-010: Edit brand information
-- [ ] FR-011: Delete brand (with product dependency check)
-- [ ] FR-012: Activate/deactivate brand
+- [x] FR-009: Create new brand
+- [x] FR-010: Edit brand information
+- [x] FR-011: Delete brand (with product dependency check)
+- [x] FR-012: Activate/deactivate brand
 - [ ] FR-013: Assign brand to products
 - [ ] FR-014: Change product's brand
 - [ ] FR-015: View products by brand

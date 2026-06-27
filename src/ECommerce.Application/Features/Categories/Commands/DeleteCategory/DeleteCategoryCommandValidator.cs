@@ -7,6 +7,9 @@ public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCo
 {
     public DeleteCategoryCommandValidator()
     {
-       
+        RuleFor(x => x.Slug)
+            .NotEmpty()
+            .WithName("اسلاگ")
+            .MaximumLength(1000);
     }
 }

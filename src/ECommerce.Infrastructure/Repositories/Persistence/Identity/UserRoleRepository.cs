@@ -40,18 +40,40 @@ public class UserRoleRepository(ApplicationDbContext context) : IUserRoleReposit
         return await context.UserRoles.AnyAsync(r => r.RoleId == roleId, cancellationToken);
     }
 
-    public async Task MigrateUsersToRoleAsync(long sourceRoleId, long targetRoleId, CancellationToken cancellationToken)
+    public async Task MigrateUsersToRoleAsync(long sourceRoleId, long targetRoleId, CancellationToken cancellationToken = default)
     {
-        await context.UserRoles.Where(ur => ur.RoleId == sourceRoleId)
-            .ExecuteUpdateAsync(s => s.SetProperty(ur => ur.RoleId, targetRoleId), cancellationToken);
+        var userIdsWithSourceRole = await context.UserRoles
+            .Where(ur => ur.RoleId == sourceRoleId)
+            .Select(ur => ur.UserId)
+            .ToListAsync(cancellationToken);
+
+        var userIdsWithTargetRole = await context.UserRoles
+            .Where(ur => userIdsWithSourceRole.Contains(ur.UserId) && ur.RoleId == targetRoleId)
+            .Select(ur => ur.UserId)
+            .ToListAsync(cancellationToken);
+
+        var usersToUpdate = userIdsWithSourceRole.Except(userIdsWithTargetRole).ToList();
+        if (usersToUpdate.Any())
+        {
+            await context.UserRoles
+                .Where(ur => ur.RoleId == sourceRoleId && usersToUpdate.Contains(ur.UserId))
+                .ExecuteUpdateAsync(s => s.SetProperty(ur => ur.RoleId, targetRoleId), cancellationToken);
+        }
+
+        if (userIdsWithTargetRole.Any())
+        {
+            await context.UserRoles
+                .Where(ur => ur.RoleId == sourceRoleId && userIdsWithTargetRole.Contains(ur.UserId))
+                .ExecuteDeleteAsync(cancellationToken);
+        }
     }
 
-    public async Task DeleteUserRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task DeleteUserRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         await context.UserRoles.Where(ur => ur.UserId == userId).ExecuteDeleteAsync(cancellationToken);
     }
 
-    public async Task AddRangeAsync(List<UserRole> userRoles, CancellationToken cancellationToken)
+    public async Task AddRangeAsync(List<UserRole> userRoles, CancellationToken cancellationToken = default)
     {
         await context.UserRoles.AddRangeAsync(userRoles, cancellationToken);
     }

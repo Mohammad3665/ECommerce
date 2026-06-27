@@ -9,4 +9,4 @@ public record GetPagedCategoriesQuery(
     int PageNumber,
     int PageSize,
     string? SearchTerm
-) : IRequest<Result<Pagination<PagedCategoriesDto>>>;
+) : IRequest<Result<Pagination<GetPagedCategoriesResponseDto>>>;

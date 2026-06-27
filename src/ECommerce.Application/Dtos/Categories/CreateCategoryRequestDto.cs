@@ -1,6 +1,6 @@
 namespace ECommerce.Application.Dtos.Categories;
 
-public record CreateCategoryDto(
+public record CreateCategoryRequestDto(
     string Name,
     string EnglishName,
     string? Description,

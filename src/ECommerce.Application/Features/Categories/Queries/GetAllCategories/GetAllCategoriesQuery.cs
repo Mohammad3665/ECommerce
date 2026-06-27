@@ -5,4 +5,4 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetAllCategories;
 
-public record GetAllCategoriesQuery() : IRequest<Result<IEnumerable<CategoryDto>>>;
+public record GetAllCategoriesQuery() : IRequest<Result<IEnumerable<GetCategoryResponseDto>>>;

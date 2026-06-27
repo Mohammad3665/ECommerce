@@ -1,8 +1,8 @@
 namespace ECommerce.Application.Dtos.Categories;
 
-public record CategoryTreeDto(
+public record CategoryTreeResponseDto(
     long Id,
     string Name,
     string Slug,
     long? ParentId,
-    List<CategoryTreeDto> Children);
+    List<CategoryTreeResponseDto> Children);

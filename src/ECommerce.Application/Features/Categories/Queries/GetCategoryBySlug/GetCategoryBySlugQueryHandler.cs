@@ -7,24 +7,24 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetCategoryBySlug;
 
-public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryBySlugQuery, Result<CategoryDto>>
+public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryBySlugQuery, Result<GetCategoryResponseDto>>
 {
-    public async Task<Result<CategoryDto>> Handle(GetCategoryBySlugQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetCategoryResponseDto>> Handle(GetCategoryBySlugQuery request, CancellationToken cancellationToken)
     {
         var categoryDto = await unitOfWork.CategoryRepository.GetAsync(
             expression: c => c.Slug == request.Slug.Trim().ToLower(),
-            selector: src => src.Adapt<CategoryDto>(),
+            selector: src => src.Adapt<GetCategoryResponseDto>(),
             cancellationToken: cancellationToken
         );
         if (categoryDto is null)
         {
             var error = new Error(
-                "Category.NotFound", 
-                "دسته‌بندی مورد نظر یافت نشد.", 
+                "Category.NotFound",
+                "دسته‌بندی مورد نظر یافت نشد.",
                 ErrorType.NotFound
             );
-            return Result<CategoryDto>.Failure(error);
+            return Result<GetCategoryResponseDto>.Failure(error);
         }
-        return Result<CategoryDto>.Success(categoryDto);
+        return Result<GetCategoryResponseDto>.Success(categoryDto);
     }
 }

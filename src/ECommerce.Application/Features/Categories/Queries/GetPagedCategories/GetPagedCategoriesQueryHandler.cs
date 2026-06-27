@@ -9,9 +9,9 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetPagedCategories;
 
-public class GetPagedCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetPagedCategoriesQuery, Result<Pagination<PagedCategoriesDto>>>
+public class GetPagedCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetPagedCategoriesQuery, Result<Pagination<GetPagedCategoriesResponseDto>>>
 {
-    public async Task<Result<Pagination<PagedCategoriesDto>>> Handle(GetPagedCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Pagination<GetPagedCategoriesResponseDto>>> Handle(GetPagedCategoriesQuery request, CancellationToken cancellationToken)
     {
         Expression<Func<Category, bool>>? filterExpression = null;
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
@@ -23,11 +23,11 @@ public class GetPagedCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHa
         var pagedResult = await unitOfWork.CategoryRepository.GetAllAsync(
             current: request.PageNumber,
             take: request.PageSize,
-            selector: src => src.Adapt<PagedCategoriesDto>(),
+            selector: src => src.Adapt<GetPagedCategoriesResponseDto>(),
             expression: filterExpression,
             order: o => o.OrderByDescending(c => c.Id),
             cancellationToken: cancellationToken
         );
-        return Result<Pagination<PagedCategoriesDto>>.Success(pagedResult);
+        return Result<Pagination<GetPagedCategoriesResponseDto>>.Success(pagedResult);
     }
 }

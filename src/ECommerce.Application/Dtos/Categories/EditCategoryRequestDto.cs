@@ -1,7 +1,6 @@
 namespace ECommerce.Application.Dtos.Categories;
 
-public record EditCategoryDto(
-    long Id,
+public record EditCategoryRequestDto(
     string Name,
     string EnglishName,
     string Description,

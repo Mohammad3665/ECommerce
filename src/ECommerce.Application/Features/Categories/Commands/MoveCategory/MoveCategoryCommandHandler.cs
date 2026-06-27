@@ -18,7 +18,7 @@ public class MoveCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
         {
             var error = new Error(
                 "Category.NotFound",
-                "دسته‌بندی مورد نظر یافت نشد.",
+                "دسته‌بندی یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);

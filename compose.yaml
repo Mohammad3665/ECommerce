@@ -4,7 +4,7 @@ services:
     container_name: ecommerce-mailhog
     ports:
       - "1025:1025"
-      - "8025:8025"
+      - "38025:8025"
     networks:
       - ecommerce-network
 

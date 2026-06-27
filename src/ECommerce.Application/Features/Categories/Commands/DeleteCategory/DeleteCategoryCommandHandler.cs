@@ -18,17 +18,17 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         {
             var error = new Error(
                 "Category.NotFound",
-                $"دسته‌بندی یافت نشد.",
+                "دسته‌بندی یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
         }
 
-        var product = await unitOfWork.ProductRepository.GetAsync(
+        var hasProduct = await unitOfWork.ProductRepository.IsExistAsync(
             expression: p => p.CategoryId == category.Id,
             cancellationToken: cancellationToken
         );
-        if (product is not null)
+        if (hasProduct)
         {
             var error = new Error(
                 "Category.CannotDeleteWithProducts",

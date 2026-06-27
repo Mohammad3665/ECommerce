@@ -6,11 +6,11 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetCategoryBreadcrumb;
 
-public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryBreadcrumbQuery, Result<List<BreadcrumbItemDto>>>
+public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryBreadcrumbQuery, Result<List<BreadcrumbItemResponseDto>>>
 {
-    public async Task<Result<List<BreadcrumbItemDto>>> Handle(GetCategoryBreadcrumbQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<BreadcrumbItemResponseDto>>> Handle(GetCategoryBreadcrumbQuery request, CancellationToken cancellationToken)
     {
-        var breadcrumb = new List<BreadcrumbItemDto>();
+        var breadcrumb = new List<BreadcrumbItemResponseDto>();
 
         var currentCategory = await unitOfWork.CategoryRepository.GetAsync(
             expression: c => c.Slug == request.Slug.Trim().ToLower(),
@@ -23,13 +23,13 @@ public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IReques
                 "دسته‌بندی مورد نظر یافت نشد.",
                 ErrorType.NotFound
             );
-            return Result<List<BreadcrumbItemDto>>.Failure(error);
+            return Result<List<BreadcrumbItemResponseDto>>.Failure(error);
         }
 
         var category = currentCategory;
         while (category is not null)
         {
-            var item = new BreadcrumbItemDto(category.Id, category.Name, category.Slug);
+            var item = new BreadcrumbItemResponseDto(category.Id, category.Name, category.Slug);
             breadcrumb.Insert(0, item);
 
             if (category.ParentCategoryId is null)
@@ -40,6 +40,6 @@ public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IReques
                 cancellationToken: cancellationToken
             );
         }
-        return Result<List<BreadcrumbItemDto>>.Success(breadcrumb);
+        return Result<List<BreadcrumbItemResponseDto>>.Success(breadcrumb);
     }
 }

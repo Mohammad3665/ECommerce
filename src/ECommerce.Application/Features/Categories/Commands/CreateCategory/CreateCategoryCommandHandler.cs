@@ -13,6 +13,19 @@ public class CreateCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
 {
     public async Task<Result<long>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
+        var isDuplicateEnglishName = await unitOfWork.CategoryRepository.IsExistAsync(
+            expression: c => c.EnglishName.ToLower() == request.EnglishName.Trim().ToLower(),
+            cancellationToken: cancellationToken
+        );
+        if (isDuplicateEnglishName)
+        {
+            var error = new Error(
+                "Category.DuplicateName",
+                "دسته‌بندی با این نام انگلیسی قبلا در سیستم ثبت شده است.",
+                ErrorType.Validation
+            );
+            return Result<long>.Failure(error);
+        }
         var category = request.Adapt<Category>();
 
         await unitOfWork.CategoryRepository.AddAsync(category, cancellationToken);

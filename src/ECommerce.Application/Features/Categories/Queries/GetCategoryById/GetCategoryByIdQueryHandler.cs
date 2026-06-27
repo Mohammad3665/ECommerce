@@ -7,25 +7,25 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetCategoryById;
 
-public class GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryByIdQuery, Result<CategoryDto>>
+public class GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryByIdQuery, Result<GetCategoryResponseDto>>
 {
-    public async Task<Result<CategoryDto>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetCategoryResponseDto>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var categoryDto = await unitOfWork.CategoryRepository.GetAsync(
             expression: c => c.Id == request.Id,
-            selector: src => src.Adapt<CategoryDto>(),
+            selector: src => src.Adapt<GetCategoryResponseDto>(),
             cancellationToken: cancellationToken
         );
 
         if (categoryDto is null)
         {
             var error = new Error(
-                "Category.NotFound", 
-                "دسته‌بندی مورد نظر یافت نشد.", 
+                "Category.NotFound",
+                "دسته‌بندی مورد نظر یافت نشد.",
                 ErrorType.NotFound
             );
-            return Result<CategoryDto>.Failure(error);
+            return Result<GetCategoryResponseDto>.Failure(error);
         }
-        return Result<CategoryDto>.Success(categoryDto);
+        return Result<GetCategoryResponseDto>.Success(categoryDto);
     }
 }

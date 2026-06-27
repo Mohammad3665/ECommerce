@@ -5,24 +5,24 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetCategoryTree;
 
-public class GetCategoryTreeQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryTreeQuery, Result<List<CategoryTreeDto>>>
+public class GetCategoryTreeQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCategoryTreeQuery, Result<List<CategoryTreeResponseDto>>>
 {
-    public async Task<Result<List<CategoryTreeDto>>> Handle(GetCategoryTreeQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<CategoryTreeResponseDto>>> Handle(GetCategoryTreeQuery request, CancellationToken cancellationToken)
     {
         var allCategories = await unitOfWork.CategoryRepository.GetAllAsync(
             expression: c => c.IsActive,
             cancellationToken: cancellationToken
         );
 
-        var allDtos = allCategories.Select(c => new CategoryTreeDto(
+        var allDtos = allCategories.Select(c => new CategoryTreeResponseDto(
             c.Id,
             c.Name,
             c.Slug,
             c.ParentCategoryId,
-            new List<CategoryTreeDto>()
+            new List<CategoryTreeResponseDto>()
         )).ToList();
 
-        var rootCategories = new List<CategoryTreeDto>();
+        var rootCategories = new List<CategoryTreeResponseDto>();
         var dtoLookup = allDtos.ToDictionary(g => g.Id);
 
         foreach (var dto in allDtos)
@@ -37,7 +37,7 @@ public class GetCategoryTreeQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
             }
         }
 
-        return Result<List<CategoryTreeDto>>.Success(rootCategories);
+        return Result<List<CategoryTreeResponseDto>>.Success(rootCategories);
     }
 
 }

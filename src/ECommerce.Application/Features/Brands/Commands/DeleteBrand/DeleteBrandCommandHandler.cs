@@ -1,3 +1,4 @@
+using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.IRepositories.Common.UnitOfWork;
@@ -5,7 +6,7 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Brands.Commands.DeleteBrand;
 
-public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteBrandCommand, Result>
+public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteBrandCommand, Result>
 {
     public async Task<Result> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
     {
@@ -37,8 +38,16 @@ public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
             return Result.Failure(error);
         }
 
+        var imageUrlToRemove = brand.LogoImageUrl;
+
         unitOfWork.BrandRepository.DeletePermanently(brand);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
+        if (saveResult.IsSuccess && !string.IsNullOrWhiteSpace(imageUrlToRemove))
+        {
+            fileService.DeleteFile(imageUrlToRemove);
+        }
+
         if (saveResult.IsFailure)
         {
             var error = new Error(

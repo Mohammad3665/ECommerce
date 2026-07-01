@@ -42,6 +42,8 @@ services:
       #   condition: service_healthy
       ecommerce_db:
         condition: service_healthy
+    volumes:
+      - ./src/ECommerce.Api/wwwroot:/app/wwwroot
 
     networks:
       - ecommerce-network

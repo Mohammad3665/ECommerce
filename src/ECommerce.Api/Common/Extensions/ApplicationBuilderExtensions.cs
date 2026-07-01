@@ -21,10 +21,10 @@ public static class ApplicationBuilderExtensions
         {
             app.MapOpenApi();
             app.MapScalarApiReference();
-            app.MapGet("/test", () => Results.Json(new { message = "api is working"}));
+            app.MapGet("/test", () => Results.Json(new { message = "api is working" }));
             app.MapGet("/", () => Results.Redirect("/scalar"));
         }
-
+        app.UseStaticFiles();
         app.MapControllers();
 
         return app;

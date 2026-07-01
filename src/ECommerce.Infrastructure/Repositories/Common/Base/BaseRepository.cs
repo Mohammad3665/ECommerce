@@ -53,7 +53,7 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
         await Db.AddAsync(entity, cancellationToken);
     }
 
-    public virtual async void Update(TEntity entity)
+    public virtual void Update(TEntity entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
         Db.Update(entity);

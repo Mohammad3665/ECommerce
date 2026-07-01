@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddApplication();
         services.AddControllers();
         services.AddProblemDetails();
+        services.AddApi();
         services.AddOpenApi();
         services.AddApiVersioning(options =>
         {

@@ -231,6 +231,7 @@ _pkginfo.txt
 
 # Others
 ClientBin/
+wwwroot/
 ~$*
 *~
 *.dbmdl

@@ -31,7 +31,7 @@ public class ArticleCategory : BaseEntity<long>
     ///     Gets or sets the URL-friendly identifier for the category.
     /// </summary>
     /// <value>
-    ///     A SEO-friendly string derived from <see cref="Name"/> (e.g., "technology", "health-wellness").
+    ///     A SEO-friendly string derived from <see cref="EnglishName"/> (e.g., "technology", "health-wellness").
     /// </value>
     [Required]
     [MaxLength(1000)]

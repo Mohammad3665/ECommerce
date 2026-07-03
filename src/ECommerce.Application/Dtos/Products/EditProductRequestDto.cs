@@ -9,6 +9,6 @@ public record EditProductRequestDto(
     int StockQuantity,
     long BrandId,
     long CategoryId,
-    ICollection<SpecificationDto> Specifications,
+    string? SpecificationsJson,
     string? ImagesJson
 );

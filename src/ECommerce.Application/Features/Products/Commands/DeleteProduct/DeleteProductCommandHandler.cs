@@ -12,6 +12,7 @@ public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileService fi
     {
         var product = await unitOfWork.ProductRepository.GetAsync(
             expression: p => p.Slug == request.Slug.Trim().ToLower(),
+            includes: query => query.Images,
             cancellationToken: cancellationToken
         );
         if (product is null)

@@ -13,19 +13,8 @@ public class GetPagedCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHa
 {
     public async Task<Result<Pagination<GetPagedCategoriesResponseDto>>> Handle(GetPagedCategoriesQuery request, CancellationToken cancellationToken)
     {
-        Expression<Func<Category, bool>>? filterExpression = null;
-        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
-        {
-            var search = request.SearchTerm.Trim().ToLower();
-            filterExpression = c => c.Name.ToLower().Contains(search) ||
-                c.EnglishName.ToLower().Contains(search);
-        }
-        var pagedResult = await unitOfWork.CategoryRepository.GetAllAsync(
-            current: request.PageNumber,
-            take: request.PageSize,
-            selector: src => src.Adapt<GetPagedCategoriesResponseDto>(),
-            expression: filterExpression,
-            order: o => o.OrderByDescending(c => c.Id),
+        var pagedResult = await unitOfWork.CategoryRepository.GetPagedListAsync<GetPagedCategoriesResponseDto>(
+            request: request,
             cancellationToken: cancellationToken
         );
         return Result<Pagination<GetPagedCategoriesResponseDto>>.Success(pagedResult);

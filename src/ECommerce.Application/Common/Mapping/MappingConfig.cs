@@ -20,8 +20,13 @@ public class MappingConfig : IRegister
             var source = type.GetInterfaces()
                 .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>))
                 .GetGenericArguments()[0];
-
-            config.NewConfig(source, type);
+            if (typeof(IHaveCustomMapping).IsAssignableFrom(type))
+            {
+                var method = type.GetMethod(nameof(IHaveCustomMapping.ConfigureMapping), BindingFlags.Public | BindingFlags.Static);
+                method?.Invoke(null, [config]);
+            }
+            else
+                config.NewConfig(source, type);
         }
 
         var mapToTypes = assembly.GetExportedTypes()
@@ -35,13 +40,22 @@ public class MappingConfig : IRegister
                 .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapTo<>))
                 .GetGenericArguments()[0];
 
-            var typeConfig = config.NewConfig(type, destination);
+            TypeAdapterSetter? typeConfig = null;
+
+            if (typeof(IHaveCustomMapping).IsAssignableFrom(type))
+            {
+                var method = type.GetMethod(nameof(IHaveCustomMapping.ConfigureMapping), BindingFlags.Public | BindingFlags.Static);
+                method?.Invoke(null, [config]);
+            }
+            else
+                typeConfig = config.NewConfig(type, destination);
 
             var srcProp = type.GetProperty("EnglishName");
             var destProp = destination.GetProperty("Slug");
 
             if (srcProp is not null && destProp is not null)
             {
+                typeConfig ??= config.NewConfig(type, destination);
                 typeConfig.Map(destProp.Name, 
                    (object src) => ((string)src.GetType().GetProperty("EnglishName")!.GetValue(src, null)!).ToSlug()
                 );

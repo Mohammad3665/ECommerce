@@ -5,6 +5,8 @@ using ECommerce.Application.Dtos.Products;
 using ECommerce.Application.Features.Products.Commands.CreateProduct;
 using ECommerce.Application.Features.Products.Commands.DeleteProduct;
 using ECommerce.Application.Features.Products.Commands.EditProduct;
+using ECommerce.Application.Features.Products.Queries.GetLowStockProducts;
+using ECommerce.Application.Features.Products.Queries.GetPagedProducts;
 using ECommerce.Infrastructure.Identity.Attributes;
 using Mapster;
 using MediatR;
@@ -14,6 +16,16 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 
 public class ProductsController(ISender sender, ILogger<ProductsController> logger, IFileService fileService) : AdminBaseController
 {
+
+    [HttpGet]
+    [HasPermission("products.read")]
+    public async Task<IActionResult> GetLowStockAlerts(CancellationToken cancellationToken)
+    {
+        var query = new GetLowStockProductsQuery();
+        var result = await sender.Send(query, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
     [HttpPost]
     [HasPermission("products.create")]
     [Consumes("multipart/form-data")]
@@ -41,6 +53,15 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
             }
         }
 
+        var specifications = new List<SpecificationDto>();
+        if (!string.IsNullOrEmpty(request.SpecificationsJson))
+        {
+            specifications = JsonSerializer.Deserialize<List<SpecificationDto>>(
+                request.SpecificationsJson,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ) ?? new List<SpecificationDto>();
+        }
+
         var command = new CreateProductCommand(
             Name: request.Name,
             EnglishName: request.EnglishName,
@@ -50,7 +71,7 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
             StockQuantity: request.StockQuantity,
             BrandId: request.BrandId,
             CategoryId: request.CategoryId,
-            Specifications: request.Specifications ?? new List<SpecificationDto>(),
+            Specifications: specifications,
             Images: uploadedImages
         );
         var result = await sender.Send(command, cancellationToken);
@@ -60,14 +81,14 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
     [HttpPut("{slug}")]
     [HasPermission("products.update")]
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> Edit([FromRoute] string slug, [FromForm] EditProductRequestDto dto, List<IFormFile> newImageFiles, CancellationToken cancellationToken)
+    public async Task<IActionResult> Edit([FromRoute] string slug, [FromForm] EditProductRequestDto request, List<IFormFile> newImageFiles, CancellationToken cancellationToken)
     {
 
         var finalImages = new List<ProductImageDto>();
 
-        if (!string.IsNullOrEmpty(dto.ImagesJson))
+        if (!string.IsNullOrEmpty(request.ImagesJson))
         {
-            var existingImages = JsonSerializer.Deserialize<List<ExistingImageDto>>(dto.ImagesJson,
+            var existingImages = JsonSerializer.Deserialize<List<ExistingImageDto>>(request.ImagesJson,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             if (existingImages != null)
@@ -82,7 +103,7 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
 
             foreach (var file in newImageFiles)
             {
-                string fileNameSeed = $"{dto.EnglishName.Trim()}_gallery";
+                string fileNameSeed = $"{request.EnglishName.Trim()}_gallery";
                 string relativeUrl = await fileService.SaveFileAsync(file, fileNameSeed, "uploads/products");
 
                 if (!string.IsNullOrEmpty(relativeUrl))
@@ -98,17 +119,26 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
 
         }
 
+        var specifications = new List<SpecificationDto>();
+        if (!string.IsNullOrEmpty(request.SpecificationsJson))
+        {
+            specifications = JsonSerializer.Deserialize<List<SpecificationDto>>(
+                request.SpecificationsJson,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ) ?? new List<SpecificationDto>();
+        }
+
         var command = new EditProductCommand(
             CurrentSlug: slug,
-            Name: dto.Name,
-            EnglishName: dto.EnglishName,
-            Description: dto.Description,
-            ShortDescription: dto.ShortDescription,
-            Price: dto.Price,
-            StockQuantity: dto.StockQuantity,
-            BrandId: dto.BrandId,
-            CategoryId: dto.CategoryId,
-            Specifications: dto.Specifications,
+            Name: request.Name,
+            EnglishName: request.EnglishName,
+            Description: request.Description,
+            ShortDescription: request.ShortDescription,
+            Price: request.Price,
+            StockQuantity: request.StockQuantity,
+            BrandId: request.BrandId,
+            CategoryId: request.CategoryId,
+            Specifications: specifications,
             Images: finalImages
         );
 

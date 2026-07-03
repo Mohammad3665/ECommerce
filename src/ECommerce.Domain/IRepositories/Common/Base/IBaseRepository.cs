@@ -26,19 +26,17 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
         CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes);
-    
+
     /// <summary>
     /// Asynchronously retrieves all entities, projected into a custom result type, with optional filtering, ordering, and included data.
     /// </summary>
     /// <typeparam name="TResult">The type of the projected result.</typeparam>
-    /// <param name="selector">The projection expression that defines the result shape.</param>
     /// <param name="expression">Optional filter expression.</param>
     /// <param name="order">Optional ordering function.</param>
     /// <param name="cancellationToken">The cancellation token used to cancel the operation.</param>
     /// <param name="includes">Expressions specifying related entities to include.</param>
     /// <returns>A collection of projected results.</returns>
     Task<IEnumerable<TResult>> GetAllAsync<TResult>(
-        Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? expression = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
         CancellationToken cancellationToken = default,
@@ -49,7 +47,6 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
     /// </summary>
     /// <typeparam name="TResult">The type of the projected result.</typeparam>
     /// <param name="take">The maximum number of entities to retrieve.</param>
-    /// <param name="selector">The projection expression that defines the result shape.</param>
     /// <param name="expression">Optional filter expression.</param>
     /// <param name="order">Optional ordering function.</param>
     /// <param name="cancellationToken">The cancellation token used to cancel the operation.</param>
@@ -57,7 +54,6 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
     /// <returns>A collection of projected results, limited to <paramref name="take"/> items.</returns>
     Task<IEnumerable<TResult>> GetAllAsync<TResult>(
         int take,
-        Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? expression,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
         CancellationToken cancellationToken = default,
@@ -69,7 +65,6 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
     /// <typeparam name="TResult">The type of the projected result.</typeparam>
     /// <param name="current">The 1-based page number to retrieve.</param>
     /// <param name="take">The number of items per page.</param>
-    /// <param name="selector">The projection expression that defines the result shape.</param>
     /// <param name="expression">Optional filter expression.</param>
     /// <param name="order">Optional ordering function.</param>
     /// <param name="cancellationToken">The cancellation token used to cancel the operation.</param>
@@ -78,12 +73,11 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
     Task<Pagination<TResult>> GetAllAsync<TResult>(
         int current,
         int take,
-        Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? expression,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
         CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes);
-    
+
     /// <summary>
     /// Asynchronously retrieves the first entity that matches the given filter, with optional included related data.
     /// </summary>
@@ -95,22 +89,20 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
         Expression<Func<TEntity, bool>> expression,
         CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes);
-    
+
     /// <summary>
     /// Asynchronously retrieves a single entity projected into a custom type, with optional included related data.
     /// </summary>
     /// <typeparam name="TResult">The type of the projected result.</typeparam>
     /// <param name="expression">The filter expression to match a single entity.</param>
-    /// <param name="selector">The projection expression that defines the result shape.</param>
     /// <param name="cancellationToken">The cancellation token used to cancel the operation.</param>
     /// <param name="includes">Expressions specifying related entities to include.</param>
     /// <returns>The projected result, or <c>null</c> if no matching entity is found.</returns>
     public Task<TResult?> GetAsync<TResult>(
         Expression<Func<TEntity, bool>> expression,
-        Expression<Func<TEntity, TResult>> selector,
         CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes);
-    
+
     /// <summary>
     /// Asynchronously adds a new entity.
     /// </summary>
@@ -150,7 +142,7 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
     /// Retrieves a complete paginated query result containing metadata, sorting, and filters based on a QueryRequest.
     /// </summary>
     Task<Pagination<TEntity>> GetPagedListAsync(
-        QueryRequest request, 
+        QueryRequest request,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -158,6 +150,5 @@ public interface IBaseRepository<TKey, TEntity> where TEntity : BaseEntity<TKey>
     /// </summary>
     Task<Pagination<TResult>> GetPagedListAsync<TResult>(
         QueryRequest request,
-        Expression<Func<TEntity, TResult>> selector,
         CancellationToken cancellationToken = default);
 }

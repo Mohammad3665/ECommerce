@@ -11,12 +11,11 @@ public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
 {
     public async Task<Result<GetCategoryResponseDto>> Handle(GetCategoryBySlugQuery request, CancellationToken cancellationToken)
     {
-        var categoryDto = await unitOfWork.CategoryRepository.GetAsync(
+        var category = await unitOfWork.CategoryRepository.GetAsync<GetCategoryResponseDto>(
             expression: c => c.Slug == request.Slug.Trim().ToLower(),
-            selector: src => src.Adapt<GetCategoryResponseDto>(),
             cancellationToken: cancellationToken
         );
-        if (categoryDto is null)
+        if (category is null)
         {
             var error = new Error(
                 "Category.NotFound",
@@ -25,6 +24,6 @@ public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
             );
             return Result<GetCategoryResponseDto>.Failure(error);
         }
-        return Result<GetCategoryResponseDto>.Success(categoryDto);
+        return Result<GetCategoryResponseDto>.Success(category);
     }
 }

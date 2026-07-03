@@ -24,6 +24,7 @@ public static class ApplicationBuilderExtensions
             app.MapGet("/test", () => Results.Json(new { message = "api is working" }));
             app.MapGet("/", () => Results.Redirect("/scalar"));
         }
+        app.UseExceptionHandler();
         app.UseStaticFiles();
         app.MapControllers();
 

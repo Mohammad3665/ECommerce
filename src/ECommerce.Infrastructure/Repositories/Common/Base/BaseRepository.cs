@@ -5,6 +5,7 @@ using ECommerce.Domain.Entities.Base;
 using ECommerce.Domain.IRepositories.Common.Base;
 using ECommerce.Domain.Specifications.Common;
 using ECommerce.Infrastructure.Common.Extensions;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Repositories.Common.Base;
@@ -36,13 +37,13 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
 
         if (order is not null)
             query = order(query);
-        
+
         if (asNoTracking)
             query = query.AsNoTracking();
-        
+
         if (asSplitQuery)
             query = query.AsSplitQuery();
-        
+
         return query;
     }
 
@@ -65,46 +66,44 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
     }
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
-        Expression<Func<TEntity, bool>>? expression = null, 
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null, 
-        CancellationToken cancellationToken = default, 
+        Expression<Func<TEntity, bool>>? expression = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
         var query = BuildQuery(expression, order, true, false, includes);
         return await query.ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult>(Expression<Func<TEntity, TResult>> selector, 
-        Expression<Func<TEntity, bool>>? expression = null, 
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null, 
-        CancellationToken cancellationToken = default, 
+    public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult>(
+        Expression<Func<TEntity, bool>>? expression = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
         var query = BuildQuery(expression, order, true, false, includes);
-        return await query.Select(selector).ToListAsync(cancellationToken: cancellationToken);
+        return await query.ProjectToType<TResult>().ToListAsync(cancellationToken: cancellationToken);
     }
 
     public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult>(
-        int take, 
-        Expression<Func<TEntity, TResult>> selector, 
-        Expression<Func<TEntity, bool>>? expression, 
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null, 
-        CancellationToken cancellationToken = default, 
+        int take,
+        Expression<Func<TEntity, bool>>? expression,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
         var query = BuildQuery(expression, order, true, false, includes);
 
         take = take <= 0 ? 10 : take;
-        return await query.Select(selector).Take(take).ToListAsync();
+        return await query.ProjectToType<TResult>().Take(take).ToListAsync();
     }
 
     public virtual async Task<Pagination<TResult>> GetAllAsync<TResult>(
-        int current, 
-        int take, 
-        Expression<Func<TEntity, TResult>> selector, 
-        Expression<Func<TEntity, bool>>? expression, 
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null, 
-        CancellationToken cancellationToken = default, 
+        int current,
+        int take,
+        Expression<Func<TEntity, bool>>? expression,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
         var query = BuildQuery(expression, order, true, false, includes);
@@ -115,22 +114,22 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
         int count = await query.CountAsync(cancellationToken: cancellationToken);
         if (count == 0)
             return new Pagination<TResult>([], current, 0, take);
-        
+
         int skip = (current - 1) * take;
         if (skip <= count)
         {
             current = (int)Math.Ceiling(count / (decimal)take);
             current = current <= 0 ? 1 : current;
-            skip = (current -1 ) * take;
+            skip = (current - 1) * take;
         }
 
-        var items = await query.Select(selector).Skip(skip).Take(take).ToListAsync(cancellationToken: cancellationToken);
+        var items = await query.ProjectToType<TResult>().Skip(skip).Take(take).ToListAsync(cancellationToken: cancellationToken);
         return new Pagination<TResult>(items, current, count, take);
     }
 
     public virtual async Task<TEntity?> GetAsync(
-        Expression<Func<TEntity, bool>> expression, 
-        CancellationToken cancellationToken = default, 
+        Expression<Func<TEntity, bool>> expression,
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
         var query = BuildQuery(expression, null, true, false, includes);
@@ -138,17 +137,16 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
     }
 
     public virtual async Task<TResult?> GetAsync<TResult>(
-        Expression<Func<TEntity, bool>> expression, 
-        Expression<Func<TEntity, TResult>> selector, 
-        CancellationToken cancellationToken = default, 
+        Expression<Func<TEntity, bool>> expression,
+        CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
         var query = BuildQuery(expression, null, true, false, includes);
-        return await query.Select(selector).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        return await query.ProjectToType<TResult>().FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
     public virtual async Task<bool> IsExistAsync(
-        Expression<Func<TEntity, bool>>? expression, 
+        Expression<Func<TEntity, bool>>? expression,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(expression);
@@ -156,7 +154,7 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
     }
 
     public virtual async Task<int> CountAsync(
-        Expression<Func<TEntity, bool>>? expression = null, 
+        Expression<Func<TEntity, bool>>? expression = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(expression);
@@ -164,7 +162,7 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
     }
 
     public virtual async Task<Pagination<TEntity>> GetPagedListAsync(
-        QueryRequest request, 
+        QueryRequest request,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(null, null, true, false);
@@ -182,7 +180,7 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
         return new Pagination<TEntity>(items, page, totalCount, take);
     }
 
-    public virtual async Task<Pagination<TResult>> GetPagedListAsync<TResult>(QueryRequest request, Expression<Func<TEntity, TResult>> selector, CancellationToken cancellationToken = default)
+    public virtual async Task<Pagination<TResult>> GetPagedListAsync<TResult>(QueryRequest request, CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(null, null, true, false);
 
@@ -195,8 +193,8 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
         var take = request.Take <= 0 ? 10 : request.Take;
         var skip = (page - 1) * take;
 
-        var items = await query.Select(selector).Skip(skip).Take(take).ToListAsync(cancellationToken: cancellationToken);
+        var items = await query.ProjectToType<TResult>().Skip(skip).Take(take).ToListAsync(cancellationToken: cancellationToken);
         return new Pagination<TResult>(items, page, totalCount, take);
     }
-    
+
 }

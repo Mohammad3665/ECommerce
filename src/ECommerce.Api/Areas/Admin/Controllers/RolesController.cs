@@ -4,6 +4,8 @@ using ECommerce.Application.Features.Roles.Commands.AssignUserRoles;
 using ECommerce.Application.Features.Roles.Commands.CreateRole;
 using ECommerce.Application.Features.Roles.Commands.DeleteRole;
 using ECommerce.Application.Features.Roles.Commands.EditRole;
+using ECommerce.Application.Features.Roles.Queries.GetAllRoles;
+using ECommerce.Application.Features.Roles.Queries.GetRoleBySlug;
 using ECommerce.Infrastructure.Identity.Attributes;
 using Mapster;
 using MediatR;
@@ -13,6 +15,25 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 
 public class RolesController(ISender sender, ILogger<RolesController> logger) : AdminBaseController
 {
+
+    [HttpGet]
+    [HasPermission("roles.read")]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var query = new GetAllRolesQuery();
+        var result = await sender.Send(query, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpGet("{slug}")]
+    [HasPermission("roles.read")]
+    public async Task<IActionResult> GetBySlug(string slug, CancellationToken cancellationToken)
+    {
+        var query = new GetRoleBySlugQuery(slug);
+        var result = await sender.Send(query, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
     [HttpPost]
     [HasPermission("roles.create")]
     public async Task<IActionResult> Create([FromBody] CreateRoleRequestDto dto, CancellationToken cancellationToken)
@@ -26,7 +47,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     [HasPermission("roles.update")]
     public async Task<IActionResult> Edit(string slug, [FromBody] EditRoleRequestDto dto, CancellationToken cancellationToken)
     {
-        var command = new EditRoleCommand(slug, dto.DisplayName, dto.Description, dto.level, dto.PermissionIds);
+        var command = new EditRoleCommand(slug, dto.DisplayName, dto.Description, dto.level, dto.GrantAllPermissions, dto.PermissionIds);
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }

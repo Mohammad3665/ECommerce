@@ -7,6 +7,7 @@ public record EditRoleCommand(
     string Slug,
     string DisplayName,
     string Description,
-    int? Level,
+    int Level,
+    bool GrantAllPermissions,
     List<long>? PermissionIds
 ) : IRequest<Result>;

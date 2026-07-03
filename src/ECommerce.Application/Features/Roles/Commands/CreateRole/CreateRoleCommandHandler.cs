@@ -49,15 +49,14 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
         }
 
         var newRole = request.Adapt<Role>();
+
         List<long> finalPermissionIds;
+
         if (request.GrantAllPermissions)
-        {
             finalPermissionIds = await unitOfWork.PerimssionRepository.GetAllIdsAsync(cancellationToken);
-        }
+
         else
-        {
             finalPermissionIds = request.PermissionIds ?? [];
-        }
 
         foreach (var permissionId in finalPermissionIds)
         {

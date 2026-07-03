@@ -11,5 +11,5 @@ public record CreateProductRequestDto(
     int StockQuantity,
     long BrandId,
     long CategoryId,
-    List<SpecificationDto>? Specifications
+    string? SpecificationsJson
 );

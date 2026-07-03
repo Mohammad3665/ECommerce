@@ -11,9 +11,8 @@ public class GetBrandBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
 {
     public async Task<Result<GetBrandResponseDto>> Handle(GetBrandBySlugQuery request, CancellationToken cancellationToken)
     {
-        var brandDto = await unitOfWork.BrandRepository.GetAsync(
+        var brandDto = await unitOfWork.BrandRepository.GetAsync<GetBrandResponseDto>(
             expression: b => b.Slug == request.Slug.Trim().ToLower(),
-            selector: src => src.Adapt<GetBrandResponseDto>(),
             cancellationToken: cancellationToken
         );
         if (brandDto is null)

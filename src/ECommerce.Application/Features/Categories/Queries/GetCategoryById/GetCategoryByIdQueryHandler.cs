@@ -11,9 +11,8 @@ public class GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
 {
     public async Task<Result<GetCategoryResponseDto>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var categoryDto = await unitOfWork.CategoryRepository.GetAsync(
+        var categoryDto = await unitOfWork.CategoryRepository.GetAsync<GetCategoryResponseDto>(
             expression: c => c.Id == request.Id,
-            selector: src => src.Adapt<GetCategoryResponseDto>(),
             cancellationToken: cancellationToken
         );
 

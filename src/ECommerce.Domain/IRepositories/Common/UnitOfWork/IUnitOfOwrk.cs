@@ -140,7 +140,7 @@ public interface IUnitOfWork : IAsyncDisposable
     /// <param name="transaction">The spell handler.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>Success or failure.</returns>
-    Task<Result> CommitTransactionAsync(IDbContextTransaction transaction, CancellationToken cancellationToken = default);
+    Task CommitTransactionAsync(IDbContextTransaction transaction, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Undoes the spell (rollback) if something goes wrong, so no changes happen.
@@ -148,6 +148,6 @@ public interface IUnitOfWork : IAsyncDisposable
     /// <param name="transaction">The spell handler.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>Success or failure.</returns>
-    Task<Result> RollbackTransactionAsync(IDbContextTransaction transaction, CancellationToken cancellationToken = default);
+    Task RollbackTransactionAsync(IDbContextTransaction transaction, CancellationToken cancellationToken = default);
     #endregion
 }

@@ -10,8 +10,7 @@ public class GetAllCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
 {
     public async Task<Result<IEnumerable<GetCategoryResponseDto>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var categories = await unitOfWork.CategoryRepository.GetAllAsync(
-            selector: src => src.Adapt<GetCategoryResponseDto>(),
+        var categories = await unitOfWork.CategoryRepository.GetAllAsync<GetCategoryResponseDto>(
             expression: null,
             order: query => query.OrderBy(c => c.Name),
             cancellationToken: cancellationToken

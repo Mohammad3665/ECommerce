@@ -67,10 +67,29 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
 
         var product = request.Adapt<Product>();
 
+        Console.WriteLine($"Mapped specs count: {product.Specifications.Count}, incoming: {request.Specifications.Count}");
+
         product.Slug = finalSlug;
         product.Name = request.Name.Trim();
         product.EnglishName = request.EnglishName.Trim();
         product.ViewCount = 0;
+
+        product.Specifications = request.Specifications
+            .Select(s => new ProductSpecification
+            {
+                Key = s.Key.NormalizePersian(),
+                Value = s.Value.NormalizePersian()
+            })
+            .ToList();
+
+        product.Images = request.Images
+            .Select(img => new ProductImage
+            {
+                ImageUrl = img.ImageUrl,
+                IsMain = img.IsMain,
+                DisplayOrder = img.DisplayOrder
+            })
+            .ToList();
 
         await unitOfWork.ProductRepository.AddAsync(product, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);

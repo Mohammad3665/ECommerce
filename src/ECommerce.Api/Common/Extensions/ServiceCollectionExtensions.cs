@@ -1,9 +1,8 @@
-using System.Security.Claims;
 using System.Text;
 using Asp.Versioning;
+using ECommerce.Api.Middlewares;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
-using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,9 +14,11 @@ public static class ServiceCollectionExtensions
     {
         services.AddInfrastructure(configuration);
         services.AddApplication();
-        services.AddControllers();
-        services.AddProblemDetails();
         services.AddApi();
+        services.AddControllers();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddExceptionHandler<ValidationExceptionHandler>();
+        services.AddProblemDetails();
         services.AddOpenApi();
         services.AddApiVersioning(options =>
         {

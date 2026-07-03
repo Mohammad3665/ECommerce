@@ -19,31 +19,31 @@
 - [x] FR-010: Edit brand information
 - [x] FR-011: Delete brand (with product dependency check)
 - [x] FR-012: Activate/deactivate brand
-- [ ] FR-013: Assign brand to products
-- [ ] FR-014: Change product's brand
-- [ ] FR-015: View products by brand
+- [x] FR-013: Assign brand to products
+- [x] FR-014: Change product's brand
+- [x] FR-015: View products by brand
 
 ### 3. Category Management
 
 - [x] FR-016: Complete CRUD operations for categories
 - [x] FR-017: Activate/deactivate category
-- [ ] FR-018: View products by category
+- [x] FR-018: View products by category
 
 ### 4. Product Management
 
-- [ ] FR-019: Complete CRUD operations for products
-- [ ] FR-020: Multiple image upload for products
-- [ ] FR-021: Product specifications and attributes
-- [ ] FR-022: Inventory management
-- [ ] FR-023: Low stock alert (below 5 units)
-- [ ] FR-024: Activate/deactivate product
+- [x] FR-019: Complete CRUD operations for products
+- [x] FR-020: Multiple image upload for products
+- [x] FR-021: Product specifications and attributes
+- [x] FR-022: Inventory management
+- [x] FR-023: Low stock alert (below 5 units)
+<!-- - [ ] FR-024: Activate/deactivate product -->
 
 ### 5. Product Search & Filtering
 
-- [ ] FR-025: Keyword search
+- [x] FR-025: Keyword search
 - [x] FR-026: Filter by brand and category
 - [x] FR-027: Price range filter (from-to)
-- [ ] FR-028: Stock filter (in-stock/out-of-stock)
+- [x] FR-028: Stock filter (in-stock/out-of-stock)
 - [x] FR-029: Sorting (most expensive, cheapest, most viewed, newest)
 - [x] FR-030: Pagination
 
@@ -65,7 +65,7 @@
 
 ### 8. Articles & Content
 
-- [ ] FR-041: Article CRUD by Super Admin/Admin/ContentManager
+- [ ] FR-041: Article CRUD by Super Admin / Admin / ContentManager
 - [ ] FR-042: Article categorization
 - [ ] FR-043: Display latest articles on homepage
 - [ ] FR-044: View article details

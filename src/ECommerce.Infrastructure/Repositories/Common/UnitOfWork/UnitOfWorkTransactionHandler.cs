@@ -20,21 +20,14 @@ public class UnitOfWorkTransactionHandler(IUnitOfWork unitOfWork) : IUnitOfWorkT
                 return result;
             }
 
-            var commitResult = await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
-            if (!commitResult.IsSuccess) return commitResult;
+            await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
 
             return Result.Success();
         }
-        catch (Exception ex)
+        catch
         {
             await unitOfWork.RollbackTransactionAsync(transaction, cancellationToken);
-
-            var error = new Error(
-                "Database.UnexpectedError",
-                $"Transaction failed: {ex.Message}",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
+            throw;
         }
     }
 
@@ -55,22 +48,13 @@ public class UnitOfWorkTransactionHandler(IUnitOfWork unitOfWork) : IUnitOfWorkT
                 return result;
             }
 
-            var commitResult = await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
-            if (!commitResult.IsSuccess)
-                return Result<T>.Failure(commitResult.Error);
-            
+            await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
             return result;
         }
-        catch (Exception ex)
+        catch
         {
             await unitOfWork.RollbackTransactionAsync(transaction, cancellationToken);
-
-            var error = new Error(
-                "Database.UnexpectedError",
-                $"Transaction failed: {ex.Message}",
-                ErrorType.Unexpected
-            );
-            return Result<T>.Failure(error);
+            throw;
         }
     }
 

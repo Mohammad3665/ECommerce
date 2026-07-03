@@ -16,8 +16,8 @@ public class EditProductCommandHandler(IUnitOfWork unitOfWork, IFileService file
     {
         var product = await unitOfWork.ProductRepository.GetAsync(
             expression: p => p.Slug == request.CurrentSlug.Trim().ToLower(),
-            cancellationToken: cancellationToken,
-            query => query.Images
+            includes: query => query.Images,
+            cancellationToken: cancellationToken
         );
         if (product is null)
         {
@@ -96,7 +96,7 @@ public class EditProductCommandHandler(IUnitOfWork unitOfWork, IFileService file
         }
 
         product.Images = freshImages;
-        product.Specifications = null!; 
+        product.Specifications = null!;
         unitOfWork.ProductRepository.Update(product);
 
         var incomingSpecs = request.Specifications.ToList();

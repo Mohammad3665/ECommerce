@@ -10,8 +10,7 @@ public class GetAllBrandsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<
 {
     public async Task<Result<IEnumerable<GetBrandResponseDto>>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
     {
-        var brands = await unitOfWork.BrandRepository.GetAllAsync(
-            selector: src => src.Adapt<GetBrandResponseDto>(),
+        var brands = await unitOfWork.BrandRepository.GetAllAsync<GetBrandResponseDto>(
             expression: null,
             order: query => query.OrderBy(b => b.Name),
             cancellationToken: cancellationToken

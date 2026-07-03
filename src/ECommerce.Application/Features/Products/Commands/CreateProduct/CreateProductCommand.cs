@@ -15,6 +15,6 @@ public record CreateProductCommand(
     int StockQuantity,
     long BrandId,
     long CategoryId,
-    List<SpecificationDto> Specifications,
-    List<ProductImageDto> Images
+    ICollection<SpecificationDto> Specifications,
+    ICollection<ProductImageDto> Images
 ) : IRequest<Result<long>>, IMapTo<Product>;

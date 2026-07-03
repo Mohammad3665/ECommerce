@@ -46,37 +46,53 @@ public class EditRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService 
             return Result.Failure(error);
         }
 
+        if (request.GrantAllPermissions && currentUserMaxLevel < 100)
+        {
+            var error = new Error(
+                "Role.UnauthorizedPermissionGrant",
+                "فقط مدیران کل سیستم می‌توانند دسترسی کامل به یک نقش اعطا کنند.",
+                ErrorType.Validation
+            );
+            return Result.Failure(error);
+        }
+
         role.DisplayName = request.DisplayName;
         role.Description = request.Description;
 
-        if (request.PermissionIds is not null)
-        {
-            var currentPermissionIds = role.RolePermissions.Select(rp => rp.PermissionId).ToList();
-            var newPermissionIds = request.PermissionIds;
+        List<long> finalPermissionIds;
+        if (request.GrantAllPermissions)
+            finalPermissionIds = await unitOfWork.PerimssionRepository.GetAllIdsAsync(cancellationToken);
 
-            var permissionsToRemove = role.RolePermissions.Where(rp => !newPermissionIds.Contains(rp.PermissionId)).ToList();
-            foreach (var rp in permissionsToRemove)
+        else
+            finalPermissionIds = request.PermissionIds ?? [];
+
+        var currentPermissionIds = role.RolePermissions.Select(rp => rp.PermissionId).ToList();
+
+        var permissionsToRemove = role.RolePermissions
+            .Where(rp => !finalPermissionIds.Contains(rp.PermissionId))
+            .ToList();
+
+        foreach (var rp in permissionsToRemove)
+            role.RolePermissions.Remove(rp);
+
+        var permissionsToAdd = finalPermissionIds
+            .Where(id => !currentPermissionIds.Contains(id))
+            .Select(id => new RolePermission
             {
-                role.RolePermissions.Remove(rp);
-            }
+                RoleId = role.Id,
+                PermissionId = id
+            })
+            .ToList();
+        
+        foreach(var newRp in permissionsToAdd)
+            role.RolePermissions.Add(newRp);
 
-            var permissionsToAdd = newPermissionIds
-                .Where(id => !currentPermissionIds.Contains(id))
-                .Select(id => new RolePermission
-                {
-                    RoleId = role.Id,
-                    PermissionId = id
-                }
-            );
-            foreach (var newRp in permissionsToAdd)
-            {
-                role.RolePermissions.Add(newRp);
-            }
-        }
-
+            
         var config = new TypeAdapterConfig();
         config.NewConfig<EditRoleCommand, Role>()
-            .IgnoreNullValues(true);
+            .IgnoreNullValues(true)
+            .Ignore(dest => dest.RolePermissions);
+
         request.Adapt(role, config);
 
         unitOfWork.RoleRepository.Update(role);

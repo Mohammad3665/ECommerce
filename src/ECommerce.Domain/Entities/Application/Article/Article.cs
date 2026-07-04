@@ -70,6 +70,16 @@ public class Article : BaseEntity<long>
     [MaxLength(300)]
     public string ImageUrl { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Gets or sets the date and time when the article was published.
+    /// </summary>
+    public DateTime? PublishedAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the date and time when the article was archived.
+    /// </summary>
+    public DateTime? ArchivedAt { get; set; }
+
     #endregion
 
     #region Metrics & Statistics

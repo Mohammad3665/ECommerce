@@ -2,54 +2,53 @@ using ECommerce.Application.Common.Extensions;
 using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.Entities.Product;
+using ECommerce.Domain.Entities.Application.Article;
 using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using Mapster;
 using MediatR;
 
-namespace ECommerce.Application.Features.Categories.Commands.EditCategory;
+namespace ECommerce.Application.Features.Articles.Commands.EditArticle;
 
-public class EditCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<EditCategoryCommand, Result>
+public class EditArticleCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<EditArticleCommand, Result>
 {
-    public async Task<Result> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(EditArticleCommand request, CancellationToken cancellationToken)
     {
-        var category = await unitOfWork.CategoryRepository.GetAsync(
-            expression: c => c.Slug == request.Slug.Trim().ToLower(),
-            cancellationToken: cancellationToken);
-
-        if (category is null)
+        var article = await unitOfWork.ArticleRepository.GetAsync(
+            expression: a => a.Slug == request.Slug.Trim().ToLower(),
+            cancellationToken: cancellationToken
+        );
+        if (article is null)
         {
             var error = new Error(
-                "Category.NotFound",
-                "دسته‌بندی یافت نشد.",
+                "Article.NotFound",
+                "مقاله یافت نشد.",
                 ErrorType.NotFound
             );
             return Result.Failure(error);
         }
 
-        string? oldImagePath = category.ImageUrl;
+        var oldImagePath = article.ImageUrl;
         var hasNewImage = request.ImageUrl != null;
 
-        category.Slug = request.EnglishName.ToSlug();
+        article.Slug = request.EnglishTitle.ToSlug();
         var config = new TypeAdapterConfig();
-        config.NewConfig<EditCategoryCommand, Category>()
+        config.NewConfig<EditArticleCommand, Article>()
             .IgnoreNullValues(true)
             .Ignore(dest => dest.Slug)
             .Ignore(dest => dest.ImageUrl);
-        request.Adapt(category, config);
+        request.Adapt(article, config);
 
         if (hasNewImage)
         {
-            category.ImageUrl = request.ImageUrl;
+            article.ImageUrl = request.ImageUrl!;
         }
 
-        unitOfWork.CategoryRepository.Update(category);
-
+        unitOfWork.ArticleRepository.Update(article);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)
         {
             var error = new Error(
-                "Category.Failed",
+                "Article.Failed",
                 "خطای پیش‌بینی نشده‌ای رخ داد.",
                 ErrorType.Unexpected
             );

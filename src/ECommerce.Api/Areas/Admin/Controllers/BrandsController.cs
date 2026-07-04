@@ -1,4 +1,5 @@
 using ECommerce.Api.Common.Extensions;
+using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Brands;
 using ECommerce.Application.Features.Brands.Commands.CreateBrand;
 using ECommerce.Application.Features.Brands.Commands.DeleteBrand;
@@ -11,23 +12,58 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 
-public class BrandsController(ISender sender, ILogger<BrandsController> logger) : AdminBaseController
+public class BrandsController(ISender sender, ILogger<BrandsController> logger, IFileService fileService) : AdminBaseController
 {
     [HttpPost]
     [HasPermission("brands.create")]
-    public async Task<IActionResult> Create([FromBody] CreateBrandRequestDto dto, CancellationToken cancellationToken)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Create([FromForm] CreateBrandRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
-        var command = dto.Adapt<CreateBrandCommand>();
+        string relativeUrl = "";
+        if (imageFile is not null)
+        {
+            string fileNameSeed = $"{request.EnglishName.Trim()}_gallery";
+            relativeUrl = await fileService.SaveFileAsync(imageFile, fileNameSeed, "uploads/categories");
+        }
+
+        var command = new CreateBrandCommand(
+            Name: request.Name,
+            EnglishName: request.EnglishName,
+            Description: request.Description,
+            LogoImageUrl: relativeUrl,
+            IsActive: request.IsActive
+        );
+        
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }
 
     [HttpPut("{slug}")]
     [HasPermission("brands.update")]
-    public async Task<IActionResult> Edit(string slug, [FromBody] EditBrandRequestDto dto, CancellationToken cancellationToken)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Edit(string slug, [FromForm] EditBrandRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
-        var command = new EditBrandCommand(slug, dto.Name, dto.EnglishName, dto.Description, dto.LogoImageUrl);
+        string relativeUrl = "";
+        if (imageFile is not null)
+        {
+            string fileNameSeed = $"{request.EnglishName.Trim()}_gallery";
+            relativeUrl = await fileService.SaveFileAsync(imageFile, fileNameSeed, "uploads/categories");
+        }
+
+        var command = new EditBrandCommand(
+            Slug: slug,
+            Name: request.Name,
+            EnglishName: request.EnglishName,
+            Description: request.Description,
+            LogoImageUrl: relativeUrl
+        );
+
         var result = await sender.Send(command, cancellationToken);
+        if (result.IsFailure && !string.IsNullOrEmpty(relativeUrl))
+        {
+            fileService.DeleteFile(relativeUrl);
+        }
+
         return result.ToActionResult(logger);
     }
 

@@ -4,5 +4,4 @@ public record CreateCategoryRequestDto(
     string Name,
     string EnglishName,
     string? Description,
-    string? ImageUrl,
     long? ParentCategoryId);

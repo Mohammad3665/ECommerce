@@ -1,3 +1,4 @@
+using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.IRepositories.Common.UnitOfWork;
@@ -5,7 +6,7 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Commands.DeleteCategory;
 
-public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteCategoryCommand, Result>
+public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteCategoryCommand, Result>
 {
     public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -38,6 +39,8 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
             return Result.Failure(error);
         }
 
+        string? imagePathToDelete = category.ImageUrl;
+
         unitOfWork.CategoryRepository.DeletePermanently(category);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)
@@ -48,6 +51,10 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
                 ErrorType.Unexpected
             );
             return Result.Failure(error);
+        }
+        if (!string.IsNullOrEmpty(imagePathToDelete))
+        {
+            fileService.DeleteFile(imagePathToDelete);
         }
         return Result.Success();
     }

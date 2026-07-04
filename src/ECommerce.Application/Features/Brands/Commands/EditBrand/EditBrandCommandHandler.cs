@@ -1,4 +1,5 @@
 using ECommerce.Application.Common.Extensions;
+using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Entities.Product;
@@ -8,7 +9,7 @@ using MediatR;
 
 namespace ECommerce.Application.Features.Brands.Commands.EditBrand;
 
-public class EditBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<EditBrandCommand, Result>
+public class EditBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<EditBrandCommand, Result>
 {
     public async Task<Result> Handle(EditBrandCommand request, CancellationToken cancellationToken)
     {
@@ -26,13 +27,22 @@ public class EditBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<E
             return Result.Failure(error);
         }
 
+        string oldImagePath = brand.LogoImageUrl;
+        var hasNewImage = request.LogoImageUrl != null;
+
         brand.Slug = request.EnglishName.ToSlug();
         var config = new TypeAdapterConfig();
         config.NewConfig<EditBrandCommand, Brand>()
             .IgnoreNullValues(true)
-            .Ignore(dest => dest.Slug);
-            
+            .Ignore(dest => dest.Slug)
+            .Ignore(dest => dest.LogoImageUrl);
+
         request.Adapt(brand, config);
+
+        if (hasNewImage)
+        {
+            brand.LogoImageUrl = request.LogoImageUrl!;
+        }
 
         unitOfWork.BrandRepository.Update(brand);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
@@ -44,6 +54,11 @@ public class EditBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<E
                 ErrorType.Unexpected
             );
             return Result.Failure(error);
+        }
+
+        if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
+        {
+            fileService.DeleteFile(oldImagePath);
         }
 
         return Result.Success();

@@ -43,10 +43,6 @@ public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService file
         unitOfWork.BrandRepository.DeletePermanently(brand);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
 
-        if (saveResult.IsSuccess && !string.IsNullOrWhiteSpace(imageUrlToRemove))
-        {
-            fileService.DeleteFile(imageUrlToRemove);
-        }
 
         if (saveResult.IsFailure)
         {
@@ -58,6 +54,10 @@ public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService file
             return Result.Failure(error);
         }
 
+        if (saveResult.IsSuccess && !string.IsNullOrWhiteSpace(imageUrlToRemove))
+        {
+            fileService.DeleteFile(imageUrlToRemove);
+        }
         return Result.Success();
     }
 }

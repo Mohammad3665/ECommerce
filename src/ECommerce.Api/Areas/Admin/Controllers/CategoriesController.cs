@@ -1,4 +1,5 @@
 using ECommerce.Api.Common.Extensions;
+using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Categories;
 using ECommerce.Application.Features.Categories.Commands.CreateCategory;
 using ECommerce.Application.Features.Categories.Commands.DeleteCategory;
@@ -10,10 +11,11 @@ using ECommerce.Infrastructure.Identity.Attributes;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Ocsp;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 
-public class CategoriesController(ILogger<CategoriesController> logger, ISender sender) : AdminBaseController
+public class CategoriesController(ILogger<CategoriesController> logger, ISender sender, IFileService fileService) : AdminBaseController
 {
     [HttpGet]
     [HasPermission("categories.read")]
@@ -25,19 +27,55 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
 
     [HttpPost]
     [HasPermission("categories.create")]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto dto, CancellationToken cancellationToken)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Create([FromForm] CreateCategoryRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
-        var command = dto.Adapt<CreateCategoryCommand>();
+        string? relativeUrl = null;
+        if (imageFile is not null)
+        {
+            string fileNameSeed = $"{request.EnglishName.Trim()}_gallery";
+            relativeUrl = await fileService.SaveFileAsync(imageFile, fileNameSeed, "uploads/categories");
+        }
+        
+        var command = new CreateCategoryCommand(
+            Name: request.Name,
+            EnglishName: request.EnglishName,
+            Description: request.Description,
+            ImageUrl: relativeUrl,
+            ParentCategoryId: request.ParentCategoryId
+        );
+
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }
 
     [HttpPut("{slug}")]
     [HasPermission("categories.update")]
-    public async Task<IActionResult> Edit(string slug, [FromBody] EditCategoryRequestDto dto, CancellationToken cancellationToken)
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Edit(string slug, [FromForm] EditCategoryRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
-        var command = new EditCategoryCommand(slug, dto.Name, dto.EnglishName, dto.Description, dto.ImageUrl);
+        string? relativeUrl = null;
+        if (imageFile is not null)
+        {
+            string fileNameSeed = $"{request.EnglishName.Trim()}_gallery";
+            relativeUrl = await fileService.SaveFileAsync(imageFile, fileNameSeed, "uploads/categories");
+
+        }
+
+        var command = new EditCategoryCommand(
+            Slug: slug,
+            Name: request.Name,
+            EnglishName: request.EnglishName,
+            Description: request.Description,
+            ImageUrl: relativeUrl
+        );
+
         var result = await sender.Send(command, cancellationToken);
+        if (result.IsFailure && !string.IsNullOrEmpty(relativeUrl))
+        {
+            fileService.DeleteFile(relativeUrl);
+        }
+
         return result.ToActionResult(logger);
     }
 

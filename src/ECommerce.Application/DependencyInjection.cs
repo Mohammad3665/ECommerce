@@ -1,14 +1,22 @@
-using System.Reflection;
 using ECommerce.Application.Common.Behaviors;
 using ECommerce.Application.Common.Configurations;
-using ECommerce.Application.Common.Mapping;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application;
 
+/// <summary>
+/// Registers application layer services with dependency injection.
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adds application layer services including mapping, MediatR, and validation.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The configured service collection.</returns>
+    /// <remarks>
+    /// Registers Mapster for object mapping, MediatR with logging pipeline behavior,
+    /// and configures FluentValidation for request validation.
+    /// </remarks>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         // Add mapping(mapster)

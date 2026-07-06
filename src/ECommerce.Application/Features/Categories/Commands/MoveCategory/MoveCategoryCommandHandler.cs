@@ -1,9 +1,3 @@
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
-using Microsoft.Extensions.Options;
-
 namespace ECommerce.Application.Features.Categories.Commands.MoveCategory;
 
 public class MoveCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<MoveCategoryCommand, Result>

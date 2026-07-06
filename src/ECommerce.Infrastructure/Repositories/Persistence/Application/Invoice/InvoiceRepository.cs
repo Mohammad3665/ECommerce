@@ -1,5 +1,4 @@
 using ECommerce.Domain.IRepositories.Persistence.Application.Invoice;
-using ECommerce.Infrastructure.Repositories.Common.Base;
 
 namespace ECommerce.Infrastructure.Repositories.Persistence.Application.Invoice;
 

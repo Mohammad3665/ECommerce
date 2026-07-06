@@ -1,9 +1,3 @@
-using ECommerce.Application.Common.Interfaces.Services;
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
-
 namespace ECommerce.Application.Features.Brands.Commands.DeleteBrand;
 
 public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteBrandCommand, Result>

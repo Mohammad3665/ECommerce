@@ -1,3 +1,13 @@
 global using ECommerce.Domain.Entities.Base;
 global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
+global using ECommerce.Domain.Common.Result;
+global using ECommerce.Domain.Common.Filter;
+global using ECommerce.Domain.Entities.Common;
+global using ECommerce.Domain.Entities.Identity;
+global using ECommerce.Domain.Entities.Product;
+global using ECommerce.Domain.Entities.Order;
+global using ECommerce.Domain.Entities.Application.Article;
+global using ECommerce.Domain.Entities.Application.Role;
+global using ECommerce.Domain.IRepositories.Common.Base;
+global using ECommerce.Domain.Specifications.Common;

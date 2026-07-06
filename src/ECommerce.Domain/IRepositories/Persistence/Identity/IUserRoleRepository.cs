@@ -1,5 +1,3 @@
-using ECommerce.Domain.Entities.Identity;
-
 namespace ECommerce.Domain.IRepositories.Persistence.Identity;
 
 /// <summary>

@@ -1,6 +1,3 @@
-using System.Data;
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Authentication.Commands.ResetForgotedPassword;
 
 public class ResetForgotedPasswordCommandValidator : AbstractValidator<ResetForgotedPasswordCommand>

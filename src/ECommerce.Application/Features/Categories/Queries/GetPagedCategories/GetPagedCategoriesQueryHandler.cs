@@ -1,11 +1,5 @@
-using System.Linq.Expressions;
 using ECommerce.Application.Dtos.Categories;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.Entities.Product;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using ECommerce.Domain.Specifications.Common;
-using Mapster;
-using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Queries.GetPagedCategories;
 

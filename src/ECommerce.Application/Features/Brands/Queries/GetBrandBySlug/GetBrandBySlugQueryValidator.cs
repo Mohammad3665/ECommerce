@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Brands.Queries.GetBrandBySlug;
 
 public class GetBrandBySlugQueryValidator : AbstractValidator<GetBrandBySlugQuery>

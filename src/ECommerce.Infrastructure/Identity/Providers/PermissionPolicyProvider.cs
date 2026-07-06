@@ -3,6 +3,12 @@ using Microsoft.Extensions.Options;
 
 namespace ECommerce.Infrastructure.Identity.Providers;
 
+/// <summary>
+/// Provides dynamic authorization policies for permissions.
+/// </summary>
+/// <remarks>
+/// Creates policies on-demand for permission-based authorization.
+/// </remarks>
 public class PermissionPolicyProvider(IOptions<AuthorizationOptions> options) : DefaultAuthorizationPolicyProvider(options)
 {
     public override async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
@@ -14,7 +20,6 @@ public class PermissionPolicyProvider(IOptions<AuthorizationOptions> options) : 
             .AddRequirements(new PermissionRequirement(policyName))
             .Build();
     }
-
 }
 
 public record PermissionRequirement(string Permission) : IAuthorizationRequirement;

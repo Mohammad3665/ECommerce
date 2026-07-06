@@ -1,6 +1,5 @@
 using ECommerce.Application.Common.Interfaces.Services;
 using MailKit.Net.Smtp;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 namespace ECommerce.Infrastructure.Common.Services;

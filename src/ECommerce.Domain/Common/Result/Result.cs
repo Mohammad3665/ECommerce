@@ -1,6 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using ECommerce.Domain.Common.Enums;
-using ECommerce.Domain.Common.Filter;
 using ECommerce.Domain.Common.Result.Base;
 
 namespace ECommerce.Domain.Common.Result;

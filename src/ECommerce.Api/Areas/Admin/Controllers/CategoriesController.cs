@@ -1,5 +1,3 @@
-using ECommerce.Api.Common.Extensions;
-using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Categories;
 using ECommerce.Application.Features.Categories.Commands.CreateCategory;
 using ECommerce.Application.Features.Categories.Commands.DeleteCategory;
@@ -7,11 +5,6 @@ using ECommerce.Application.Features.Categories.Commands.EditCategory;
 using ECommerce.Application.Features.Categories.Commands.MoveCategory;
 using ECommerce.Application.Features.Categories.Commands.ToggleCategoryStatus;
 using ECommerce.Application.Features.Categories.Queries.GetPagedCategories;
-using ECommerce.Infrastructure.Identity.Attributes;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Ocsp;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

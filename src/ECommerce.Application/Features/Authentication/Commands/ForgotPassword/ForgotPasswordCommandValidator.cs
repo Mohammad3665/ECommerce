@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Authentication.Commands.ForgotPassword;
 
 public class ForgotPasswordCommandValidator : AbstractValidator<ForgotPasswordCommand>

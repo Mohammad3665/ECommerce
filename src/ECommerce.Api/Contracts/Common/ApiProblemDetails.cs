@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace ECommerce.Api.Contracts.Common;
 
 public class ApiProblemDetails : ProblemDetails

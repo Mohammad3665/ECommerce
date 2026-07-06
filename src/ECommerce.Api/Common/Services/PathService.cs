@@ -1,5 +1,3 @@
-using ECommerce.Application.Common.Interfaces.Services;
-
 namespace ECommerce.Api.Services;
 
 public class PathService(IWebHostEnvironment environment) : IPathService

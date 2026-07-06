@@ -1,6 +1,3 @@
-using System.Data;
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Categories.Commands.CreateCategory;
 
 public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
@@ -21,6 +18,5 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
         RuleFor(x => x.Description)
             .MinimumLength(10)
             .WithName("توضیحات");
-            
     }
 }

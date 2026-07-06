@@ -1,8 +1,5 @@
 using ECommerce.Application.Dtos.Articles;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using ECommerce.Domain.Specifications.Common;
-using MediatR;
 
 namespace ECommerce.Application.Features.Articles.Queries.GetPagedArticles;
 

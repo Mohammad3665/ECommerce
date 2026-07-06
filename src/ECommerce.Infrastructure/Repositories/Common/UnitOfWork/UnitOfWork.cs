@@ -1,6 +1,4 @@
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
+using ECommerce.Domain.IRepositories.Common.Comment;
 using ECommerce.Domain.IRepositories.Persistence.Application.Article;
 using ECommerce.Domain.IRepositories.Persistence.Application.Invoice;
 using ECommerce.Domain.IRepositories.Persistence.Application.Role;
@@ -15,8 +13,6 @@ using ECommerce.Infrastructure.Repositories.Persistence.Application.Slide;
 using ECommerce.Infrastructure.Repositories.Persistence.Identity;
 using ECommerce.Infrastructure.Repositories.Persistence.Order;
 using ECommerce.Infrastructure.Repositories.Persistence.Product;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ECommerce.Infrastructure.Repositories.Common.UnitOfWork;
 

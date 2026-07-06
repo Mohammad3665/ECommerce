@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using ECommerce.Domain.Entities.Identity;
 using ECommerce.Domain.Enums;
 
 namespace ECommerce.Domain.Entities.Application.Article;
@@ -141,6 +139,14 @@ public class Article : BaseEntity<long>
     ///     A <see cref="User"/> entity representing the content author.
     /// </value>
     public User Author { get; set; } = null!;
+
+    /// <summary>
+    ///     Gets or sets the collection of user comments and reviews for this article.
+    /// </summary>
+    /// <value>
+    ///     A collection of <see cref="Comment"/> entities. Defaults to an empty list.
+    /// </value>
+    public ICollection<Comment> Comments { get; set; } = [];
 
     #endregion
 }

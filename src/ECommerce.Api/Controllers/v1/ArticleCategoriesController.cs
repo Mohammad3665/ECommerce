@@ -1,8 +1,5 @@
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Features.ArticleCategories.Queries.GetAllArticleCategories;
 using ECommerce.Application.Features.ArticleCategories.Queries.GetArticleCategoryBySlug;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Authentication.Commands.RefreshToken;
 
 public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>

@@ -1,5 +1,5 @@
-using ECommerce.Domain.Entities.Product;
-using ECommerce.Domain.IRepositories.Persistence.Product;
+using ECommerce.Domain.Entities.Common;
+using ECommerce.Domain.IRepositories.Common.Comment;
 using ECommerce.Infrastructure.Repositories.Common.Base;
 
 namespace ECommerce.Infrastructure.Repositories.Persistence.Product;

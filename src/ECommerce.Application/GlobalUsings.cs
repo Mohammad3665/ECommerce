@@ -1,0 +1,10 @@
+global using System.Reflection;
+global using ECommerce.Domain.Common.Result;
+global using ECommerce.Domain.Common.Error;
+global using ECommerce.Domain.IRepositories.Common.UnitOfWork;
+global using ECommerce.Application.Common.Interfaces.Services;
+global using MediatR;
+global using FluentValidation;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
+global using ECommerce.Application.Common.Mapping;

@@ -1,7 +1,4 @@
 using System.Linq.Expressions;
-using ECommerce.Domain.Common.Filter;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.Specifications.Common;
 
 namespace ECommerce.Domain.IRepositories.Common.Base;
 

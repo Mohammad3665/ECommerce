@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Roles.Commands.DeleteRole;
 
 public class DeleteRoleCommandValidator : AbstractValidator<DeleteRoleCommand>

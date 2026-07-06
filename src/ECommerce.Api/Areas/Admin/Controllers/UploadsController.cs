@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ECommerce.Application.Common.Interfaces.Services;
-using Microsoft.AspNetCore.Mvc;
-
 namespace ECommerce.Api.Areas.Admin.Controllers;
 
 public class UploadsController(IFileService fileService) : AdminBaseController

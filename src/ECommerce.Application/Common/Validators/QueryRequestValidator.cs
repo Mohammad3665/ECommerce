@@ -1,9 +1,12 @@
-using System.Reflection;
 using ECommerce.Domain.Common.Filter;
-using FluentValidation;
 
 namespace ECommerce.Application.Common.Validators;
 
+/// <summary>
+/// Validates query request parameters for pagination, sorting, and filtering.
+/// </summary>
+/// <typeparam name="TQuery">The query request type inheriting from QueryRequest.</typeparam>
+/// <typeparam name="TEntity">The entity type being queried for property validation.</typeparam>
 public class QueryRequestValidator<TQuery, TEntity> : AbstractValidator<TQuery> where TQuery : QueryRequest
 {
     public QueryRequestValidator()
@@ -38,6 +41,11 @@ public class QueryRequestValidator<TQuery, TEntity> : AbstractValidator<TQuery> 
 
     }
 
+    /// <summary>
+    /// Checks if the given property name exists on the entity type.
+    /// </summary>
+    /// <param name="propertyName">The property name to validate.</param>
+    /// <returns>True if the property exists; otherwise, false.</returns>
     private bool BeAValidProperty(string? propertyName)
     {
         if (string.IsNullOrWhiteSpace(propertyName)) return false;

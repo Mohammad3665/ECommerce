@@ -2,10 +2,10 @@ using ECommerce.Domain.Entities.Application.Article;
 using ECommerce.Domain.Entities.Application.Invoice;
 using ECommerce.Domain.Entities.Application.Role;
 using ECommerce.Domain.Entities.Application.Slide;
+using ECommerce.Domain.Entities.Common;
 using ECommerce.Domain.Entities.Identity;
 using ECommerce.Domain.Entities.Order;
 using ECommerce.Domain.Entities.Product;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.DatabaseContext;
 
@@ -50,12 +50,31 @@ public class ApplicationDbContext : DbContext
             .WithMany(c => c.SubCategories)
             .HasForeignKey(c => c.ParentCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+            
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasKey(c => c.Id);
 
-        modelBuilder.Entity<Comment>()
-            .HasOne(c => c.ParentComment)
-            .WithMany(c => c.Replies)
-            .HasForeignKey(c => c.ParentCommentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(c => c.ParentComment)
+                .WithMany(c => c.Replies)
+                .HasForeignKey(c => c.ParentCommentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(c => c.Product)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(c => c.Article)
+                .WithMany(a => a.Comments)
+                .HasForeignKey(c => c.ArticleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
         modelBuilder.Entity<UserRole>(entity =>
         {

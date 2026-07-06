@@ -38,4 +38,16 @@ public class CurrenUserService(IHttpContextAccessor httpContextAccessor) : ICurr
             _ => 0
         };
     }
+
+    public bool HasPermission(string permission)
+    {
+        var user = httpContextAccessor.HttpContext?.User;
+        if (user is null) return false;
+
+        bool haspermission = user.Claims.Any(c =>
+            c.Type.Equals("permission", StringComparison.OrdinalIgnoreCase) &&
+            c.Value == permission
+        );
+        return haspermission;
+    }
 }

@@ -1,9 +1,4 @@
-using System.Collections;
 using ECommerce.Application.Dtos.Products;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using Mapster;
-using MediatR;
 
 namespace ECommerce.Application.Features.Products.Queries.GetAllProducts;
 

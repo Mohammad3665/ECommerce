@@ -1,7 +1,4 @@
 using ECommerce.Application.Dtos.ArticleCategories;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.ArticleCategories.Queries.GetAllArticleCategories;
 

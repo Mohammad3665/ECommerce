@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Users.Queries.GetUserById;
 
 public class GetUserByIdQueryValidator : AbstractValidator<GetUserByIdQuery>

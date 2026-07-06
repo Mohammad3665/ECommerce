@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Authentication.Commands.ConfirmEmail;
 
 public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailCommand>

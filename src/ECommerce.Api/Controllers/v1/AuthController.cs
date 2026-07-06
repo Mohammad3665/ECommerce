@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Dtos.Authentication;
 using ECommerce.Application.Features.Authentication.Commands.ConfirmEmail;
 using ECommerce.Application.Features.Authentication.Commands.ForgotPassword;
@@ -10,10 +9,6 @@ using ECommerce.Application.Features.Authentication.Commands.ResendVerificationE
 using ECommerce.Application.Features.Authentication.Commands.ResetForgotedPassword;
 using ECommerce.Application.Features.Authentication.Commands.ResetPassword;
 using ECommerce.Application.Features.Authentication.Queries.Login;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 

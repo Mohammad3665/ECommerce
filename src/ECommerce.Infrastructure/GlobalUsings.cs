@@ -1,3 +1,12 @@
-global using ECommerce.Domain.Entities;
-global using ECommerce.Domain.Enums;
 global using ECommerce.Infrastructure.DatabaseContext;
+global using ECommerce.Domain.Common.Result;
+global using ECommerce.Domain.IRepositories.Common.Base;
+global using ECommerce.Domain.IRepositories.Common.UnitOfWork;
+global using ECommerce.Infrastructure.Repositories.Common.Base;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Infrastructure;
+global using Microsoft.EntityFrameworkCore.Migrations;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;

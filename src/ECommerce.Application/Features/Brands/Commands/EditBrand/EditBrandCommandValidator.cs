@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Brands.Commands.EditBrand;
 
 public class EditBrandCommandValidator : AbstractValidator<EditBrandCommand>

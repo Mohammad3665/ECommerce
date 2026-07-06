@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Brands.Commands.CreateBrand;
 
 public class CreateBrandCommandValidator : AbstractValidator<CreateBrandCommand>

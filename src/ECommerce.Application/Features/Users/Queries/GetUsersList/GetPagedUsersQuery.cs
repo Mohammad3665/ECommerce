@@ -1,8 +1,6 @@
 using ECommerce.Application.Dtos.Users;
 using ECommerce.Domain.Common.Filter;
-using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Specifications.Common;
-using MediatR;
 
 namespace ECommerce.Application.Features.Users.Queries.GetUsersList;
 

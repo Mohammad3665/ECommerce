@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Products.Commands.EditProduct;
 
 public class EditProductCommandValidator : AbstractValidator<EditProductCommand>

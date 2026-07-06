@@ -1,16 +1,9 @@
 using System.Text.Json;
-using ECommerce.Api.Common.Extensions;
-using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Products;
 using ECommerce.Application.Features.Products.Commands.CreateProduct;
 using ECommerce.Application.Features.Products.Commands.DeleteProduct;
 using ECommerce.Application.Features.Products.Commands.EditProduct;
 using ECommerce.Application.Features.Products.Queries.GetLowStockProducts;
-using ECommerce.Application.Features.Products.Queries.GetPagedProducts;
-using ECommerce.Infrastructure.Identity.Attributes;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

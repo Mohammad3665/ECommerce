@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Brands.Commands.ToggleBrandStatus;
 
 public class ToggleBrandStatusCommandValidator : AbstractValidator<ToggleBrandStatusCommand>

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Users.Commands.EditUserProfile;
 
 public class EditUserProfileCommandValidator : AbstractValidator<EditUserProfileCommand>

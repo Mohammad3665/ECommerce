@@ -1,9 +1,4 @@
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.Common.Result.Base;
-using FluentValidation;
-using FluentValidation.Results;
-using MediatR;
+using ECommerce.Domain.Common.Result.Base;using FluentValidation.Results;
 
 namespace ECommerce.Application.Common.Behaviors;
 

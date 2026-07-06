@@ -1,4 +1,3 @@
-using ECommerce.Api.Contracts.Common;
 using Microsoft.AspNetCore.Diagnostics;
 using ValidationException = FluentValidation.ValidationException;
 

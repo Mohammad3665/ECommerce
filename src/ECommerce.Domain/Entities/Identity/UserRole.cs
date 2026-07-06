@@ -1,6 +1,3 @@
-using ECommerce.Domain.Entities.Application.Role;
-using ECommerce.Domain.Entities.Identity;
-
 namespace ECommerce.Domain.Entities.Identity;
 
 /// <summary>

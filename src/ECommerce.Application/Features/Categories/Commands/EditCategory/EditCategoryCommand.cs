@@ -1,6 +1,3 @@
-using ECommerce.Domain.Common.Result;
-using MediatR;
-
 namespace ECommerce.Application.Features.Categories.Commands.EditCategory;
 
 public record EditCategoryCommand(

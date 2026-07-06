@@ -1,11 +1,5 @@
-using ECommerce.Application.Common.Extensions;
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Entities.Product;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using Mapster;
-using MapsterMapper;
-using MediatR;
 
 namespace ECommerce.Application.Features.Categories.Commands.CreateCategory;
 

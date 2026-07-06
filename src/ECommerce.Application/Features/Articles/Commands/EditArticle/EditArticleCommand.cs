@@ -1,6 +1,3 @@
-using ECommerce.Domain.Common.Result;
-using MediatR;
-
 namespace ECommerce.Application.Features.Articles.Commands.EditArticle;
 
 public record EditArticleCommand(

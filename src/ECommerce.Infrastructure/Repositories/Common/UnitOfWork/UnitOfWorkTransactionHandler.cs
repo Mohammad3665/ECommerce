@@ -1,7 +1,3 @@
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-
 namespace ECommerce.Infrastructure.Repositories.Common.UnitOfWork;
 
 public class UnitOfWorkTransactionHandler(IUnitOfWork unitOfWork) : IUnitOfWorkTransactionHandler

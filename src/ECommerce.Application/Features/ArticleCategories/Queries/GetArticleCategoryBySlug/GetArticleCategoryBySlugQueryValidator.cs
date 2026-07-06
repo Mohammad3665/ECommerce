@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.ArticleCategories.Queries.GetArticleCategoryBySlug;
 
 public class GetArticleCategoryBySlugQueryValidator : AbstractValidator<GetArticleCategoryBySlugQuery>

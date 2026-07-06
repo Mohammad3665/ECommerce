@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Asp.Versioning;
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Features.Categories.Queries.GetAllCategories;
 using ECommerce.Application.Features.Categories.Queries.GetCategoryBreadcrumb;
 using ECommerce.Application.Features.Categories.Queries.GetCategoryById;
 using ECommerce.Application.Features.Categories.Queries.GetCategoryBySlug;
 using ECommerce.Application.Features.Categories.Queries.GetCategoryTree;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 

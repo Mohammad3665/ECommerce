@@ -1,16 +1,9 @@
-using ECommerce.Api.Common.Extensions;
-using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Articles;
 using ECommerce.Application.Features.Articles.Commands.ChangeArticleStatus;
 using ECommerce.Application.Features.Articles.Commands.CreateArticle;
 using ECommerce.Application.Features.Articles.Commands.DeleteArticle;
 using ECommerce.Application.Features.Articles.Commands.EditArticle;
 using ECommerce.Application.Features.Articles.Queries.AdminGetArticleBySlug;
-using ECommerce.Infrastructure.Identity.Attributes;
-using MediatR;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Ocsp;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Categories.Commands.MoveCategory;
 
 public class MoveCategoryCommandValidator : AbstractValidator<MoveCategoryCommand>

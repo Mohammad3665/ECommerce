@@ -8,8 +8,21 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce.Api.Common.Extensions;
 
+/// <summary>
+/// Registers all application services with dependency injection.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Adds all required services for the application.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <returns>The configured service collection.</returns>
+    /// <remarks>
+    /// Registers infrastructure, application, API services, controllers, exception handlers,
+    /// OpenAPI documentation, API versioning, JWT authentication, and custom authorization policies.
+    /// </remarks>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);

@@ -1,6 +1,4 @@
 using ECommerce.Application.Dtos.Articles;
-using ECommerce.Domain.Common.Result;
-using MediatR;
 
 namespace ECommerce.Application.Features.Articles.Queries.GetArticleBySlug;
 

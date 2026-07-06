@@ -1,5 +1,4 @@
 using ECommerce.Application.Common.Validators;
-using ECommerce.Domain.Common.Filter;
 using ECommerce.Domain.Entities.Application.Article;
 
 namespace ECommerce.Application.Features.Articles.Queries.GetPagedArticles;

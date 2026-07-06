@@ -1,5 +1,4 @@
 using System.Globalization;
-using FluentValidation;
 using FluentValidation.Resources;
 
 namespace ECommerce.Application.Common.Configurations;

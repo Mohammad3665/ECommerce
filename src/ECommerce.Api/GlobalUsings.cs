@@ -1,0 +1,9 @@
+global using ECommerce.Application.Common.Interfaces.Services;
+global using ECommerce.Domain.Common.Result;
+global using ECommerce.Api.Common.Extensions;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
+global using MediatR;
+global using Mapster;
+global using ECommerce.Infrastructure.Identity.Attributes;
+global using ECommerce.Api.Contracts.Common;

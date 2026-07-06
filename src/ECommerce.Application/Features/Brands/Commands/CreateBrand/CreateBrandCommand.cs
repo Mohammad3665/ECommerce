@@ -1,7 +1,4 @@
-using ECommerce.Application.Common.Mapping;
-using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Entities.Product;
-using MediatR;
 
 namespace ECommerce.Application.Features.Brands.Commands.CreateBrand;
 

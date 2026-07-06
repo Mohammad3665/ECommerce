@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Articles.Commands.DeleteArticle;
 
 public class DeleteArticleCommandValidator : AbstractValidator<DeleteArticleCommand>

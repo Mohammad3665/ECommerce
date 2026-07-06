@@ -1,5 +1,4 @@
 using ECommerce.Domain.Enums;
-using FluentValidation;
 
 namespace ECommerce.Application.Features.Articles.Commands.CreateArticle;
 

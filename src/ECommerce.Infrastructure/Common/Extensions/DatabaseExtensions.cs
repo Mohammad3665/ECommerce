@@ -1,14 +1,18 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
 namespace ECommerce.Infrastructure.Common.Extensions;
 
 /// <summary>
-/// Provides extension methods for database operations.
+/// Provides database migration extension methods.
 /// </summary>
 public static class DatabaseExtensions
 {
+    /// <summary>
+    /// Applies pending migrations to the database.
+    /// </summary>
+    /// <param name="service">The service provider.</param>
+    /// <remarks>
+    /// Creates a scoped service, retrieves the database context, and applies any pending migrations.
+    /// Logs success or failure with detailed error information.
+    /// </remarks>
     public static void ApplyMigrations(this IServiceProvider service)
     {
         using var scope = service.CreateScope();
@@ -16,17 +20,17 @@ public static class DatabaseExtensions
 
         try
         {
-            logger.LogInformation("Applying database migrations...");
+            logger.LogInformation("🚀 Applying database migrations...");
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            
+
             context.Database.Migrate();
 
-            logger.LogInformation("Database migrated successfully.");
+            logger.LogInformation("✅ Database migrated successfully.");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Database migration failed.");
+            logger.LogError(ex, "💥 Database migration failed.");
             throw;
         }
     }

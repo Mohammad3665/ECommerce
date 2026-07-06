@@ -1,5 +1,4 @@
-using System.Security;
-using ECommerce.Domain.Common.Result;
+using ECommerce.Domain.IRepositories.Common.Comment;
 using ECommerce.Domain.IRepositories.Persistence.Application.Article;
 using ECommerce.Domain.IRepositories.Persistence.Application.Invoice;
 using ECommerce.Domain.IRepositories.Persistence.Application.Role;
@@ -12,9 +11,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace ECommerce.Domain.IRepositories.Common.UnitOfWork;
 
 /// <summary>
-/// This is like a huge boss that not only controls the treasure chests but also handles magic spells (transactions) 
-/// to make sure all changes happen together or not at all, like casting a spell that either works completely or gets undone.
+/// Unit of Work pattern for coordinating multiple repositories and database transactions.
 /// </summary>
+/// <remarks>
+/// Provides a unified interface for all repositories and ensures transactional consistency.
+/// All changes are committed together or rolled back entirely.
+/// </remarks>
 public interface IUnitOfWork : IAsyncDisposable
 {
     #region Repositories
@@ -122,16 +124,19 @@ public interface IUnitOfWork : IAsyncDisposable
     #endregion
 
     #region Transactions
+
     /// <summary>
-    /// Saves all the changes without a magic spell (transaction).
+    /// Saves all changes without a transaction.
     /// </summary>
-    /// <returns>Success or failure result.</returns>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Success result or failure with error details.</returns>
     Task<Result> SaveAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Starts a magic spell (transaction) to group changes.
+    /// Begins a new database transaction.
     /// </summary>
-    /// <returns>A special handler for the spell.</returns>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A transaction object for commit/rollback operations.</returns>
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
 
     /// <summary>

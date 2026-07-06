@@ -1,4 +1,3 @@
-using ECommerce.Domain.Entities.Identity;
 using ECommerce.Domain.Enums;
 
 namespace ECommerce.Domain.Entities.Order;

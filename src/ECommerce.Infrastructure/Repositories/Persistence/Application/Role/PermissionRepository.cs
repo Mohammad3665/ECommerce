@@ -1,7 +1,5 @@
 using ECommerce.Domain.Entities.Application.Role;
 using ECommerce.Domain.IRepositories.Persistence.Application.Role;
-using ECommerce.Infrastructure.Repositories.Common.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Repositories.Persistence.Application.Role;
 

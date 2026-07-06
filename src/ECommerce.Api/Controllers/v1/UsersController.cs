@@ -1,10 +1,5 @@
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Dtos.Users;
 using ECommerce.Application.Features.Users.Commands.EditUserProfile;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 

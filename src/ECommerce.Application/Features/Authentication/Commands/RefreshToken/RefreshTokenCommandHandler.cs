@@ -1,10 +1,6 @@
 using System.Security.Claims;
 using ECommerce.Application.Dtos.Authentication;
-using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Interfaces;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.Authentication.Commands.RefreshToken;
 

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Authentication.Commands.ResendVerificationEmailCommand;
 
 public class ResendVerificationEmailCommandValidator : AbstractValidator<ResendVerificationEmailCommand>

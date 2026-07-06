@@ -4,9 +4,6 @@ using ECommerce.Application.Features.ArticleCategories.Commands.CreateArticleCat
 using ECommerce.Application.Features.ArticleCategories.Commands.DeleteArticleCategory;
 using ECommerce.Application.Features.ArticleCategories.Commands.EditArticleCategory;
 using ECommerce.Infrastructure.Identity.Attributes;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

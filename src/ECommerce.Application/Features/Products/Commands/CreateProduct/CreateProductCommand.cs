@@ -1,8 +1,5 @@
-using ECommerce.Application.Common.Mapping;
 using ECommerce.Application.Dtos.Products;
-using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Entities.Product;
-using MediatR;
 
 namespace ECommerce.Application.Features.Products.Commands.CreateProduct;
 

@@ -1,12 +1,9 @@
 using System.Linq.Expressions;
 using ECommerce.Domain.Common.Filter;
-using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Entities.Base;
-using ECommerce.Domain.IRepositories.Common.Base;
 using ECommerce.Domain.Specifications.Common;
 using ECommerce.Infrastructure.Common.Extensions;
 using Mapster;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Repositories.Common.Base;
 
@@ -20,6 +17,24 @@ public class BaseRepository<TKey, TEntity> : IBaseRepository<TKey, TEntity> wher
         Db = context.Set<TEntity>();
     }
 
+    /// <summary>
+    /// Builds a queryable with optional filtering, sorting, includes, and tracking settings.
+    /// </summary>
+    /// <param name="expression">Optional filter expression (WHERE clause).</param>
+    /// <param name="order">Optional ordering function (ORDER BY).</param>
+    /// <param name="asNoTracking">If true, disables change tracking for better performance.</param>
+    /// <param name="asSplitQuery">If true, splits query to avoid cartesian explosion with multiple includes.</param>
+    /// <param name="includes">Navigation properties to include (eager loading).</param>
+    /// <returns>A configured IQueryable for the entity.</returns>
+    /// <remarks>
+    /// <para>Example usage:</para>
+    /// <para>var query = BuildQuery(
+    ///     x => x.IsActive,
+    ///     q => q.OrderByDescending(x => x.CreatedAt),
+    ///     asNoTracking: true,
+    ///     includes: x => x.Category, x => x.Brand
+    /// );</para>
+    /// </remarks>
     protected virtual IQueryable<TEntity> BuildQuery(
         Expression<Func<TEntity, bool>>? expression = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? order = null,

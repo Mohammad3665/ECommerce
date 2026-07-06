@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Categories.Commands.ToggleCategoryStatus;
 
 public class ToggleCategoryStatusCommandValidator : AbstractValidator<ToggleCategoryStatusCommand>

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Categories.Commands.EditCategory;
 
 public class EditCategoryCommandValidator : AbstractValidator<EditCategoryCommand>

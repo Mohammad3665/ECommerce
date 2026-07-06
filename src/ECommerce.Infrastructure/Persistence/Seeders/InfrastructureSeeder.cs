@@ -1,12 +1,19 @@
 using ECommerce.Domain.Entities.Application.Role;
 using ECommerce.Domain.Entities.Identity;
 using ECommerce.Infrastructure.Common.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Persistence.Seeders;
 
+/// <summary>
+/// Seeds initial data for the database including roles, permissions, and super admin user.
+/// </summary>
 public static class InfrastructureSeeder
 {
+    /// <summary>
+    /// Seeds the database with default roles, permissions, and a super admin user.
+    /// </summary>
+    /// <param name="context">The database context.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public static async Task SeedDatabaseAsync(this ApplicationDbContext context)
     {
         if (!await context.Roles.AnyAsync())

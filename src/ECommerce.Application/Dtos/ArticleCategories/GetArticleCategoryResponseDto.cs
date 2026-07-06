@@ -1,4 +1,3 @@
-using ECommerce.Application.Common.Mapping;
 using ECommerce.Domain.Entities.Application.Article;
 
 namespace ECommerce.Application.Dtos.ArticleCategories;

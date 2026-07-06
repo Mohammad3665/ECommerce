@@ -1,6 +1,4 @@
-using ECommerce.Domain.Entities.Identity;
-
-namespace ECommerce.Domain.Entities.Product;
+namespace ECommerce.Domain.Entities.Common;
 
 /// <summary>
 ///     Represents a user comment or review on a product, supporting nested replies/threads.
@@ -49,7 +47,16 @@ public class Comment : BaseEntity<Guid>
     ///     A <see cref="long"/> value referencing <see cref="Product.Id"/>.
     /// </value>
     [ForeignKey(nameof(Product))]
-    public long ProductId { get; set; }
+    public long? ProductId { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the identifier of the article this comment is about.
+    /// </summary>
+    /// <value>
+    ///     A <see cref="long"/> value referencing <see cref="Article.Id"/>.
+    /// </value>
+    [ForeignKey(nameof(Article))]
+    public long? ArticleId { get; set; }
 
     /// <summary>
     ///     Gets or sets the identifier of the parent comment for nested replies.
@@ -100,7 +107,15 @@ public class Comment : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="Product"/> entity representing the reviewed product.
     /// </value>
-    public Product Product { get; set; } = null!;
+    public Product.Product? Product { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the article that this comment is associated with.
+    /// </summary>
+    /// <value>
+    ///     A <see cref="Article"/> entity representing the reviewed product.
+    /// </value>
+    public Article? Article { get; set; }
 
     /// <summary>
     ///     Gets or sets the parent comment that this comment replies to.
@@ -117,6 +132,21 @@ public class Comment : BaseEntity<Guid>
     ///     A collection of <see cref="Comment"/> entities representing child replies. Defaults to an empty list.
     /// </value>
     public ICollection<Comment> Replies { get; set; } = [];
+
+    #endregion
+
+
+    #region Methods
+
+    public void CollectAllRepliesRecursive(IEnumerable<Comment> allComments, List<Comment> resultList)
+    {
+        var replies = allComments.Where(c => c.ParentCommentId == this.Id).ToList();
+        foreach (var reply in replies)
+        {
+            replies.Add(reply);
+            reply.CollectAllRepliesRecursive(allComments, resultList);
+        }
+    }
 
     #endregion
 }

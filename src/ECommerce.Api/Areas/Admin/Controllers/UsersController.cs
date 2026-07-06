@@ -1,14 +1,9 @@
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Dtos.Authentication;
 using ECommerce.Application.Features.Authentication.Commands.CreateUserByAdmin;
 using ECommerce.Application.Features.Users.Commands.ToggleUserStatus;
 using ECommerce.Application.Features.Users.Queries.GetAllUsers;
 using ECommerce.Application.Features.Users.Queries.GetUserById;
 using ECommerce.Application.Features.Users.Queries.GetUsersList;
-using ECommerce.Infrastructure.Identity.Attributes;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

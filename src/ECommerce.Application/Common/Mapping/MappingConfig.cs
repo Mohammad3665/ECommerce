@@ -1,17 +1,27 @@
-using System.Reflection;
 using ECommerce.Application.Common.Extensions;
 using Mapster;
 
 namespace ECommerce.Application.Common.Mapping;
 
+/// <summary>
+/// Configures Mapster mappings for the application.
+/// </summary>
+/// <remarks>
+/// Automatically registers mappings for types implementing IMapFrom or IMapTo.
+/// Supports custom mapping configuration via IHaveCustomMapping.
+/// </remarks>
 public class MappingConfig : IRegister
 {
+    /// <summary>
+    /// Registers all mapping configurations.
+    /// </summary>
+    /// <param name="config">The Mapster configuration instance.</param>
     public void Register(TypeAdapterConfig config)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
         var mapFromTypes = assembly.GetExportedTypes()
-            .Where(t => t.GetInterfaces().Any(i => 
+            .Where(t => t.GetInterfaces().Any(i =>
                 i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
                 .ToList();
 
@@ -30,7 +40,7 @@ public class MappingConfig : IRegister
         }
 
         var mapToTypes = assembly.GetExportedTypes()
-            .Where(t => t.GetInterfaces().Any(i => 
+            .Where(t => t.GetInterfaces().Any(i =>
                 i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapTo<>)))
                 .ToList();
 
@@ -56,7 +66,7 @@ public class MappingConfig : IRegister
             if (srcProp is not null && destProp is not null)
             {
                 typeConfig ??= config.NewConfig(type, destination);
-                typeConfig.Map(destProp.Name, 
+                typeConfig.Map(destProp.Name,
                    (object src) => ((string)src.GetType().GetProperty("EnglishName")!.GetValue(src, null)!).ToSlug()
                 );
             }

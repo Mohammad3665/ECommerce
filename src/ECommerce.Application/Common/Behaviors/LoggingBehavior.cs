@@ -1,15 +1,28 @@
 using System.Diagnostics;
 using ECommerce.Domain.Common.Result.Base;
-using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.Common.Behaviors;
 
+/// <summary>
+/// Logs request execution time and results for MediatR pipeline.
+/// </summary>
+/// <typeparam name="TRequest">The request type (e.g., CreateProductCommand).</typeparam>
+/// <typeparam name="TResponse">The response type inherited from BaseResult.</typeparam>
+/// <remarks>
+/// Logs start/completion with performance metrics, distinguishes business failures from exceptions.
+/// </remarks>
 public class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : BaseResult
 {
+    /// <summary>
+    /// Handles request with performance logging and error tracking.
+    /// </summary>
+    /// <param name="request">The incoming request.</param>
+    /// <param name="next">Next pipeline handler.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Response wrapped in BaseResult.</returns>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var requestName = typeof(TRequest).Name;

@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Authentication.Commands.CreateUserByAdmin;
 
 public class CreateUserByAdminCommandValidator : AbstractValidator<CreateUserByAdminCommand>

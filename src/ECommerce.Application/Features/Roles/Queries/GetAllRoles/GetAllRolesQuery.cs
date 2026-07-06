@@ -1,6 +1,4 @@
 using ECommerce.Application.Dtos.Roles;
-using ECommerce.Domain.Common.Result;
-using MediatR;
 
 namespace ECommerce.Application.Features.Roles.Queries.GetAllRoles;
 

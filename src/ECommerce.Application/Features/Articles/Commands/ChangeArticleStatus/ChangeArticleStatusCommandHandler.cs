@@ -1,8 +1,4 @@
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
 using ECommerce.Domain.Enums;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.Articles.Commands.ChangeArticleStatus;
 

@@ -1,6 +1,5 @@
 using Serilog;
 using ECommerce.Api;
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Infrastructure.Persistence.Seeders;
 try
 {

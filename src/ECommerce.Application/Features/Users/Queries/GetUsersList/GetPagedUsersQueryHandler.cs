@@ -1,11 +1,5 @@
-using System.Linq.Expressions;
 using ECommerce.Application.Dtos.Users;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.Entities.Identity;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
 using ECommerce.Domain.Specifications.Common;
-using Mapster;
-using MediatR;
 
 namespace ECommerce.Application.Features.Users.Queries.GetUsersList;
 

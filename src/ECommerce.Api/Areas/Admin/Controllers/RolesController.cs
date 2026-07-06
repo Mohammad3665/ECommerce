@@ -1,4 +1,3 @@
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Dtos.Roles;
 using ECommerce.Application.Features.Roles.Commands.AssignUserRoles;
 using ECommerce.Application.Features.Roles.Commands.CreateRole;
@@ -6,10 +5,6 @@ using ECommerce.Application.Features.Roles.Commands.DeleteRole;
 using ECommerce.Application.Features.Roles.Commands.EditRole;
 using ECommerce.Application.Features.Roles.Queries.GetAllRoles;
 using ECommerce.Application.Features.Roles.Queries.GetRoleBySlug;
-using ECommerce.Infrastructure.Identity.Attributes;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

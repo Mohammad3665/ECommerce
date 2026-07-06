@@ -1,8 +1,4 @@
 using ECommerce.Application.Dtos.Roles;
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.Roles.Queries.GetRoleBySlug;
 

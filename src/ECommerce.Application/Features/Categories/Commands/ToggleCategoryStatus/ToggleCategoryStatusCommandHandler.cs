@@ -1,8 +1,3 @@
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
-
 namespace ECommerce.Application.Features.Categories.Commands.ToggleCategoryStatus;
 
 public class ToggleCategoryStatusCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<ToggleCategoryStatusCommand, Result>

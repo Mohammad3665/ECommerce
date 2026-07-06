@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ECommerce.Api.Common.Extensions;
 using ECommerce.Application.Features.Brands.Queries.GetAllBrands;
 using ECommerce.Application.Features.Brands.Queries.GetBrandBySlug;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers.v1;
 

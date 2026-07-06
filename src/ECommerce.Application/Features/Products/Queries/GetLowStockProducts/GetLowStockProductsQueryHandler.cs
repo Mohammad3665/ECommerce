@@ -1,8 +1,4 @@
-using System.Linq.Expressions;
 using ECommerce.Application.Dtos.Products;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.Products.Queries.GetLowStockProducts;
 

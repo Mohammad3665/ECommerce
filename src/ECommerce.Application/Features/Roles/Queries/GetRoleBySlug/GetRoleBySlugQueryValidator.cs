@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Roles.Queries.GetRoleBySlug;
 
 public class GetRoleBySlugQueryValidator : AbstractValidator<GetRoleBySlugQuery>

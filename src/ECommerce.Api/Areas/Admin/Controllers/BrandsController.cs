@@ -1,14 +1,8 @@
-using ECommerce.Api.Common.Extensions;
-using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Brands;
 using ECommerce.Application.Features.Brands.Commands.CreateBrand;
 using ECommerce.Application.Features.Brands.Commands.DeleteBrand;
 using ECommerce.Application.Features.Brands.Commands.EditBrand;
 using ECommerce.Application.Features.Brands.Commands.ToggleBrandStatus;
-using ECommerce.Infrastructure.Identity.Attributes;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

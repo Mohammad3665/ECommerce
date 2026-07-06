@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Roles.Commands.EditRole;
 
 public class EditRoleCommandValidator : AbstractValidator<EditRoleCommand>

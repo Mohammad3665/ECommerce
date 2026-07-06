@@ -1,5 +1,3 @@
-using ECommerce.Application.Common.Interfaces.Services;
-
 namespace ECommerce.Api.Common.Services;
 
 public class FileService(IPathService pathService) : IFileService

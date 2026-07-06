@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.Categories.Queries.GetCategoryById;
 
 public class GetCategoryByIdQueryValidator : AbstractValidator<GetCategoryByIdQuery>

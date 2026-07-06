@@ -1,7 +1,4 @@
 using ECommerce.Application.Dtos.Users;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.Users.Queries.GetAllUsers;
 

@@ -1,8 +1,5 @@
-using ECommerce.Api.Contracts.Common;
 using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
 using MapsterMapper;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Common.Extensions;
 

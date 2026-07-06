@@ -65,17 +65,17 @@
 
 ### 8. Articles & Content
 
-- [ ] FR-041: Article CRUD by Super Admin / Admin / ContentManager
-- [ ] FR-042: Article categorization
-- [ ] FR-043: Display latest articles on homepage
-- [ ] FR-044: View article details
+- [x] FR-041: Article CRUD by Super Admin / Admin / ContentManager
+- [x] FR-042: Article categorization
+- [x] FR-043: Display latest articles on homepage
+- [x] FR-044: View article details
 
 ### 9. Comment System
 
-- [ ] FR-045: Comment submission by authenticated users only
-- [ ] FR-046: Nested replies to comments
-- [ ] FR-047: Comment approval by ContentManager/Admin/Super Admin
-- [ ] FR-048: Display approved comments on product page
+- [x] FR-045: Comment submission by authenticated users only
+- [x] FR-046: Nested replies to comments
+- [x] FR-047: Comment approval by ContentManager/Admin/Super Admin
+- [x] FR-048: Display approved comments on product/article page
 
 ### 10. Slider Management
 

@@ -1,10 +1,3 @@
-using System.Linq.Expressions;
-using ECommerce.Application.Common.Interfaces.Services;
-using ECommerce.Domain.Common.Error;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
-
 namespace ECommerce.Application.Features.Roles.Commands.DeleteRole;
 
 public class DeleteRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<DeleteRoleCommand, Result>

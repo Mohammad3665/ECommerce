@@ -1,6 +1,5 @@
 using ECommerce.Domain.Entities.Identity;
 using ECommerce.Domain.IRepositories.Persistence.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Repositories.Persistence.Identity;
 

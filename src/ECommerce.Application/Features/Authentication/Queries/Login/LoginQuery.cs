@@ -1,6 +1,4 @@
 using ECommerce.Application.Dtos.Authentication;
-using ECommerce.Domain.Common.Result;
-using MediatR;
 
 namespace ECommerce.Application.Features.Authentication.Queries.Login;
 

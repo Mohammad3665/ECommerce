@@ -1,4 +1,3 @@
-using ECommerce.Application.Common.Mapping;
 using ECommerce.Domain.Entities.Identity;
 
 namespace ECommerce.Application.Dtos.Users;

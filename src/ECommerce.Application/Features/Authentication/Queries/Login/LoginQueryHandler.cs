@@ -1,11 +1,5 @@
-using System.Linq.Expressions;
-using ECommerce.Application.Common.Interfaces.Services;
 using ECommerce.Application.Dtos.Authentication;
-using ECommerce.Domain.Common.Error;
 using ECommerce.Domain.Common.Interfaces;
-using ECommerce.Domain.Common.Result;
-using ECommerce.Domain.IRepositories.Common.UnitOfWork;
-using MediatR;
 
 namespace ECommerce.Application.Features.Authentication.Queries.Login;
 

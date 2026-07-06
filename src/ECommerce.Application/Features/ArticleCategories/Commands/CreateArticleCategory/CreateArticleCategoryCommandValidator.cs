@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace ECommerce.Application.Features.ArticleCategories.Commands.CreateArticleCategory;
 
 public class CreateArticleCategoryCommandValidator : AbstractValidator<CreateArticleCategoryCommand>

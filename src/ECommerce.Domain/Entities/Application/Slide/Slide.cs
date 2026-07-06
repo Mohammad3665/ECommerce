@@ -13,22 +13,19 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string containing the slide's primary text. Defaults to empty string.
     /// </value>
-    /// <remarks>
-    ///     Displayed prominently on the banner image as a headline.
-    ///     Best practices:
-    ///     - Keep it short and impactful (5-10 words maximum)
-    ///     - Use action-oriented language (e.g., "Summer Sale Starts Now")
-    ///     - Should be readable even on small screens
-    ///     - May be omitted for image-only slides
-    ///     
-    ///     Examples:
-    ///     - "New Collection 2024"
-    ///     - "Up to 50% Off"
-    ///     - "Free Shipping on Orders Over $50"
-    /// </remarks>
     [Required]
     [MaxLength(150)]
     public string Title { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the english title of the article.
+    /// </summary>
+    /// <value>
+    ///     A string containing the article's english title. Should be descriptive and engaging.
+    /// </value>
+    [Required]
+    [MaxLength(150)]
+    public string EnglishTitle { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the supporting text or subheading of the slide.
@@ -36,20 +33,8 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string containing additional details or call-to-action text. Defaults to empty string.
     /// </value>
-    /// <remarks>
-    ///     Displayed below the title as secondary text.
-    ///     Best practices:
-    ///     - Provides more context or details about the promotion
-    ///     - Typically 1-2 sentences (15-30 words)
-    ///     - Can include discount details, product features, or deadlines
-    ///     - May be omitted for minimalist designs
-    ///     
-    ///     Examples:
-    ///     - "Shop the latest trends and save big"
-    ///     - "Get free shipping on all orders over $100"
-    ///     - "Limited stock available - order now!"
-    /// </remarks>
     [Required]
+    [MaxLength(300)]
     public string Description { get; set; } = string.Empty;
 
     #endregion

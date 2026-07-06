@@ -79,9 +79,9 @@
 
 ### 10. Slider Management
 
-- [ ] FR-049: Slider CRUD by Admin/Super Admin
-- [ ] FR-050: Each slide includes (image, title, description, link)
-- [ ] FR-051: Slide display order configuration
+- [x] FR-049: Slider CRUD by Admin/Super Admin
+- [x] FR-050: Each slide includes (image, title, description, link)
+- [x] FR-051: Slide display order configuration
 
 ### 11. Admin Dashboard
 

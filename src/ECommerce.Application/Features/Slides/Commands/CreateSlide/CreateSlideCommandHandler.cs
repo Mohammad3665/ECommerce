@@ -1,0 +1,29 @@
+using ECommerce.Domain.Entities.Application.Slide;
+using Mapster;
+
+namespace ECommerce.Application.Features.Slides.Commands.CreateSlide;
+
+public class CreateSlideCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateSlideCommand, Result<long>>
+{
+    public async Task<Result<long>> Handle(CreateSlideCommand request, CancellationToken cancellationToken)
+    {
+        int maxOrder = await unitOfWork.SlideRepository.GetMaxOrderAsync(cancellationToken);
+
+        var slide = request.Adapt<Slide>();
+        slide.DisplayOrder = maxOrder + 1;
+
+        await unitOfWork.SlideRepository.AddAsync(slide, cancellationToken);
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+        {
+            var error = new Error(
+                "Slide.Failed",
+                "خطای پیش‌بینی نشده‌ای رخ داد.",
+                ErrorType.Unexpected
+            );
+            return Result<long>.Failure(error);
+        }
+
+        return Result<long>.Success(slide.Id);
+    }
+}

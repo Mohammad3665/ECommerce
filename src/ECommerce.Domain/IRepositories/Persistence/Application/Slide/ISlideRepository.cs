@@ -1,3 +1,6 @@
 namespace ECommerce.Domain.IRepositories.Persistence.Application.Slide;
 
-public interface ISlideRepository : IBaseRepository<long, Entities.Application.Slide.Slide>;
+public interface ISlideRepository : IBaseRepository<long, Entities.Application.Slide.Slide>
+{
+    Task<int> GetMaxOrderAsync(CancellationToken cancellationToken = default);
+}

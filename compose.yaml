@@ -34,7 +34,7 @@ services:
       - "5000:8080" # HTTP
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User Id=sa;Password=Password123;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User=sa;Password=Password123;TrustServerCertificate=True;
       - Redis__ConnectionString=redis:6379,abortConnect=false
       - ASPNETCORE_URLS=http://+:8080;
     depends_on:

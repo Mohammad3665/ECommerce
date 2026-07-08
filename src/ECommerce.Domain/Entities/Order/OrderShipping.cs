@@ -58,4 +58,25 @@ public class OrderShipping : BaseEntity<long>
     public string PostalCode { get; set; } = string.Empty;
 
     #endregion
+
+    #region ForigenKeys
+
+    /// <summary>
+    ///     Gets or sets the foreign key referencing the associated order.
+    /// </summary>
+    /// <value>
+    ///     The unique identifier of the order that this shipping information belongs to.
+    /// </value>
+    [ForeignKey(nameof(Order))]
+    public long OrderId { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the associated order entity.
+    /// </summary>
+    /// <value>
+    ///     The <see cref="Order"/> entity that this shipping information is linked to.
+    ///     This property is required and cannot be null.
+    /// </value>
+    public Order Order { get; set; } = null!;
+    #endregion
 }

@@ -3,6 +3,9 @@ using ECommerce.Application.Features.Cart.Commands.ClearCart;
 using ECommerce.Application.Features.Cart.Commands.RemoveFromCart;
 using ECommerce.Application.Features.Cart.Commands.UpdateCartItemQuantity;
 using ECommerce.Application.Features.Cart.Queries.GetCart;
+using ECommerce.Application.Features.Orders.Commands.CreateOrder;
+using ECommerce.Application.Features.Orders.Queries.GetOrderById;
+using ECommerce.Application.Features.Orders.Queries.GetOrderHistory;
 
 namespace ECommerce.Api.Controllers.v1;
 
@@ -43,6 +46,29 @@ public class CartController(ISender sender, ILogger<CartController> logger) : Ba
     {
         var command = new ClearCartCommand();
         var result = await sender.Send(command, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PlaceOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(command, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetOrderHistory(CancellationToken cancellationToken)
+    {
+        var query = new GetOrderHistoryQuery();
+        var result = await sender.Send(query, cancellationToken);
+        return result.ToActionResult(logger);
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetOrderById(long id, CancellationToken cancellationToken)
+    {
+        var query = new GetOrderByIdQuery(id);
+        var result = await sender.Send(query, cancellationToken);
         return result.ToActionResult(logger);
     }
 }

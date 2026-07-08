@@ -50,7 +50,7 @@ public class ApplicationDbContext : DbContext
             .WithMany(c => c.SubCategories)
             .HasForeignKey(c => c.ParentCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
-            
+
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(c => c.Id);
@@ -141,6 +141,14 @@ public class ApplicationDbContext : DbContext
             entity.HasOne(oi => oi.Order)
                 .WithMany(o => o.Items)
                 .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<OrderShipping>(entity =>
+        {
+            entity.HasOne(os => os.Order)
+                .WithOne()
+                .HasForeignKey<OrderShipping>(os => os.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 

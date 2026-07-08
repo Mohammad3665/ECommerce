@@ -12,7 +12,7 @@ public class GetOrderByIdQueryHandler(IUnitOfWork unitOfWork, ICurrentUserServic
 
         var userId = currentUser.UserId.Value;
         var order = await unitOfWork.OrderRepository.GetAsync(
-            expression: o => o.Id == request.OrderId,
+            expression: o => o.Id == request.OrderId && o.UserId == userId,
             cancellationToken: cancellationToken,
             includes: [
                 o => o.Items,
@@ -20,9 +20,6 @@ public class GetOrderByIdQueryHandler(IUnitOfWork unitOfWork, ICurrentUserServic
             ]
         );
         if (order is null)
-            return new Error("Order.NotFound", "سفارش یافت نشد.", ErrorType.NotFound);
-
-        if (order.UserId != userId)
             return new Error("Order.NotFound", "سفارش یافت نشد.", ErrorType.NotFound);
 
         var shipping = await unitOfWork.OrderShippingRepository.GetAsync<OrderShippingDto>(

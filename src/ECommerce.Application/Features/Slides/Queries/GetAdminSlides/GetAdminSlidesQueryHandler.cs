@@ -12,6 +12,8 @@ public class GetAdminSlidesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             request: request,
             cancellationToken: cancellationToken
         );
+        if (slides is null)
+            return new Error("slide.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return slides;
     }

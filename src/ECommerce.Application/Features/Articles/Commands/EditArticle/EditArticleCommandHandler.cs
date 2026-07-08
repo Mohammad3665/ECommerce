@@ -13,14 +13,7 @@ public class EditArticleCommandHandler(IUnitOfWork unitOfWork, IFileService file
             cancellationToken: cancellationToken
         );
         if (article is null)
-        {
-            var error = new Error(
-                "Article.NotFound",
-                "مقاله یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Article.NotFound", "مقاله یافت نشد.", ErrorType.NotFound);
 
         var oldImagePath = article.ImageUrl;
         var hasNewImage = request.ImageUrl != null;
@@ -34,26 +27,16 @@ public class EditArticleCommandHandler(IUnitOfWork unitOfWork, IFileService file
         request.Adapt(article, config);
 
         if (hasNewImage)
-        {
             article.ImageUrl = request.ImageUrl!;
-        }
 
         unitOfWork.ArticleRepository.Update(article);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Article.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Article.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-        {
             fileService.DeleteFile(oldImagePath);
-        }
 
         return Result.Success();
     }

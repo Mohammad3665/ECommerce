@@ -10,7 +10,9 @@ public class GetLowStockProductsQueryHandler(IUnitOfWork unitOfWork) : IRequestH
             expression: p => p.StockQuantity < 5,
             cancellationToken: cancellationToken
         );
-        
+        if (products is null || !products.Any())
+            return new Error("Product.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
+
         return Result<IEnumerable<LowStockProductDto>>.Success(products);
     }
 }

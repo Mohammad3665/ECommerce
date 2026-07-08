@@ -14,44 +14,21 @@ public class LoginQueryHandler(
             request.Email,
             cancellationToken
         );
-
         if (user is null)
-        {
-            var error = new Error(
-                "Auth.InvalidCredentials",
-                "Email or password is wrong.",
-                ErrorType.Validation
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.InvalidCredentials", "Email or password is wrong.", ErrorType.Validation);
 
         if (!user.IsActive || !user.IsEmailConfirmed)
-        {
-            var error = new Error(
-                "Auth.UserInactive",
-                "Your account is not active.",
-                ErrorType.Forbidden
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.UserInactive", "Your account is not active.", ErrorType.Forbidden);
 
         var isPasswordValid = passwordService.Verify(request.Password, user.PasswordHash);
         if (!isPasswordValid)
-        {
-            var error = new Error(
-                "Auth.InvalidCredentials",
-                "ایمیل یا رمز عبور اشتباه است.",
-                ErrorType.Validation
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.InvalidCredentials", "ایمیل یا رمز عبور اشتباه است.", ErrorType.Validation);
 
         var roles = user.UserRoles.Where(ur => ur.Role is not null).Select(r => r.Role.Name).ToList();
         var permissions = user.UserRoles
             .SelectMany(ur => ur.Role.RolePermissions)
             .Select(rp => rp.Permission.Name)
             .Distinct();
-        Console.WriteLine($"DEBUG: Roles Count = {roles.Count}, Permissions Count = {permissions.Count()}");
         var token = jwtProvider.GenerateToken(user.Id, user.Email, roles, permissions);
         var currentTime = DateTime.UtcNow;
         var expiration = currentTime.AddMinutes(10);
@@ -65,15 +42,9 @@ public class LoginQueryHandler(
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         var result = new TokenResponseDto(token, newRefreshToken, expiration);
         return result;

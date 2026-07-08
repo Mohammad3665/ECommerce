@@ -13,24 +13,15 @@ public class CreateSlideCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
         );
 
         foreach (var slideToShift in slidesToShift)
-        {
             slideToShift.DisplayOrder++;
-        }
 
         var slide = request.Adapt<Slide>();
 
         await unitOfWork.SlideRepository.AddAsync(slide, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Slide.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
 
-        return slide.Id;
+        return saveResult.IsFailure ?
+            new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            slide.Id;
     }
 }

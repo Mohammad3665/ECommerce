@@ -7,11 +7,13 @@ public class GetPagedUsersQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler
 {
     public async Task<Result<Pagination<PagedUsersResponseDto>>> Handle(GetPagedUsersQuery request, CancellationToken cancellationToken)
     {
-        var pagedResult = await unitOfWork.UserRepository.GetPagedListAsync<PagedUsersResponseDto>(
+        var users = await unitOfWork.UserRepository.GetPagedListAsync<PagedUsersResponseDto>(
             request: request,
             cancellationToken: cancellationToken
         );
+        if (users is null)
+            return new Error("User.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
-        return pagedResult;
+        return users;
     }
 }

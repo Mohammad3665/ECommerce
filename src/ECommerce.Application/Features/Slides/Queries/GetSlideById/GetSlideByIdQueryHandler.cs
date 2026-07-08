@@ -10,16 +10,9 @@ public class GetSlideByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<
             expression: s => s.Id == request.Id,
             cancellationToken: cancellationToken
         );
-        if (slide is null)
-        {
-            var error = new Error(
-                "Slide.NotFound",
-                "اسلاید یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<SlideResponseDto>.Failure(error);
-        }
 
-        return slide;
+        return slide is null ?
+            new Error("Slide.NotFound", "اسلاید یافت نشد.", ErrorType.NotFound) :
+            slide;
     }
 }

@@ -12,29 +12,19 @@ public class CreateArticleCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequ
             cancellationToken: cancellationToken
         );
         if (isDuplicateEnglishName)
-        {
-            var error = new Error(
+            return new Error(
                 "ArticleCategory.DuplicateName",
                 "دسته‌بندی با این نام انگلیسی قبلا در سیستم ثبت شده است.",
                 ErrorType.Validation
             );
-            return Result<long>.Failure(error);
-        }
 
         var articleCategory = request.Adapt<ArticleCategory>();
 
         await unitOfWork.ArticleCategoryRepository.AddAsync(articleCategory, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "ArticleCategory.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
 
-        return articleCategory.Id;
+        return saveResult.IsFailure ?
+            new Error("ArticleCategory.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            articleCategory.Id;
     }
 }

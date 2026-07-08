@@ -6,14 +6,7 @@ public class ForgotPasswordCommandHandler(IUnitOfWork unitOfWork, IEmailService 
     {
         var user = await unitOfWork.UserRepository.GetUserWithRolesByEmailAsync(request.Email, cancellationToken);
         if (user is null)
-        {
-            var error = new Error(
-                "Auth.UserNotFound",
-                "کاربری با این ایمیل یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.UserNotFound", "کاربری با این ایمیل یافت نشد.", ErrorType.NotFound);
 
         var securityCode = codeGenerator.Generate();
 
@@ -22,15 +15,9 @@ public class ForgotPasswordCommandHandler(IUnitOfWork unitOfWork, IEmailService 
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         var subject = "بازیابی رمز عبور - فروشگاه من";
         var emailBody = $"<h3>کد تایید شما:</h3><h1 style='color:blue;'>{securityCode}</h1><p>این کد تا 60 دقیقه دیگر معتبر است.</p>";
@@ -38,5 +25,4 @@ public class ForgotPasswordCommandHandler(IUnitOfWork unitOfWork, IEmailService 
 
         return Result.Success();
     }
-
 }

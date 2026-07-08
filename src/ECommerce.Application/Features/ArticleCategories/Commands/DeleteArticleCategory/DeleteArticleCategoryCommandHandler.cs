@@ -9,41 +9,28 @@ public class DeleteArticleCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequ
             cancellationToken: cancellationToken
         );
         if (articleCategory is null)
-        {
-            var error = new Error(
-                "ArticleCategory.NotFound",
-                "دسته‌بندی یافت نشد.",
+            return new Error(
+                "ArticleCategory.NotFound", 
+                "دسته‌بندی یافت نشد.", 
                 ErrorType.NotFound
             );
-            return Result.Failure(error);
-        }
 
         var hasArticle = await unitOfWork.ArticleRepository.IsExistAsync(
             expression: a => a.ArticleCategoryId == articleCategory.Id,
             cancellationToken: cancellationToken
         );
         if (hasArticle)
-        {
-            var error = new Error(
-                "ArticleCategory.CannotDeleteWithArticle",
-                "این دسته‌بندی شامل مقاله است و قابل حذف نیست. لطفا مقالات را به دسته‌بندی دیگری منتقل کنید.",
+            return new Error(
+                "ArticleCategory.CannotDeleteWithArticle", 
+                "این دسته‌بندی شامل مقاله است و قابل حذف نیست. لطفا مقالات را به دسته‌بندی دیگری منتقل کنید.", 
                 ErrorType.Validation
             );
-            return Result.Failure(error);
-        }
 
         unitOfWork.ArticleCategoryRepository.DeletePermanently(articleCategory);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "ArticleCategory.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            Result.Failure(new Error("ArticleCategory.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected)) :
+            Result.Success();
     }
 }

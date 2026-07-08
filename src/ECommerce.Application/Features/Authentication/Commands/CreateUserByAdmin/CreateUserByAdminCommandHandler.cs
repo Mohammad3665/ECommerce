@@ -11,16 +11,8 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
             expression: u => u.Email == request.Email,
             cancellationToken: cancellationToken
         );
-
         if (emailTaken is not null)
-        {
-            var error = new Error(
-                "Auth.EmailTaken",
-                "این ایمیل قبلا ثبت شده است.", 
-                ErrorType.Conflict
-            );
-            return Result<Guid>.Failure(error);
-        }
+            return new Error("Auth.EmailTaken", "این ایمیل قبلا ثبت شده است.", ErrorType.Conflict);
 
         var roleName = request.Role;
         var role = await unitOfWork.RoleRepository.GetAsync(
@@ -28,16 +20,10 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
             cancellationToken: cancellationToken
         );
         if (role is null)
-        {
-            var error = new Error(
-                "Auth.NotFound",
-                $"نقش {roleName} در سیستم یافت نشد.", 
-                ErrorType.NotFound
-            );
-            return Result<Guid>.Failure(error);
-        }
-        var rawPassword = !string.IsNullOrWhiteSpace(request.Password) 
-            ? request.Password 
+            return new Error("Auth.NotFound", $"نقش {roleName} در سیستم یافت نشد.", ErrorType.NotFound);
+
+        var rawPassword = !string.IsNullOrWhiteSpace(request.Password)
+            ? request.Password
             : Guid.NewGuid().ToString("N")[..8] + "A1!";
 
         var user = request.Adapt<User>();
@@ -59,15 +45,9 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای ناخواسته‌ای هنگام افزودن کاربر رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<Guid>.Failure(error);
-        }
+            return new Error("Auth.Failed", "خطای ناخواسته‌ای هنگام افزودن کاربر رخ داد.", ErrorType.Unexpected);
 
         var loginLink = "http://localhost:5000/Api/V1/Auth/Login";
         var emailBody = $@"
@@ -92,11 +72,10 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
         ";
 
         await emailService.SendEmailAsync(
-            request.Email, 
-            "اطلاعات حساب کاربری شما", 
+            request.Email,
+            "اطلاعات حساب کاربری شما",
             emailBody);
 
         return user.Id;
     }
-
 }

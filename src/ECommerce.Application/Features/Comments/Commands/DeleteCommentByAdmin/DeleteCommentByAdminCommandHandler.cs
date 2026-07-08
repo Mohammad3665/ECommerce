@@ -11,14 +11,7 @@ public class DeleteCommentByAdminCommandHandler(IUnitOfWork unitOfWork) : IReque
             cancellationToken: cancellationToken
         );
         if (rootComment is null)
-        {
-            var error = new Error(
-                "Comment.NotFound",
-                "دیدگاه یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Comment.NotFound", "دیدگاه یافت نشد.", ErrorType.NotFound);
 
         var allComments = await unitOfWork.CommentRepository.GetAllAsync(
             expression: c => c.ProductId == rootComment.ProductId && c.ArticleId == rootComment.ArticleId,
@@ -29,21 +22,12 @@ public class DeleteCommentByAdminCommandHandler(IUnitOfWork unitOfWork) : IReque
         rootComment.CollectAllRepliesRecursive(allComments.ToList(), commentsToDelete);
 
         foreach (var comment in commentsToDelete)
-        {
             unitOfWork.CommentRepository.DeletePermanently(comment);
-        }
 
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Comment.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Comment.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

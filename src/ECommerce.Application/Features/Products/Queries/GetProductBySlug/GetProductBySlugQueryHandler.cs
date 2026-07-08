@@ -10,16 +10,9 @@ public class GetProductBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
             expression: p => p.Slug == request.Slug.Trim().ToLower(),
             cancellationToken: cancellationToken
         );
-        if (product is null)
-        {
-            var error = new Error(
-                "Product.NotFound",
-                "محصول مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetProductResponseDto>.Failure(error);
-        }
 
-        return product;
+        return product is null ?
+            new Error("Product.NotFound", "محصول مورد نظر یافت نشد.", ErrorType.NotFound) :
+            product;
     }
 }

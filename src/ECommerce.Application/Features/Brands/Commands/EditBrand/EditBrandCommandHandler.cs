@@ -13,14 +13,7 @@ public class EditBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
             cancellationToken: cancellationToken
         );
         if (brand is null)
-        {
-            var error = new Error(
-                "Brand.NotFound",
-                "برند یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Brand.NotFound", "برند یافت نشد.", ErrorType.NotFound);
 
         string oldImagePath = brand.LogoImageUrl;
         var hasNewImage = request.LogoImageUrl != null;
@@ -35,26 +28,16 @@ public class EditBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
         request.Adapt(brand, config);
 
         if (hasNewImage)
-        {
             brand.LogoImageUrl = request.LogoImageUrl!;
-        }
 
         unitOfWork.BrandRepository.Update(brand);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Brand.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-        {
             fileService.DeleteFile(oldImagePath);
-        }
 
         return Result.Success();
     }

@@ -10,15 +10,9 @@ public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
             expression: c => c.Slug == request.Slug.Trim().ToLower(),
             cancellationToken: cancellationToken
         );
-        if (category is null)
-        {
-            var error = new Error(
-                "Category.NotFound",
-                "دسته‌بندی مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetCategoryResponseDto>.Failure(error);
-        }
-        return category;
+
+        return category is null ?
+            new Error("Category.NotFound", "دسته‌بندی مورد نظر یافت نشد.", ErrorType.NotFound) :
+            category;
     }
 }

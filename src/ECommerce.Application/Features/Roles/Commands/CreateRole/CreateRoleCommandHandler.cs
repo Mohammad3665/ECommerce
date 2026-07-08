@@ -13,35 +13,14 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
             cancellationToken: cancellationToken
         );
         if (isDuplicate)
-        {
-            var error = new Error(
-                "Role.DuplicateName",
-                "نقشی با این نام سیستمی قبلاً در سیستم ثبت شده است.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Role.DuplicateName", "نقشی با این نام سیستمی قبلاً در سیستم ثبت شده است.", ErrorType.Validation);
 
         var currentUserMaxLevel = currentUser.GetMaxRoleLevel();
         if (request.Level <= currentUserMaxLevel && currentUserMaxLevel < 100)
-        {
-            var error = new Error(
-                "Role.InvalidLevel",
-                "شما نمی‌توانید نقشی با سطح دسترسی بالاتر یا هم‌تراز با خود ایجاد کنید.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Role.InvalidLevel", "شما نمی‌توانید نقشی با سطح دسترسی بالاتر یا هم‌تراز با خود ایجاد کنید.", ErrorType.Validation);
 
         if (request.GrantAllPermissions && currentUserMaxLevel < 100)
-        {
-            var error = new Error(
-                "Role.UnauthorizedPermissionGrant",
-                "فقط مدیران کل سیستم می‌توانند دسترسی کامل به یک نقش اعطا کنند.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Role.UnauthorizedPermissionGrant", "فقط مدیران کل سیستم می‌توانند دسترسی کامل به یک نقش اعطا کنند.", ErrorType.Validation);
 
         var newRole = request.Adapt<Role>();
 
@@ -49,7 +28,6 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
 
         if (request.GrantAllPermissions)
             finalPermissionIds = await unitOfWork.PerimssionRepository.GetAllIdsAsync(cancellationToken);
-
         else
             finalPermissionIds = request.PermissionIds ?? [];
 
@@ -65,16 +43,9 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
 
         await unitOfWork.RoleRepository.AddAsync(newRole);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Role.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
 
-        return newRole.Id;
+        return saveResult.IsFailure ?
+            new Error("Role.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            newRole.Id;
     }
 }

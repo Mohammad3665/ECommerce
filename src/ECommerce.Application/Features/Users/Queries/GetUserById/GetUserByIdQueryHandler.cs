@@ -10,16 +10,9 @@ public class GetUserByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<G
             expression: u => u.Id == request.Id,
             cancellationToken: cancellationToken
         );
-        if (user is null)
-        {
-            var error = new Error(
-                "User.NotFound",
-                "حساب کاربری یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetUserResponseDto>.Failure(error);
-        }
 
-        return user;
+        return user is null ?
+            new Error("User.NotFound", "حساب کاربری یافت نشد.", ErrorType.NotFound) :
+            user;
     }
 }

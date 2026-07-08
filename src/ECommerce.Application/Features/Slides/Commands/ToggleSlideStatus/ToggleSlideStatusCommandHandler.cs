@@ -9,28 +9,14 @@ public class ToggleSlideStatusCommandHandler(IUnitOfWork unitOfWork) : IRequestH
             cancellationToken: cancellationToken
         );
         if (slide is null)
-        {
-            var error = new Error(
-                "Slide.NotFound",
-                "اسلاید یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Slide.NotFound", "اسلاید یافت نشد.", ErrorType.NotFound);
 
         slide.IsActive = request.IsActive;
         unitOfWork.SlideRepository.Update(slide);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Slide.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

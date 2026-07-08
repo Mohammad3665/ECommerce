@@ -10,17 +10,10 @@ public class EditCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fil
     {
         var category = await unitOfWork.CategoryRepository.GetAsync(
             expression: c => c.Slug == request.Slug.Trim().ToLower(),
-            cancellationToken: cancellationToken);
-
+            cancellationToken: cancellationToken
+        );
         if (category is null)
-        {
-            var error = new Error(
-                "Category.NotFound",
-                "دسته‌بندی یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Category.NotFound", "دسته‌بندی یافت نشد.", ErrorType.NotFound);
 
         string? oldImagePath = category.ImageUrl;
         var hasNewImage = request.ImageUrl != null;
@@ -30,31 +23,20 @@ public class EditCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fil
         config.NewConfig<EditCategoryCommand, Category>()
             .IgnoreNullValues(true)
             .Ignore(dest => dest.Slug)
-            .Ignore(dest => dest.ImageUrl);
+            .Ignore(dest => dest.ImageUrl!);
         request.Adapt(category, config);
 
         if (hasNewImage)
-        {
             category.ImageUrl = request.ImageUrl;
-        }
 
         unitOfWork.CategoryRepository.Update(category);
-
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Category.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-        {
             fileService.DeleteFile(oldImagePath);
-        }
 
         return Result.Success();
     }

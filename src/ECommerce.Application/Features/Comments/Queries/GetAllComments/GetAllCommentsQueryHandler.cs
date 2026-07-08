@@ -25,6 +25,8 @@ public class GetAllCommentsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             request: request,
             cancellationToken: cancellationToken
         );
+        if(comments is null)
+            return new Error("Comment.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return comments;
     }

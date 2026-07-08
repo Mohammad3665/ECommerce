@@ -10,14 +10,7 @@ public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileService fi
             cancellationToken: cancellationToken
         );
         if (product is null)
-        {
-            var error = new Error(
-                "Product.NotFound",
-                "محصول مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Product.NotFound", "محصول مورد نظر یافت نشد.", ErrorType.NotFound);
 
         var imagePathsToRemove = product.Images
             .Select(img => img.ImageUrl)
@@ -26,20 +19,12 @@ public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileService fi
 
         unitOfWork.ProductRepository.DeletePermanently(product);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Product.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Product.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         foreach (var relativeUrl in imagePathsToRemove)
-        {
             fileService.DeleteFile(relativeUrl);
-        }
 
         return Result.Success();
     }

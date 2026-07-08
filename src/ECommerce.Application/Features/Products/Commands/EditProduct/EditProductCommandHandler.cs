@@ -14,14 +14,7 @@ public class EditProductCommandHandler(IUnitOfWork unitOfWork, IFileService file
             cancellationToken: cancellationToken
         );
         if (product is null)
-        {
-            var error = new Error(
-                "Product.NotFound",
-                "محصول مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Product.NotFound", "محصول مورد نظر یافت نشد.", ErrorType.NotFound);
 
         if (product.EnglishName.ToLower() != request.EnglishName.Trim().ToLower())
         {
@@ -105,9 +98,7 @@ public class EditProductCommandHandler(IUnitOfWork unitOfWork, IFileService file
             .ToList();
 
         foreach (var specToRemove in specsToRemove)
-        {
             unitOfWork.ProductSpecificationRepository.DeletePermanently(specToRemove);
-        }
 
         foreach (var incomingSpec in incomingSpecs)
         {
@@ -131,20 +122,12 @@ public class EditProductCommandHandler(IUnitOfWork unitOfWork, IFileService file
         }
 
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Product.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Product.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         foreach (var relativeUrl in physicalPathsToDelete)
-        {
             fileService.DeleteFile(relativeUrl);
-        }
 
         return Result.Success();
     }

@@ -3,7 +3,7 @@ using ECommerce.Domain.Enums;
 
 namespace ECommerce.Application.Features.Articles.Queries.GetArticleBySlug;
 
-public class GetArticleBySlugQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<GetArticleBySlugQuery, Result<GetArticleResponseDto>>
+public class GetArticleBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetArticleBySlugQuery, Result<GetArticleResponseDto>>
 {
     public async Task<Result<GetArticleResponseDto>> Handle(GetArticleBySlugQuery request, CancellationToken cancellationToken)
     {
@@ -11,16 +11,9 @@ public class GetArticleBySlugQueryHandler(IUnitOfWork unitOfWork, ICurrentUserSe
             expression: a => a.Slug == request.Slug.Trim().ToLower() && a.Status == ArticleStatus.Published,
             cancellationToken: cancellationToken
         );
-        if (article is null)
-        {
-            var error = new Error(
-                "Article.NotFound",
-                "مقاله یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetArticleResponseDto>.Failure(error);
-        }        
 
-        return article;
+        return article is null ?
+            new Error("Article.NotFound", "مقاله یافت نشد.", ErrorType.NotFound) :
+            article;
     }
 }

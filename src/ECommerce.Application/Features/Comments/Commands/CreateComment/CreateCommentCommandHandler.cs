@@ -14,14 +14,7 @@ public class CreateCommentCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
                 cancellationToken: cancellationToken
             );
             if (!parentExists)
-            {
-                var error = new Error(
-                    "Comment.ParentNotFound",
-                    "دیدگاه اصلی جهت ثبت پاسخ یافت نشد.",
-                    ErrorType.NotFound
-                );
-                return Result<Guid>.Failure(error);
-            }
+                return new Error("Comment.ParentNotFound", "دیدگاه اصلی جهت ثبت پاسخ یافت نشد.", ErrorType.NotFound);
         }
 
         var isUserAdmin = currentUser.HasPermission("comments.read");
@@ -33,16 +26,9 @@ public class CreateCommentCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
 
         await unitOfWork.CommentRepository.AddAsync(comment, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Comment.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<Guid>.Failure(error);
-        }
 
-        return comment.Id;
+        return saveResult.IsFailure ?
+            new Error("Comment.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            comment.Id;
     }
 }

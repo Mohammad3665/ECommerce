@@ -10,6 +10,8 @@ public class GetCategoryTreeQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
             expression: c => c.IsActive,
             cancellationToken: cancellationToken
         );
+        if(allCategories is null || !allCategories.Any())
+            return new Error("Category.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         var allDtos = allCategories.Select(c => new CategoryTreeResponseDto(
             c.Id,
@@ -36,5 +38,4 @@ public class GetCategoryTreeQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
 
         return rootCategories;
     }
-
 }

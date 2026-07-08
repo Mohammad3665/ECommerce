@@ -6,24 +6,11 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
     {
         var user = await unitOfWork.UserRepository.GetUserWithRolesByEmailAsync(request.Email, cancellationToken);
         if (user is null)
-        {
-            var error = new Error(
-                "Auth.UserNotFound",
-                "کاربری با این ایمیل یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.UserNotFound", "کاربری با این ایمیل یافت نشد.", ErrorType.NotFound);
 
         if (user.SecurityCode != request.SecurityCode || user.SecurityCodeExpiry <= DateTime.UtcNow)
-        {
-            var error = new Error(
-                "Auth.InvalidSecurityCode",
-                "رفرش توکن منقضی شده یا نامعتبر است.",
-                ErrorType.Forbidden
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.InvalidSecurityCode", "رفرش توکن منقضی شده یا نامعتبر است.", ErrorType.Forbidden);
+
         user.IsActive = true;
         user.IsEmailConfirmed = true;
 
@@ -32,17 +19,9 @@ public class ConfirmEmailCommandHandler(IUnitOfWork unitOfWork) : IRequestHandle
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Auth.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
-
 }

@@ -27,6 +27,6 @@ public class GetOrderHistoryQueryHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             o.Items.Count
         )).ToList();
 
-        return Result<IEnumerable<OrderHistoryResponseDto>>.Success(result);
+        return result;
     }
 }

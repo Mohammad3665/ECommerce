@@ -6,31 +6,16 @@ public class LogoutCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<Logo
     {
         var user = await unitOfWork.UserRepository.GetUserWithRolesByIdAsync(request.UserId, cancellationToken);
         if (user is null)
-        {
-            var error = new Error(
-                "Auth.UserNotFound",
-                "کاربر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.UserNotFound", "کاربر یافت نشد.", ErrorType.NotFound);
 
         user.RefreshToken = null;
         user.RefreshTokenExpiryTime = null;
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Auth.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
-
 }

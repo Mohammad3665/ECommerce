@@ -11,16 +11,8 @@ public class AdminGetArticleBySlugQueryHandler(IUnitOfWork unitOfWork) : IReques
             cancellationToken: cancellationToken
         );
 
-        if (article is null)
-        {
-            var error = new Error(
-                "Article.NotFound",
-                "مقاله یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetAdminArticleResponseDto>.Failure(error);
-        }
-
-        return article;
+        return article is null ?
+            new Error("Article.NotFound", "مقاله یافت نشد.", ErrorType.NotFound) :
+            article;
     }
 }

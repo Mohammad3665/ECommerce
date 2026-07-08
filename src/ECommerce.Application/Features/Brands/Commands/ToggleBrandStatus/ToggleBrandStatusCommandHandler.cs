@@ -11,29 +11,15 @@ public class ToggleBrandStatusCommandHandler(IUnitOfWork unitOfWork) : IRequestH
             cancellationToken: cancellationToken
         );
         if (brand is null)
-        {
-            var error = new Error(
-                "Brand.NotFound",
-                $"برند یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Brand.NotFound", "برند یافت نشد.", ErrorType.NotFound);
 
         brand.IsActive = request.IsActive;
 
         unitOfWork.BrandRepository.Update(brand);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Brand.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

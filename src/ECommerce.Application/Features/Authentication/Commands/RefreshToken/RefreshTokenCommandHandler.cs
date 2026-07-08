@@ -11,36 +11,15 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
     {
         var principal = jwtProvider.GetPrincipalFromExpiredToken(request.AccessToken);
         if (principal is null)
-        {
-            var error = new Error(
-                "Auth.InvalidToken",
-                "ساختار توکن دسترسی نامعتبر است.",
-                ErrorType.Validation
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.InvalidToken", "ساختار توکن دسترسی نامعتبر است.", ErrorType.Validation);
 
         var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier) ?? principal.FindFirst("sub");
         if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
-        {
-            var error = new Error(
-                "Auth.InvalidClaims",
-                "اطلاعات کاربر در توکن یافت نشد.",
-                ErrorType.Validation
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.InvalidClaims", "اطلاعات کاربر در توکن یافت نشد.", ErrorType.Validation);
 
         var user = await unitOfWork.UserRepository.GetUserWithRolesByIdAsync(userId, cancellationToken);
         if (user is null || user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-        {
-            var error = new Error(
-                "Auth.InvalidRefreshToken",
-                "رفرش توکن منقضی شده یا نامعتبر است.",
-                ErrorType.Forbidden
-            );
-            return Result<TokenResponseDto>.Failure(error);
-        }
+            return new Error("Auth.InvalidRefreshToken", "رفرش توکن منقضی شده یا نامعتبر است.", ErrorType.Forbidden);
 
         var roles = user.UserRoles.Where(r => r.Role is not null).Select(r => r.Role.Name).ToList();
         var permissions = user.UserRoles

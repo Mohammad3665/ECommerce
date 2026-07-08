@@ -9,14 +9,7 @@ public class DeleteSlideCommandHandler(IUnitOfWork unitOfWork, IFileService file
             cancellationToken: cancellationToken
         );
         if (slide is null)
-        {
-            var error = new Error(
-                "Slide.NotFound",
-                "اسلاید یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Slide.NotFound", "اسلاید یافت نشد.", ErrorType.NotFound);
 
         string imagePathToDelete = slide.ImageUrl;
         var slidesToShift = await unitOfWork.SlideRepository.GetAllWithTrackingAsync(
@@ -25,20 +18,13 @@ public class DeleteSlideCommandHandler(IUnitOfWork unitOfWork, IFileService file
         );
 
         foreach (var slideToShift in slidesToShift)
-        {
             slideToShift.DisplayOrder--;
-        }
+
         unitOfWork.SlideRepository.DeletePermanently(slide);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Slide.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         fileService.DeleteFile(imagePathToDelete);
         return Result.Success();

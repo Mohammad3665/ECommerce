@@ -12,6 +12,8 @@ public class GetAllArticleCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequ
             cancellationToken: cancellationToken
         );
 
-        return Result<IEnumerable<GetArticleCategoryResponseDto>>.Success(articleCategories);
+        return articleCategories is null || !articleCategories.Any() ?
+            new Error("ArticleCategory.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound) :
+            Result<IEnumerable<GetArticleCategoryResponseDto>>.Success(articleCategories);
     }
 }

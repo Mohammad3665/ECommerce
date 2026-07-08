@@ -9,29 +9,15 @@ public class ToggleCategoryStatusCommandHandler(IUnitOfWork unitOfWork) : IReque
             cancellationToken: cancellationToken
         );
         if (category is null)
-        {
-            var error = new Error(
-                "Category.NotFound",
-                "دسته‌بندی مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Category.NotFound", "دسته‌بندی مورد نظر یافت نشد.", ErrorType.NotFound);
 
         category.IsActive = request.IsActive;
 
         unitOfWork.CategoryRepository.Update(category);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Category.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

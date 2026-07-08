@@ -13,42 +13,21 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
             cancellationToken: cancellationToken
         );
         if (!categoryExists)
-        {
-            var error = new Error(
-                "Product.CategoryNotFound",
-                "دسته‌بندی انتخاب شده در سیستم یافت نشد.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Product.CategoryNotFound", "دسته‌بندی انتخاب شده در سیستم یافت نشد.", ErrorType.Validation);
 
         var brandExists = await unitOfWork.BrandRepository.IsExistAsync(
             expression: b => b.Id == request.BrandId,
             cancellationToken: cancellationToken
         );
         if (!brandExists)
-        {
-            var error = new Error(
-                "Product.BrandNotFound",
-                "برند انتخاب شده در سیستم یافت نشد.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Product.BrandNotFound", "برند انتخاب شده در سیستم یافت نشد.", ErrorType.Validation);
 
         var isNameDuplicate = await unitOfWork.ProductRepository.IsExistAsync(
             expression: p => p.Name.ToLower() == request.Name.Trim().ToLower(),
             cancellationToken: cancellationToken
         );
         if (isNameDuplicate)
-        {
-            var error = new Error(
-                "Product.DuplicateName",
-                "محصولی با این نام قبلاً ثبت شده است.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Product.DuplicateName", "محصولی با این نام قبلاً ثبت شده است.", ErrorType.Validation);
 
         string baseSlug = request.EnglishName.ToSlug();
         string finalSlug = baseSlug;
@@ -61,8 +40,6 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
         }
 
         var product = request.Adapt<Product>();
-
-        Console.WriteLine($"Mapped specs count: {product.Specifications.Count}, incoming: {request.Specifications.Count}");
 
         product.Slug = finalSlug;
         product.Name = request.Name.Trim();
@@ -88,16 +65,9 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
 
         await unitOfWork.ProductRepository.AddAsync(product, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Product.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
 
-        return product.Id;
+        return saveResult.IsFailure ?
+            new Error("Product.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            product.Id;
     }
 }

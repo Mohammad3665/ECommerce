@@ -11,36 +11,15 @@ public class ChangeArticleStatusCommandHandler(IUnitOfWork unitOfWork) : IReques
             cancellationToken: cancellationToken
         );
         if (article is null)
-        {
-            var error = new Error(
-                "Article.NotFound",
-                "مقاله یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Article.NotFound", "مقاله یافت نشد.", ErrorType.NotFound);
 
         var targetStatus = Enum.Parse<ArticleStatus>(request.Status);
 
         if (article.Status != ArticleStatus.Draft && targetStatus == ArticleStatus.Draft)
-        {
-            var error = new Error(
-                "Article.InvalidStatus",
-                "مقاله‌ای که منتشتر یا آرشیو شده نمی‌تواند به وضعیت پیش‌نویس بازگردد.",
-                ErrorType.Validation
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Article.InvalidStatus", "مقاله‌ای که منتشتر یا آرشیو شده نمی‌تواند به وضعیت پیش‌نویس بازگردد.", ErrorType.Validation);
 
         if (article.Status == targetStatus)
-        {
-            var error = new Error(
-                "Article.SameStatus",
-                "مقاله هم‌اکنون در همین وضعیت قرار دارد.",
-                ErrorType.Validation
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Article.SameStatus", "مقاله هم‌اکنون در همین وضعیت قرار دارد.", ErrorType.Validation);
 
         article.Status = targetStatus;
         article.PublishedAt = targetStatus.Equals(ArticleStatus.Published) ? DateTime.UtcNow : null;
@@ -48,16 +27,9 @@ public class ChangeArticleStatusCommandHandler(IUnitOfWork unitOfWork) : IReques
 
         unitOfWork.ArticleRepository.Update(article);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Article.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Article.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

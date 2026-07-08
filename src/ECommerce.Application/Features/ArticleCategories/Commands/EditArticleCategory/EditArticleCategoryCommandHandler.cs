@@ -13,14 +13,10 @@ public class EditArticleCategoryCommandHandler(IUnitOfWork unitOfWork) : IReques
             cancellationToken: cancellationToken
         );
         if (articleCategory is null)
-        {
-            var error = new Error(
+            return new Error(
                 "ArticleCategory.NotFound",
-                "دسته‌بندی یافت نشد.",
-                ErrorType.NotFound
+                "دسته‌بندی یافت نشد.", ErrorType.NotFound
             );
-            return Result.Failure(error);
-        }
 
         articleCategory.Slug = request.EnglishName.ToSlug();
         var config = new TypeAdapterConfig();
@@ -32,16 +28,9 @@ public class EditArticleCategoryCommandHandler(IUnitOfWork unitOfWork) : IReques
 
         unitOfWork.ArticleCategoryRepository.Update(articleCategory);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "ArticleCategory.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("ArticleCategory.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

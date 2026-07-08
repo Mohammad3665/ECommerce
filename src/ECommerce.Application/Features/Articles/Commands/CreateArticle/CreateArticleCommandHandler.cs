@@ -13,14 +13,7 @@ public class CreateArticleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             cancellationToken: cancellationToken
         );
         if (isDuplicateEnglishTitle)
-        {
-            var error = new Error(
-                "Article.DuplicateName",
-                "مقاله با این نام انگلیسی قبلا در سیستم ثبت شده است.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Article.DuplicateName", "مقاله با این نام انگلیسی قبلا در سیستم ثبت شده است.", ErrorType.Validation);
 
         var article = request.Adapt<Article>();
         article.Slug = request.EnglishTitle.ToSlug();
@@ -28,16 +21,9 @@ public class CreateArticleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
 
         await unitOfWork.ArticleRepository.AddAsync(article, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Article.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
 
-        return article.Id;
+        return saveResult.IsFailure ?
+            new Error("Article.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            article.Id;
     }
 }

@@ -7,10 +7,13 @@ public class GetPagedCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHa
 {
     public async Task<Result<Pagination<GetPagedCategoriesResponseDto>>> Handle(GetPagedCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var pagedResult = await unitOfWork.CategoryRepository.GetPagedListAsync<GetPagedCategoriesResponseDto>(
+        var categories = await unitOfWork.CategoryRepository.GetPagedListAsync<GetPagedCategoriesResponseDto>(
             request: request,
             cancellationToken: cancellationToken
         );
-        return pagedResult;
+        if (categories is null)
+            return new Error("Category.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
+
+        return categories;
     }
 }

@@ -12,6 +12,8 @@ public class GetAllArticlesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             order: query => query.OrderBy(a => a.Title),
             cancellationToken: cancellationToken
         );
+        if (articles is null || !articles.Any())
+            return new Error("Article.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<GetAllArticlesResponseDto>>.Success(articles);
     }

@@ -12,28 +12,15 @@ public class CreateCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
             cancellationToken: cancellationToken
         );
         if (isDuplicateEnglishName)
-        {
-            var error = new Error(
-                "Category.DuplicateName",
-                "دسته‌بندی با این نام انگلیسی قبلا در سیستم ثبت شده است.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Category.DuplicateName", "دسته‌بندی با این نام انگلیسی قبلا در سیستم ثبت شده است.", ErrorType.Validation);
+
         var category = request.Adapt<Category>();
 
         await unitOfWork.CategoryRepository.AddAsync(category, cancellationToken);
-
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Category.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
-        return category.Id;
+
+        return saveResult.IsFailure ?
+            new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            category.Id;
     }
 }

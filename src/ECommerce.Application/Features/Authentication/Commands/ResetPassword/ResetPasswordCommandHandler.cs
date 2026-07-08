@@ -6,25 +6,11 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
     {
         var user = await unitOfWork.UserRepository.GetUserWithRolesByEmailAsync(request.Email, cancellationToken);
         if (user is null)
-        {
-            var error = new Error(
-                "Auth.UserNotFound",
-                "کاربر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.UserNotFound", "کاربر یافت نشد.", ErrorType.NotFound);
 
         var isCurrentPasswordValid = passwordService.Verify(request.CurrentPassword, user.PasswordHash);
         if (!isCurrentPasswordValid)
-        {
-            var error = new Error(
-                "Auth.InvalidCurrentPassword",
-                "پسورد فعلی وارد شده صحیح نیست.",
-                ErrorType.Validation);
-
-            return Result.Failure(error);
-        }
+            return new Error("Auth.InvalidCurrentPassword", "پسورد فعلی وارد شده صحیح نیست.", ErrorType.Validation);
 
         var newHashedPassword = passwordService.Hash(request.NewPassword);
 
@@ -34,16 +20,9 @@ public class ResetPasswordCommandHandler(IUnitOfWork unitOfWork, IPasswordServic
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Auth.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

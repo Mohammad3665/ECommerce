@@ -10,16 +10,9 @@ public class GetBrandBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             expression: b => b.Slug == request.Slug.Trim().ToLower(),
             cancellationToken: cancellationToken
         );
-        if (brand is null)
-        {
-            var error = new Error(
-                "Brand.NotFound",
-                "برند مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetBrandResponseDto>.Failure(error);
-        }
 
-        return brand;
+        return brand is null ?
+            new Error("Brand.NotFound", "برند مورد نظر یافت نشد.", ErrorType.NotFound) :
+            brand;
     }
 }

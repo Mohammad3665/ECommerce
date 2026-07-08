@@ -11,6 +11,8 @@ public class GetAllUsersQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<G
             order: query => query.OrderBy(u => u.FullName),
             cancellationToken: cancellationToken
         );
+        if (users is null || !users.Any())
+            return new Error("User.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<GetAllUsersResponseDto>>.Success(users);
     }

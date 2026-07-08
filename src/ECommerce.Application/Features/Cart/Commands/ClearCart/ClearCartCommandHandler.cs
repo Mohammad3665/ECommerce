@@ -4,18 +4,10 @@ public class ClearCartCommandHandler(ICartService cartService, ICurrentUserServi
 {
     public async Task<Result> Handle(ClearCartCommand request, CancellationToken cancellationToken)
     {
-        var userId = currentUser.UserId;
-        if (userId is null)
-        {
-            var error = new Error(
-                "Auth.Unauthorized",
-                "کاربر احراز هویت نشده است.",
-                ErrorType.Unauthorized
-            );
-            return Result.Failure(error);
-        }
+        if (currentUser.UserId is null)
+            return new Error("Auth.Unauthorized", "کاربر احراز هویت نشده است.", ErrorType.Unauthorized);
 
-        await cartService.ClearCart((Guid)userId);
+        await cartService.ClearCart((Guid)currentUser.UserId);
         return Result.Success();
     }
 }

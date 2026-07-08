@@ -10,6 +10,8 @@ public class GetActiveSlidesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
             expression: s => s.IsActive,
             cancellationToken: cancellationToken
         );
+        if (slides is null || !slides.Any())
+            return new Error("Product.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<SlideResponseDto>>.Success(slides);
     }

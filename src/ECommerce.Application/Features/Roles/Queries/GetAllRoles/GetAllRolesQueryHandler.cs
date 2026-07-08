@@ -12,6 +12,8 @@ public class GetAllRolesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<G
             cancellationToken: cancellationToken,
             includes: r => r.RolePermissions
         );
+        if (roles is null || !roles.Any())
+            return new Error("Role.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<GetAllRolesResponseDto>>.Success(roles);
     }

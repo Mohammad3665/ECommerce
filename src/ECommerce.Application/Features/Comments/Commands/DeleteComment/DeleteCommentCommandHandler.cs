@@ -11,25 +11,11 @@ public class DeleteCommentCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             cancellationToken: cancellationToken
         );
         if (rootComment is null)
-        {
-            var error = new Error(
-                "Comment.NotFound",
-                "دیدگاه یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Comment.NotFound", "دیدگاه یافت نشد.", ErrorType.NotFound);
 
         Guid currentUserId = (Guid)currentUser.UserId!;
         if (rootComment.UserId != currentUserId)
-        {
-            var error = new Error(
-                "Comment.Forbidden",
-                "شما مجاز به حذف این دیدگاه نیستید.",
-                ErrorType.Forbidden
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Comment.Forbidden", "شما مجاز به حذف این دیدگاه نیستید.", ErrorType.Forbidden);
 
         var allComments = await unitOfWork.CommentRepository.GetAllAsync(
             expression: c => c.ProductId == rootComment.ProductId && c.ArticleId == rootComment.ArticleId,
@@ -43,15 +29,9 @@ public class DeleteCommentCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             unitOfWork.CommentRepository.DeletePermanently(comment);
 
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Comment.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
-        return Result.Success();
+
+        return saveResult.IsFailure ?
+            new Error("Comment.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

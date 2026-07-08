@@ -11,6 +11,8 @@ public class GetAllBrandsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<
             order: query => query.OrderBy(b => b.Name),
             cancellationToken: cancellationToken
         );
+        if (brands is null || !brands.Any())
+            return new Error("Brand.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<GetBrandResponseDto>>.Success(brands);
     }

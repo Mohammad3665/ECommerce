@@ -4,18 +4,10 @@ public class RemoveFromCartCommandHandler(ICartService cartService, ICurrentUser
 {
     public async Task<Result> Handle(RemoveFromCartCommand request, CancellationToken cancellationToken)
     {
-        var userId = currentUser.UserId;
-        if (userId is null)
-        {
-            var error = new Error(
-                "Auth.Unauthorized",
-                "کاربر احراز هویت نشده است.",
-                ErrorType.Unauthorized
-            );
-            return Result.Failure(error);
-        }
+        if (currentUser.UserId is null)
+            return new Error("Auth.Unauthorized", "کاربر احراز هویت نشده است.", ErrorType.Unauthorized);
 
-        await cartService.RemoveItemAsync((Guid)userId, request.ProductId);
+        await cartService.RemoveItemAsync((Guid)currentUser.UserId, request.ProductId);
         return Result.Success();
     }
 }

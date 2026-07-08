@@ -7,10 +7,13 @@ public class GetPagedProductsQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
 {
     public async Task<Result<Pagination<GetPagedProductsResponseDto>>> Handle(GetPagedProductsQuery request, CancellationToken cancellationToken)
     {
-        var pagedResult = await unitOfWork.ProductRepository.GetPagedListAsync<GetPagedProductsResponseDto>(
+        var products = await unitOfWork.ProductRepository.GetPagedListAsync<GetPagedProductsResponseDto>(
             request: request,
             cancellationToken: cancellationToken
         );
-        return pagedResult;
+        if (products is null)
+            return new Error("Product.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
+
+        return products;
     }
 }

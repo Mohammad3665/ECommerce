@@ -15,6 +15,8 @@ public class GetAllProductsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
                 p => p.Brand
             ]
         );
+        if (products is null || !products.Any())
+            return new Error("Product.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<GetAllProductsResponseDto>>.Success(products);
     }

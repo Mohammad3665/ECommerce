@@ -10,16 +10,9 @@ public class GetArticleCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IReq
             expression: ac => ac.Slug == request.Slug.Trim().ToLower(),
             cancellationToken: cancellationToken
         );
-        if (articleCategory is null)
-        {
-            var error = new Error(
-                "ArticleCategory.NotFound",
-                "دسته‌بندی یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetArticleCategoryResponseDto>.Failure(error);
-        }
 
-        return articleCategory;
+        return articleCategory is null ?
+            new Error("ArticleCategory.NotFound", "دسته‌بندی یافت نشد.", ErrorType.NotFound) :
+            articleCategory;
     }
 }

@@ -9,37 +9,16 @@ public class RejectCommentCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
             cancellationToken: cancellationToken
         );
         if (comment is null)
-        {
-            var error = new Error(
-                "Comment.NotFound",
-                "دیدگاه مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Comment.NotFound", "دیدگاه مورد نظر یافت نشد.", ErrorType.NotFound);
 
         if (comment.IsApproved)
-        {
-            var error = new Error(
-                "Comment.AlreadyApproved",
-                "این دیدگاه قبلاً تایید شده است و قابل رد کردن (ریجکت) نیست. در صورت نیاز از گزینه حذف استفاده کنید.",
-                ErrorType.Validation
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Comment.AlreadyApproved", "این دیدگاه قبلاً تایید شده است و قابل رد کردن (ریجکت) نیست. در صورت نیاز از گزینه حذف استفاده کنید.", ErrorType.Validation);
 
         unitOfWork.CommentRepository.DeletePermanently(comment);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Comment.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("Comment.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
 }

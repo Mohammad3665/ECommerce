@@ -4,47 +4,24 @@ public class EditUserProfileCommandHandler(IUnitOfWork unitOfWork, ICurrentUserS
 {
     public async Task<Result> Handle(EditUserProfileCommand request, CancellationToken cancellationToken)
     {
-        var userId = currentUser.UserId;
-        if (userId is null)
-        {
-            var error = new Error(
-                "Auth.Unauthorized",
-                "کاربر احراز هویت نشده است.",
-                ErrorType.Unauthorized
-            );
-            return Result.Failure(error);
-        }
+        if (currentUser.UserId is null)
+            return new Error("Auth.Unauthorized", "کاربر احراز هویت نشده است.", ErrorType.Unauthorized);
 
         var user = await unitOfWork.UserRepository.GetAsync(
-            expression: u => u.Id == userId.Value,
+            expression: u => u.Id == currentUser.UserId.Value,
             cancellationToken: cancellationToken
         );
         if (user is null)
-        {
-            var error = new Error(
-                "User.NotFound",
-                "حساب کاربری یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("User.NotFound", "حساب کاربری یافت نشد.", ErrorType.NotFound);
 
         user.FullName = request.FullName;
         user.PhoneNumber = request.PhoneNumber;
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "User.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
 
-        return Result.Success();
+        return saveResult.IsFailure ?
+            new Error("User.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            Result.Success();
     }
-
 }

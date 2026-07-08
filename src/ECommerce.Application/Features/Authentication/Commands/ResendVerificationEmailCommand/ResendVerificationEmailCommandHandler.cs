@@ -6,37 +6,23 @@ public class ResendVerificationEmailCommandHandler(IUnitOfWork unitOfWork, IEmai
     {
         var user = await unitOfWork.UserRepository.GetAsync(
             expression: u => u.Email == request.Email,
-            cancellationToken: cancellationToken);
+            cancellationToken: cancellationToken
+        );
 
         if (user is null || !user.IsActive)
-        {
             return Result.Success();
-        }
 
         if (user.IsEmailConfirmed)
-        {
-            var error = new Error(
-                "Auth.EmailAlreadyVerified",
-                "این حساب کاربری قبلاً تایید شده است.",
-                ErrorType.Validation
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.EmailAlreadyVerified", "این حساب کاربری قبلاً تایید شده است.", ErrorType.Validation);
 
         user.SecurityCode = codeGenerator.Generate();
         user.SecurityCodeExpiry = DateTime.UtcNow.AddHours(1);
 
         unitOfWork.UserRepository.Update(user);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Auth.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         var emailBody = $@"
             <div dir='rtl' style='font-family: Tahoma, Arial; text-align: right; line-height: 1.6;'>

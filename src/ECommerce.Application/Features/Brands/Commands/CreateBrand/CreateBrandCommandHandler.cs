@@ -12,29 +12,15 @@ public class CreateBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
             cancellationToken: cancellationToken
         );
         if (isDuplicateEnglishName)
-        {
-            var error = new Error(
-                "Brand.DuplicateName",
-                "برند با این نام انگلیسی قبلا در سیستم ثبت شده است.",
-                ErrorType.Validation
-            );
-            return Result<long>.Failure(error);
-        }
+            return new Error("Brand.DuplicateName", "برند با این نام انگلیسی قبلا در سیستم ثبت شده است.", ErrorType.Validation);
 
         var brand = request.Adapt<Brand>();
 
         await unitOfWork.BrandRepository.AddAsync(brand, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Brand.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<long>.Failure(error);
-        }
 
-        return brand.Id;
+        return saveResult.IsFailure ?
+            new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected) :
+            brand.Id;
     }
 }

@@ -22,6 +22,8 @@ public class GetPendingCommentsQueryHandler(IUnitOfWork unitOfWork) : IRequestHa
             request: request,
             cancellationToken: cancellationToken
         );
+        if (comments is null)
+            return new Error("Comment.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return comments;
     }

@@ -11,16 +11,9 @@ public class GetRoleBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler
             cancellationToken: cancellationToken,
             includes: r => r.RolePermissions
         );
-        if (role is null)
-        {
-            var error = new Error(
-                "Role.NotFound",
-                "نقش مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<GetRoleResponseDto>.Failure(error);
-        }
 
-        return role;
+        return role is null ?
+            new Error("Role.NotFound", "نقش مورد نظر یافت نشد.", ErrorType.NotFound) :
+            role;
     }
 }

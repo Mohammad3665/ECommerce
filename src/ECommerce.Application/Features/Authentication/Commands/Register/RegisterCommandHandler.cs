@@ -12,16 +12,8 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
             expression: u => u.Email == request.Email,
             cancellationToken: cancellationToken
         );
-
         if (emailTaken is not null)
-        {
-            var error = new Error(
-                "Auth.EmailTaken",
-                "ایمیل قبلا ثبت شده است.",
-                ErrorType.Conflict
-            );
-            return Result<Guid>.Failure(error);
-        }
+            return new Error("Auth.EmailTaken", "ایمیل قبلا ثبت شده است.", ErrorType.Conflict);
 
         var roleName = request.Role ?? "Customer";
         var role = await unitOfWork.RoleRepository.GetAsync(
@@ -29,14 +21,8 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
             cancellationToken: cancellationToken
         );
         if (role is null)
-        {
-            var error = new Error(
-                "Auth.NotFound",
-                $"نقش {roleName} در سیستم یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<Guid>.Failure(error);
-        }
+            return new Error("Auth.NotFound", $"نقش {roleName} در سیستم یافت نشد.", ErrorType.NotFound);
+
         var user = request.Adapt<User>();
         user.Id = Guid.NewGuid();
         user.PasswordHash = passwordService.Hash(request.Password);
@@ -59,15 +45,9 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
 
         await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Auth.Falied",
-                "خطای ناخواسته‌ای هنگام ذخیره اطلاعات رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result<Guid>.Failure(error);
-        }
+            return new Error("Auth.Failed", "خطای ناخواسته‌ای هنگام ذخیره اطلاعات رخ داد.", ErrorType.Unexpected);
 
         var emailBody = $@"
             <div dir='rtl' style='font-family: Tahoma, Arial; text-align: right; line-height: 1.6;'>
@@ -89,5 +69,4 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
 
         return user.Id;
     }
-
 }

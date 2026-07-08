@@ -11,6 +11,8 @@ public class GetPagedArticlesQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
             request: request,
             cancellationToken: cancellationToken
         );
+        if (articles is null)
+            return new Error("Article.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return articles;
     }

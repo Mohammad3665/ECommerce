@@ -9,49 +9,26 @@ public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService file
             cancellationToken: cancellationToken
         );
         if (brand is null)
-        {
-            var error = new Error(
-                "Brand.NotFound",
-                "برند یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Brand.NotFound", "برند یافت نشد.", ErrorType.NotFound);
 
         var hasProduct = await unitOfWork.ProductRepository.IsExistAsync(
             expression: p => p.BrandId == brand.Id,
             cancellationToken: cancellationToken
         );
         if (hasProduct)
-        {
-            var error = new Error(
-                "Brand.HasDependencies",
-                "حذف این برند امکان‌پذیر نیست، زیرا محصولاتی در سیستم به این برند متصل هستند. ابتدا برند محصولات را عوض کنید.",
-                ErrorType.Validation
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Brand.HasDependencies", "حذف این برند امکان‌پذیر نیست، زیرا محصولاتی در سیستم به این برند متصل هستند. ابتدا برند محصولات را عوض کنید.", ErrorType.Validation);
 
         var imageUrlToRemove = brand.LogoImageUrl;
 
         unitOfWork.BrandRepository.DeletePermanently(brand);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
 
-
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Brand.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (saveResult.IsSuccess && !string.IsNullOrWhiteSpace(imageUrlToRemove))
-        {
             fileService.DeleteFile(imageUrlToRemove);
-        }
+
         return Result.Success();
     }
 }

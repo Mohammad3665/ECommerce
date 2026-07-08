@@ -13,14 +13,7 @@ public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IReques
             cancellationToken: cancellationToken
         );
         if (currentCategory is null)
-        {
-            var error = new Error(
-                "Category.NotFound",
-                "دسته‌بندی مورد نظر یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result<List<BreadcrumbItemResponseDto>>.Failure(error);
-        }
+            return new Error("Category.NotFound", "دسته‌بندی مورد نظر یافت نشد.", ErrorType.NotFound);
 
         var category = currentCategory;
         while (category is not null)
@@ -36,6 +29,7 @@ public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IReques
                 cancellationToken: cancellationToken
             );
         }
+
         return breadcrumb;
     }
 }

@@ -12,14 +12,7 @@ public class EditSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
             cancellationToken: cancellationToken
         );
         if (slide is null)
-        {
-            var error = new Error(
-                "Slide.NotFound",
-                "اسلاید یافت نشد.",
-                ErrorType.NotFound
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Slide.NotFound", "اسلاید یافت نشد.", ErrorType.NotFound);
 
         if (slide.DisplayOrder != request.DisplayOrder)
         {
@@ -31,7 +24,8 @@ public class EditSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
                     cancellationToken: cancellationToken
                 )).ToList();
 
-                foreach (var affectedSlide in affectedSlides) affectedSlide.DisplayOrder++;
+                foreach (var affectedSlide in affectedSlides)
+                    affectedSlide.DisplayOrder++;
             }
             else
             {
@@ -40,7 +34,8 @@ public class EditSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
                     cancellationToken: cancellationToken
                 )).ToList();
 
-                foreach (var affectedSlide in affectedSlides) affectedSlide.DisplayOrder--;
+                foreach (var affectedSlide in affectedSlides)
+                    affectedSlide.DisplayOrder--;
             }
             slide.DisplayOrder = request.DisplayOrder;
         }
@@ -56,26 +51,16 @@ public class EditSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
         request.Adapt(slide, config);
 
         if (hasNewImage)
-        {
             slide.ImageUrl = request.ImageUrl!;
-        }
 
         unitOfWork.SlideRepository.Update(slide);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+
         if (saveResult.IsFailure)
-        {
-            var error = new Error(
-                "Slide.Failed",
-                "خطای پیش‌بینی نشده‌ای رخ داد.",
-                ErrorType.Unexpected
-            );
-            return Result.Failure(error);
-        }
+            return new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-        {
             fileService.DeleteFile(oldImagePath);
-        }
 
         return Result.Success();
     }

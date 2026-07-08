@@ -11,6 +11,8 @@ public class GetAllCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
             order: query => query.OrderBy(c => c.Name),
             cancellationToken: cancellationToken
         );
+        if (categories is null || !categories.Any())
+            return new Error("Category.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);
 
         return Result<IEnumerable<GetCategoryResponseDto>>.Success(categories);
     }

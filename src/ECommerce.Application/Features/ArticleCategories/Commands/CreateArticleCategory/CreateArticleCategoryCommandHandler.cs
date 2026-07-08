@@ -35,6 +35,6 @@ public class CreateArticleCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequ
             return Result<long>.Failure(error);
         }
 
-        return Result<long>.Success(articleCategory.Id);
+        return articleCategory.Id;
     }
 }

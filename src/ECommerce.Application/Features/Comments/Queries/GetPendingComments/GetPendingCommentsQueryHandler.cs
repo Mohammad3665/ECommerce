@@ -23,6 +23,6 @@ public class GetPendingCommentsQueryHandler(IUnitOfWork unitOfWork) : IRequestHa
             cancellationToken: cancellationToken
         );
 
-        return Result<Pagination<AdminCommentsResponseDto>>.Success(comments);
+        return comments;
     }
 }

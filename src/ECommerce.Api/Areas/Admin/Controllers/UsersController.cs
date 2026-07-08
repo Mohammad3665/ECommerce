@@ -2,8 +2,8 @@ using ECommerce.Application.Dtos.Authentication;
 using ECommerce.Application.Features.Authentication.Commands.CreateUserByAdmin;
 using ECommerce.Application.Features.Users.Commands.ToggleUserStatus;
 using ECommerce.Application.Features.Users.Queries.GetAllUsers;
+using ECommerce.Application.Features.Users.Queries.GetPagedUsers;
 using ECommerce.Application.Features.Users.Queries.GetUserById;
-using ECommerce.Application.Features.Users.Queries.GetUsersList;
 
 namespace ECommerce.Api.Areas.Admin.Controllers;
 

@@ -20,6 +20,6 @@ public class GetProductBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
             return Result<GetProductResponseDto>.Failure(error);
         }
 
-        return Result<GetProductResponseDto>.Success(product);
+        return product;
     }
 }

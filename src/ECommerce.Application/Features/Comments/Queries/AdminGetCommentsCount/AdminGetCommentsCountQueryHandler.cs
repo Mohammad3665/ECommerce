@@ -11,6 +11,6 @@ public class AdminGetCommentsCountQueryHandler(IUnitOfWork unitOfWork) : IReques
             cancellationToken: cancellationToken
         );
 
-        return Result<int>.Success(count);
+        return count;
     }
 }

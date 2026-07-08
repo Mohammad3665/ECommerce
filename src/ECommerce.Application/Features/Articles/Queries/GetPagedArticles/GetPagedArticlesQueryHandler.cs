@@ -12,6 +12,6 @@ public class GetPagedArticlesQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
             cancellationToken: cancellationToken
         );
 
-        return Result<Pagination<GetPagedArticlesResponseDto>>.Success(articles);
+        return articles;
     }
 }

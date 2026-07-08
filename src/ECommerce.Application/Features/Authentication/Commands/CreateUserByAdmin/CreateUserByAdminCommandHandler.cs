@@ -96,7 +96,7 @@ public class CreateUserByAdminCommandHandler(IUnitOfWork unitOfWork, IPasswordSe
             "اطلاعات حساب کاربری شما", 
             emailBody);
 
-        return Result<Guid>.Success(user.Id);
+        return user.Id;
     }
 
 }

@@ -4,6 +4,7 @@ namespace ECommerce.Api.Controllers.v1;
 
 public class SlidesController(ISender sender, ILogger<SlidesController> logger) : BaseController
 {
+    [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetActiveSlidesQuery();

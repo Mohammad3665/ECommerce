@@ -2,7 +2,7 @@ using ECommerce.Application.Dtos.Users;
 using ECommerce.Domain.Common.Filter;
 using ECommerce.Domain.Specifications.Common;
 
-namespace ECommerce.Application.Features.Users.Queries.GetUsersList;
+namespace ECommerce.Application.Features.Users.Queries.GetPagedUsers;
 
 public class GetPagedUsersQuery : QueryRequest, IRequest<Result<Pagination<PagedUsersResponseDto>>>
 {

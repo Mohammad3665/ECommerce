@@ -13,6 +13,6 @@ public class GetAdminSlidesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             cancellationToken: cancellationToken
         );
 
-        return Result<Pagination<AdminSlidesResponseDto>>.Success(slides);
+        return slides;
     }
 }

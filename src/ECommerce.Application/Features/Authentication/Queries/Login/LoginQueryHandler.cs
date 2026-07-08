@@ -76,6 +76,6 @@ public class LoginQueryHandler(
         }
 
         var result = new TokenResponseDto(token, newRefreshToken, expiration);
-        return Result<TokenResponseDto>.Success(result);
+        return result;
     }
 }

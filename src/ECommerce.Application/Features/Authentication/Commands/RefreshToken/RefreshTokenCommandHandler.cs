@@ -56,6 +56,6 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IJwtProvider jwt
         var expiration = currentTime.AddMinutes(10);
 
         var result = new TokenResponseDto(newAccessToken, newRefreshToken, expiration);
-        return Result<TokenResponseDto>.Success(result);
+        return result;
     }
 }

@@ -21,6 +21,6 @@ public class GetRoleBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler
             return Result<GetRoleResponseDto>.Failure(error);
         }
 
-        return Result<GetRoleResponseDto>.Success(role);
+        return role;
     }
 }

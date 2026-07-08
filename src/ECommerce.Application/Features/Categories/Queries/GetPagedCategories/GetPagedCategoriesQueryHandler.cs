@@ -11,6 +11,6 @@ public class GetPagedCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHa
             request: request,
             cancellationToken: cancellationToken
         );
-        return Result<Pagination<GetPagedCategoriesResponseDto>>.Success(pagedResult);
+        return pagedResult;
     }
 }

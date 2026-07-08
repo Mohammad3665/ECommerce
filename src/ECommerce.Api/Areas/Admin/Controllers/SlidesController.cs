@@ -11,7 +11,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class SlidesController(ISender sender, ILogger<SlidesController> logger, IFileService fileService) : AdminBaseController
 {
     [HttpGet]
-    [HasPermission("slides.read")]
+    [HasPermission("sliders.read")]
     public async Task<IActionResult> AdminGetAll([FromQuery] GetAdminSlidesQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
@@ -19,7 +19,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpGet("{id:long}")]
-    [HasPermission("slides.read")]
+    [HasPermission("sliders.read")]
     public async Task<IActionResult> GetById(long id, CancellationToken cancellationToken)
     {
         var query = new GetSlideByIdQuery(id);
@@ -28,7 +28,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpPost]
-    [HasPermission("slides.create")]
+    [HasPermission("sliders.create")]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateSlideRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -53,7 +53,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpPut("{id:long}")]
-    [HasPermission("slides.update")]
+    [HasPermission("sliders.update")]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Edit(long id, [FromForm] EditSlideRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -81,7 +81,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpDelete("{id:long}")]
-    [HasPermission("slides.delete")]
+    [HasPermission("sliders.delete")]
     public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
     {
         var command = new DeleteSlideCommand(id);
@@ -90,7 +90,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpPut("{id:long}")]
-    [HasPermission("slides.update")]
+    [HasPermission("sliders.update")]
     public async Task<IActionResult> ToggleStatus(long id, [FromBody] bool isActive, CancellationToken cancellationToken)
     {
         var command = new ToggleSlideStatusCommand(id, isActive);

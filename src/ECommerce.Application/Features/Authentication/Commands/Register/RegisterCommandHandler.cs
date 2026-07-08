@@ -87,7 +87,7 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordService
             "کد تایید ثبت‌نام در فروشگاه",
             emailBody);
 
-        return Result<Guid>.Success(user.Id);
+        return user.Id;
     }
 
 }

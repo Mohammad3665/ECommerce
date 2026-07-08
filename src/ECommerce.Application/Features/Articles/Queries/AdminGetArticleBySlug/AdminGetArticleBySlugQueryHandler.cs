@@ -21,6 +21,6 @@ public class AdminGetArticleBySlugQueryHandler(IUnitOfWork unitOfWork) : IReques
             return Result<GetAdminArticleResponseDto>.Failure(error);
         }
 
-        return Result<GetAdminArticleResponseDto>.Success(article);
+        return article;
     }
 }

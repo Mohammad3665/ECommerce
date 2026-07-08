@@ -23,7 +23,7 @@ public class ArticlesController(ISender sender, ILogger<ArticlesController> logg
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateArticleRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
-        string relativeUrl = null;
+        string relativeUrl = null!;
         if (imageFile is not null)
         {
             string fileNameSeed = $"{request.EnglishTitle.Trim()}_gallery";

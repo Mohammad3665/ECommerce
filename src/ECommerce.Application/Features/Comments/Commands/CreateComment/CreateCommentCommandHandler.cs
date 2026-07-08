@@ -43,6 +43,6 @@ public class CreateCommentCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             return Result<Guid>.Failure(error);
         }
 
-        return Result<Guid>.Success(comment.Id);
+        return comment.Id;
     }
 }

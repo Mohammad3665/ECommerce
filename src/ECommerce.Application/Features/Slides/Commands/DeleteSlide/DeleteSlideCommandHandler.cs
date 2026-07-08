@@ -19,7 +19,15 @@ public class DeleteSlideCommandHandler(IUnitOfWork unitOfWork, IFileService file
         }
 
         string imagePathToDelete = slide.ImageUrl;
+        var slidesToShift = await unitOfWork.SlideRepository.GetAllWithTrackingAsync(
+            expression: s => s.DisplayOrder > slide.DisplayOrder,
+            cancellationToken: cancellationToken
+        );
 
+        foreach (var slideToShift in slidesToShift)
+        {
+            slideToShift.DisplayOrder--;
+        }
         unitOfWork.SlideRepository.DeletePermanently(slide);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)

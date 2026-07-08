@@ -98,6 +98,6 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
             return Result<long>.Failure(error);
         }
 
-        return Result<long>.Success(product.Id);
+        return product.Id;
     }
 }

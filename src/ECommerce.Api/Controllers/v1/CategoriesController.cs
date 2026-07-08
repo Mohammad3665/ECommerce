@@ -24,7 +24,9 @@ public class CategoriesController(ISender sender, ILogger<CategoriesController> 
         return result.ToActionResult(logger);
     }
 
+#pragma warning disable ASP0023 // Route conflict detected between controller actions
     [HttpGet("{slug}")]
+#pragma warning restore ASP0023 // Route conflict detected between controller actions
     public async Task<IActionResult> GetBySlug(string slug, CancellationToken cancellationToken)
     {
         var query = new GetCategoryBySlugQuery(slug);
@@ -40,7 +42,9 @@ public class CategoriesController(ISender sender, ILogger<CategoriesController> 
         return result.ToActionResult(logger);
     }
 
+#pragma warning disable ASP0023 // Route conflict detected between controller actions
     [HttpGet("{slug}")]
+#pragma warning restore ASP0023 // Route conflict detected between controller actions
     public async Task<IActionResult> Breadcrumb(string slug, CancellationToken cancellationToken)
     {
         var query = new GetCategoryBreadcrumbQuery(slug);

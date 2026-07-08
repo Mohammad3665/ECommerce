@@ -1,7 +1,7 @@
 using ECommerce.Application.Dtos.Users;
 using ECommerce.Domain.Specifications.Common;
 
-namespace ECommerce.Application.Features.Users.Queries.GetUsersList;
+namespace ECommerce.Application.Features.Users.Queries.GetPagedUsers;
 
 public class GetPagedUsersQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetPagedUsersQuery, Result<Pagination<PagedUsersResponseDto>>>
 {
@@ -12,6 +12,6 @@ public class GetPagedUsersQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler
             cancellationToken: cancellationToken
         );
 
-        return Result<Pagination<PagedUsersResponseDto>>.Success(pagedResult);
+        return pagedResult;
     }
 }

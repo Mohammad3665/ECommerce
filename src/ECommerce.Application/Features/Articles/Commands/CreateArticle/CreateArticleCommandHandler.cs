@@ -38,6 +38,6 @@ public class CreateArticleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSer
             return Result<long>.Failure(error);
         }
 
-        return Result<long>.Success(article.Id);
+        return article.Id;
     }
 }

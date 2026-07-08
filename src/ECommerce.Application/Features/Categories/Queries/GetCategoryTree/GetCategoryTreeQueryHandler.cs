@@ -34,7 +34,7 @@ public class GetCategoryTreeQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
             }
         }
 
-        return Result<List<CategoryTreeResponseDto>>.Success(rootCategories);
+        return rootCategories;
     }
 
 }

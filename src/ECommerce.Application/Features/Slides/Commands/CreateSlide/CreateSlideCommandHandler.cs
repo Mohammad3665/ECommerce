@@ -7,10 +7,17 @@ public class CreateSlideCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
 {
     public async Task<Result<long>> Handle(CreateSlideCommand request, CancellationToken cancellationToken)
     {
-        int maxOrder = await unitOfWork.SlideRepository.GetMaxOrderAsync(cancellationToken);
+        var slidesToShift = await unitOfWork.SlideRepository.GetAllWithTrackingAsync(
+            expression: s => s.DisplayOrder >= request.DisplayOrder,
+            cancellationToken: cancellationToken
+        );
+
+        foreach (var slideToShift in slidesToShift)
+        {
+            slideToShift.DisplayOrder++;
+        }
 
         var slide = request.Adapt<Slide>();
-        slide.DisplayOrder = maxOrder + 1;
 
         await unitOfWork.SlideRepository.AddAsync(slide, cancellationToken);
         var saveResult = await unitOfWork.SaveAsync(cancellationToken);
@@ -24,6 +31,6 @@ public class CreateSlideCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
             return Result<long>.Failure(error);
         }
 
-        return Result<long>.Success(slide.Id);
+        return slide.Id;
     }
 }

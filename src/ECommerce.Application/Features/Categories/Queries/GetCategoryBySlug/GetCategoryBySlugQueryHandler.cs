@@ -19,6 +19,6 @@ public class GetCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
             );
             return Result<GetCategoryResponseDto>.Failure(error);
         }
-        return Result<GetCategoryResponseDto>.Success(category);
+        return category;
     }
 }

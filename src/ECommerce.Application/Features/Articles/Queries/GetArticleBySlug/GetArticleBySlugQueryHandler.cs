@@ -21,6 +21,6 @@ public class GetArticleBySlugQueryHandler(IUnitOfWork unitOfWork, ICurrentUserSe
             return Result<GetArticleResponseDto>.Failure(error);
         }        
 
-        return Result<GetArticleResponseDto>.Success(article);
+        return article;
     }
 }

@@ -30,6 +30,6 @@ public class GetTargetCommentsQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
                 rootComments.Add(comment);
         }
 
-        return Result<IEnumerable<CommentDto>>.Success(rootComments);
+        return rootComments;
     }
 }

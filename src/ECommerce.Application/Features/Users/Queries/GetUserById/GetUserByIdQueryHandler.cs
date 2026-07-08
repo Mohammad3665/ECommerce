@@ -20,6 +20,6 @@ public class GetUserByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<G
             return Result<GetUserResponseDto>.Failure(error);
         }
 
-        return Result<GetUserResponseDto>.Success(user);
+        return user;
     }
 }

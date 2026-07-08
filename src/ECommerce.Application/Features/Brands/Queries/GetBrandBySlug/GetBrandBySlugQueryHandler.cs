@@ -6,11 +6,11 @@ public class GetBrandBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
 {
     public async Task<Result<GetBrandResponseDto>> Handle(GetBrandBySlugQuery request, CancellationToken cancellationToken)
     {
-        var brandDto = await unitOfWork.BrandRepository.GetAsync<GetBrandResponseDto>(
+        var brand = await unitOfWork.BrandRepository.GetAsync<GetBrandResponseDto>(
             expression: b => b.Slug == request.Slug.Trim().ToLower(),
             cancellationToken: cancellationToken
         );
-        if (brandDto is null)
+        if (brand is null)
         {
             var error = new Error(
                 "Brand.NotFound",
@@ -20,6 +20,6 @@ public class GetBrandBySlugQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             return Result<GetBrandResponseDto>.Failure(error);
         }
 
-        return Result<GetBrandResponseDto>.Success(brandDto);
+        return brand;
     }
 }

@@ -49,9 +49,9 @@
 
 ### 6. Shopping Cart & Orders
 
-- [ ] FR-031: Add/remove products from cart
-- [ ] FR-032: Edit product quantity in cart
-- [ ] FR-033: Display cart total amount
+- [x] FR-031: Add/remove products from cart
+- [x] FR-032: Edit product quantity in cart
+- [x] FR-033: Display cart total amount
 - [ ] FR-034: Place order in 3 steps (info, shipping, payment)
 - [ ] FR-035: Automatic stock decrease after order placement
 - [ ] FR-036: Order history in user profile

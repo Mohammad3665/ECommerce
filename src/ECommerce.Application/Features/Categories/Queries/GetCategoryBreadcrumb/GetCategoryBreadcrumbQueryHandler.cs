@@ -36,6 +36,6 @@ public class GetCategoryBreadcrumbQueryHandler(IUnitOfWork unitOfWork) : IReques
                 cancellationToken: cancellationToken
             );
         }
-        return Result<List<BreadcrumbItemResponseDto>>.Success(breadcrumb);
+        return breadcrumb;
     }
 }

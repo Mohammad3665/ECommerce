@@ -20,6 +20,6 @@ public class GetSlideByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<
             return Result<SlideResponseDto>.Failure(error);
         }
 
-        return Result<SlideResponseDto>.Success(slide);
+        return slide;
     }
 }

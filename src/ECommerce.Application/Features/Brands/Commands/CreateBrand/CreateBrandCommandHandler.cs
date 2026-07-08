@@ -35,6 +35,6 @@ public class CreateBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
             return Result<long>.Failure(error);
         }
 
-        return Result<long>.Success(brand.Id);
+        return brand.Id;
     }
 }

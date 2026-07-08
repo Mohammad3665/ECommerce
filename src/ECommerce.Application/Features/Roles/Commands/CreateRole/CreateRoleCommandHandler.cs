@@ -75,6 +75,6 @@ public class CreateRoleCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
             return Result<long>.Failure(error);
         }
 
-        return Result<long>.Success(newRole.Id);
+        return newRole.Id;
     }
 }

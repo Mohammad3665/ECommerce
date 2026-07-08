@@ -26,6 +26,6 @@ public class GetAllCommentsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandle
             cancellationToken: cancellationToken
         );
 
-        return Result<Pagination<AdminCommentsResponseDto>>.Success(comments);
+        return comments;
     }
 }

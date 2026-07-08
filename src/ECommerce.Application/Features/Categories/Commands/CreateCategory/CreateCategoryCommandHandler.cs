@@ -34,6 +34,6 @@ public class CreateCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
             );
             return Result<long>.Failure(error);
         }
-        return Result<long>.Success(category.Id);
+        return category.Id;
     }
 }

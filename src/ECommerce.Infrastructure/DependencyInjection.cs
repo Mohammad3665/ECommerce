@@ -7,6 +7,7 @@ using ECommerce.Infrastructure.Identity.Handlers;
 using ECommerce.Infrastructure.Identity.Providers;
 using ECommerce.Infrastructure.Repositories.Common.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
+using StackExchange.Redis;
 
 namespace ECommerce.Infrastructure;
 
@@ -44,6 +45,11 @@ public static class DependencyInjection
         // Authorization
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
         services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+        // Cart Service
+        services.AddScoped<ICartService, RedisCartService>();
+        services.AddSingleton<IConnectionMultiplexer>(provider =>
+            ConnectionMultiplexer.Connect(configuration["Redis:ConnectionString"]!));
 
         return services;
     }

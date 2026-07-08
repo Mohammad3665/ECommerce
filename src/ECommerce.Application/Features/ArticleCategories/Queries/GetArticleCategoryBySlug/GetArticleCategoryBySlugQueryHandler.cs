@@ -20,6 +20,6 @@ public class GetArticleCategoryBySlugQueryHandler(IUnitOfWork unitOfWork) : IReq
             return Result<GetArticleCategoryResponseDto>.Failure(error);
         }
 
-        return Result<GetArticleCategoryResponseDto>.Success(articleCategory);
+        return articleCategory;
     }
 }

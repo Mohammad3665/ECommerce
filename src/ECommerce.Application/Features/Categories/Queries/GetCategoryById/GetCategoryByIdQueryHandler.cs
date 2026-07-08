@@ -20,6 +20,6 @@ public class GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandl
             );
             return Result<GetCategoryResponseDto>.Failure(error);
         }
-        return Result<GetCategoryResponseDto>.Success(categoryDto);
+        return categoryDto;
     }
 }

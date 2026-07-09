@@ -12,8 +12,6 @@ services:
     image: redis:7.2-alpine
     container_name: ecommerce-redis
     command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
     volumes:
       - redis-data:/data
     restart: unless-stopped
@@ -32,11 +30,14 @@ services:
       dockerfile: src/ECommerce.Api/Dockerfile
     ports:
       - "5000:8080" # HTTP
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User=sa;Password=Password123;TrustServerCertificate=True;
       - Redis__ConnectionString=redis:6379,abortConnect=false
       - ASPNETCORE_URLS=http://+:8080;
+      - ZarinPal__CallbackUrl=http://host.docker.internal:5000/Api/V1/Payment/Verify
     depends_on:
       redis:
         condition: service_healthy

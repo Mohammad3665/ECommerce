@@ -51,6 +51,9 @@ public static class DependencyInjection
         services.AddSingleton<IConnectionMultiplexer>(provider =>
             ConnectionMultiplexer.Connect(configuration["Redis:ConnectionString"]!));
 
+        // Payment Service
+        services.AddHttpClient<IPaymentService, ZarinPalPaymentService>();
+
         return services;
     }
 }

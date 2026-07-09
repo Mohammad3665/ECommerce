@@ -52,16 +52,16 @@
 - [x] FR-031: Add/remove products from cart
 - [x] FR-032: Edit product quantity in cart
 - [x] FR-033: Display cart total amount
-- [ ] FR-034: Place order in 3 steps (info, shipping, payment)
-- [ ] FR-035: Automatic stock decrease after order placement
-- [ ] FR-036: Order history in user profile
+- [x] FR-034: Place order in 3 steps (info, shipping, payment)
+- [x] FR-035: Automatic stock decrease after order placement
+- [x] FR-036: Order history in user profile
 
 ### 7. Discount System (Coupons)
 
-- [ ] FR-037: Create percentage discount coupons (e.g., 20%)
-- [ ] FR-038: Create fixed amount discount coupons (e.g., 50,000 Tomans)
-- [ ] FR-039: Coupon expiration date
-- [ ] FR-040: Apply coupon to shopping cart
+- [x] FR-037: Create percentage discount coupons (e.g., 20%)
+- [x] FR-038: Create fixed amount discount coupons (e.g., 50,000 Tomans)
+- [x] FR-039: Coupon expiration date
+- [x] FR-040: Apply coupon to shopping cart
 
 ### 8. Articles & Content
 
@@ -91,9 +91,9 @@
 
 ### 12. Payment Module (Simulated)
 
-- [ ] FR-055: Sandbox payment gateway simulation
-- [ ] FR-056: Successful/failed payment confirmation
-- [ ] FR-057: Tracking code generation after payment
+- [x] FR-055: Sandbox payment gateway simulation
+- [x] FR-056: Successful/failed payment confirmation
+- [x] FR-057: Tracking code generation after payment
 
 ## Functional Requirements
 
@@ -286,21 +286,21 @@
 
 ### 19.1 Storage Migration
 
-- [ ] FR-141: Shopping cart data must be stored in Redis instead of SQL Server
-- [ ] FR-142: Cart and CartItem entities must be removed from SQL Server
-- [ ] FR-143: Redis must be configured with AOF persistence
-- [ ] FR-144: Redis data must be stored on a Docker volume for durability
+- [x] FR-141: Shopping cart data must be stored in Redis instead of SQL Server
+- [x] FR-142: Cart and CartItem entities must be removed from SQL Server
+- [x] FR-143: Redis must be configured with AOF persistence
+- [x] FR-144: Redis data must be stored on a Docker volume for durability
 
 ### 19.2 Cart Lifecycle
 
-- [ ] FR-145: Cart must have infinite TTL (never auto-expire)
-- [ ] FR-146: Cart must be manually deleted after successful checkout
-- [ ] FR-147: Cart must persist across user sessions
+- [x] FR-145: Cart must have infinite TTL (never auto-expire)
+- [x] FR-146: Cart must be manually deleted after successful checkout
+- [x] FR-147: Cart must persist across user sessions
 
 ### 19.3 Performance Requirements
 
-- [ ] FR-148: Cart read/write operations must complete within 50ms
-- [ ] FR-149: Redis must handle at least 1000 concurrent cart operations
+- [x] FR-148: Cart read/write operations must complete within 50ms
+- [x] FR-149: Redis must handle at least 1000 concurrent cart operations
 
 ## Non-Functional Requirements
 

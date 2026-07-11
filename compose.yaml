@@ -7,6 +7,34 @@ services:
       - "38025:8025"
     networks:
       - ecommerce-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8025/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  seq:
+    image: datalust/seq:latest
+    container_name: ecommerce-seq
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_NOAUTHENTICATION=true
+      # - SEQ_FIRSTRUN_ADMINUSERNAME=admin
+      # - SEQ_FIRSTRUN_ADMINPASSWORD=Admin123!
+    ports:
+      - "5341:80"
+    volumes:
+      - seq-data:/data
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   redis:
     image: redis:7.2-alpine
@@ -22,33 +50,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  ecommerceapi:
-    image: ecommerceapi
-    build:
-      context: .
-      dockerfile: src/ECommerce.Api/Dockerfile
-    ports:
-      - "5000:8080" # HTTP
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User=sa;Password=Password123;TrustServerCertificate=True;
-      - Redis__ConnectionString=redis:6379,abortConnect=false
-      - ASPNETCORE_URLS=http://+:8080;
-      - ZarinPal__CallbackUrl=http://host.docker.internal:5000/Api/V1/Payment/Verify
-    depends_on:
-      redis:
-        condition: service_healthy
-      ecommerce_db:
-        condition: service_healthy
-    volumes:
-      - ./src/ECommerce.Api/wwwroot:/app/wwwroot
-
-    networks:
-      - ecommerce-network
-    restart: on-failure
 
   ecommerce_db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -68,9 +69,81 @@ services:
       retries: 10
       start_period: 30s
 
+  ecommerceapi:
+    image: ecommerceapi
+    build:
+      context: .
+      dockerfile: src/ECommerce.Api/Dockerfile
+    ports:
+      - "5000:8080" # HTTP
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      # ASP.NET Core
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;
+
+      # Connection Strings
+      - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User=sa;Password=Password123;TrustServerCertificate=True;
+
+      # Serilog (override Seq URL)
+      - Serilog__WriteTo__1__Name=Seq
+      - Serilog__WriteTo__1__Args__serverUrl=http://seq:80
+
+      # Redis
+      - Redis__ConnectionString=redis:6379,abortConnect=false
+
+      # JWT
+      - JwtSettings__Secret=SuperSecretKeyMustBeVeryLongToSatisfySecurityAlgorithms123!
+      - JwtSettings__Secret=${JWT_SECRET}
+      - JwtSettings__Issuer=ECommerceApi
+      - JwtSettings__Audience=ECommerceClient
+      - JwtSettings__ExpiryInMinutes=60
+
+      # ZarinPal
+      - ZarinPal__MerchantId=00000000-0000-0000-0000-000000000000
+      - ZarinPal__CallbackUrl=http://host.docker.internal:5000/Api/V1/Payment/Verify
+
+      # SMTP (Mailhog)
+      - SmtpSettings__Host=mailhog
+      - SmtpSettings__Port=1025
+      - SmtpSettings__SenderEmail=no-reply@ecommerce.com
+      - SmtpSettings__SenderName=ECommerce Team
+      - SmtpSettings__EnableSsl=false
+
+      # HealthChecks UI Settings
+      - HealthChecksUI__HealthChecks__0__Name=ECommerce API
+      - HealthChecksUI__HealthChecks__0__Uri=http://localhost:8080/HealthChecks
+      - HealthChecksUI__Webhooks__0__Name=
+      - HealthChecksUI__Webhooks__0__Uri=
+      - HealthChecksUI__Webhooks__0__Payload=
+      - HealthChecksUI__EvaluationTimeInSeconds=10
+      - HealthChecksUI__MinimumSecondsBetweenFailureNotifications=60
+      - HealthChecksUI__HealthCheckDatabaseConnectionString=Data Source=./healthchecks.db
+
+      # Health Checks UI Storage
+      - HealthChecksUIStorage__StorageType=InMemory
+    depends_on:
+      redis:
+        condition: service_healthy
+      ecommerce_db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/Health/Live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    volumes:
+      - ./src/ECommerce.Api/wwwroot:/app/wwwroot
+    networks:
+      - ecommerce-network
+    restart: on-failure
+
 volumes:
   mssql_data:
   redis-data:
+  seq-data:
 
 networks:
   ecommerce-network:

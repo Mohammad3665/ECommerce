@@ -2,6 +2,7 @@ using System.Text;
 using Asp.Versioning;
 using ECommerce.Api.Middlewares;
 using ECommerce.Application;
+using ECommerce.Domain.Common.Stores;
 using ECommerce.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -29,10 +30,29 @@ public static class ServiceCollectionExtensions
         services.AddApplication();
         services.AddApi();
         services.AddControllers();
+
+        var connectionString = configuration.GetConnectionString(StaticDataStore.DefaultSqlServerConnectionStringName);
+        var redisConnectionString = configuration["Redis:ConnectionString"];
+
+        services.AddHealthChecks()
+            .AddSqlServer(connectionString: connectionString!, name: "database", tags: ["db", "ready"])
+            .AddRedis(redisConnectionString: redisConnectionString!, name: "redis", tags: ["cache", "ready"])
+            .AddUrlGroup(
+                new Uri("http://seq:80"),
+                name: "seq",
+                tags: ["logging", "ready"])
+            .AddUrlGroup(
+                new Uri("http://mailhog:8025"),
+                name: "mailhog",
+                tags: ["email", "ready"]);
+        services.AddHealthChecksUI()
+            .AddInMemoryStorage();
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddExceptionHandler<ValidationExceptionHandler>();
         services.AddProblemDetails();
         services.AddOpenApi();
+
         services.AddApiVersioning(options =>
         {
             options.DefaultApiVersion = new ApiVersion(1);

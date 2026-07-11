@@ -30,13 +30,8 @@ public class ZarinPalPaymentService(HttpClient httpClient, IConfiguration config
             Mobile = mobile
         };
 
-        var json = JsonSerializer.Serialize(request);
-        Console.WriteLine($"Request JSON: {json}");
-
         var response = await httpClient.PostAsJsonAsync(RequestUrl, request);
         var responseContent = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"Response Status: {response.StatusCode}");
-        Console.WriteLine($"Response Content: {responseContent}");
 
         if (!response.IsSuccessStatusCode)
             return new Error("Payment.RequestFailed", "ارتباط با درگاه پرداخت برقرار نشد.", ErrorType.Unexpected);

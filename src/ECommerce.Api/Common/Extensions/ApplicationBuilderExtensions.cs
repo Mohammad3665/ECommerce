@@ -1,3 +1,7 @@
+using ECommerce.Api.Middlewares;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -20,6 +24,8 @@ public static class ApplicationBuilderExtensions
     public static async Task<IApplicationBuilder> UseApplicationMiddlewares(this WebApplication app)
     {
         var isInDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+        app.UseMiddleware<CorrelationIdMiddleware>();
+        app.UseMiddleware<CurrentUserLoggingMiddleware>();
         app.UseSerilogRequestLogging();
 
         if (!isInDocker)
@@ -36,6 +42,18 @@ public static class ApplicationBuilderExtensions
         }
         app.UseExceptionHandler();
         app.UseStaticFiles();
+
+        app.MapHealthChecks("/HealthChecks", new HealthCheckOptions
+        {
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
+
+        app.MapHealthChecksUI(options =>
+        {
+            options.UIPath = "/health-ui";
+            options.ApiPath = "/health-api";
+        });
+
         app.MapControllers();
 
         return app;

@@ -1,6 +1,8 @@
+using ECommerce.Domain.Events.Category;
+
 namespace ECommerce.Application.Features.Categories.Commands.DeleteCategory;
 
-public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteCategoryCommand, Result>
+public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteCategoryCommand, Result>
 {
     public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -21,13 +23,13 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService f
         string? imagePathToDelete = category.ImageUrl;
 
         unitOfWork.CategoryRepository.DeletePermanently(category);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-
-        if (saveResult.IsFailure)
-            return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (!string.IsNullOrEmpty(imagePathToDelete))
-            fileService.DeleteFile(imagePathToDelete);
+            category.AddDomainEvent(new CategoryDeletedDomainEvent(imagePathToDelete));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+            return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         return Result.Success();
     }

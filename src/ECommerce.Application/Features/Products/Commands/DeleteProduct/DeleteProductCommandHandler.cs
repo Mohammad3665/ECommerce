@@ -1,6 +1,8 @@
+using ECommerce.Domain.Events.Product;
+
 namespace ECommerce.Application.Features.Products.Commands.DeleteProduct;
 
-public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteProductCommand, Result>
+public class DeleteProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteProductCommand, Result>
 {
     public async Task<Result> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
@@ -18,13 +20,12 @@ public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileService fi
             .ToList();
 
         unitOfWork.ProductRepository.DeletePermanently(product);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
 
+        product.AddDomainEvent(new ProductDeletedDomainEvent(imagePathsToRemove));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)
             return new Error("Product.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
-
-        foreach (var relativeUrl in imagePathsToRemove)
-            fileService.DeleteFile(relativeUrl);
 
         return Result.Success();
     }

@@ -139,4 +139,12 @@ public class FileService(IPathService pathService) : IFileService
 
         return new MultipleUploadResult(uploadedUrls, errors);
     }
+
+    public Task DeleteFilesAsync(IEnumerable<string> paths, CancellationToken cancellationToken = default)
+    {
+        foreach (var path in paths)
+            DeleteFile(path);
+
+        return Task.CompletedTask;
+    }
 }

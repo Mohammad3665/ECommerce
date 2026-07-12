@@ -1,6 +1,8 @@
+using ECommerce.Domain.Events.Slide;
+
 namespace ECommerce.Application.Features.Slides.Commands.DeleteSlide;
 
-public class DeleteSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteSlideCommand, Result>
+public class DeleteSlideCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteSlideCommand, Result>
 {
     public async Task<Result> Handle(DeleteSlideCommand request, CancellationToken cancellationToken)
     {
@@ -21,12 +23,13 @@ public class DeleteSlideCommandHandler(IUnitOfWork unitOfWork, IFileService file
             slideToShift.DisplayOrder--;
 
         unitOfWork.SlideRepository.DeletePermanently(slide);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
 
+        slide.AddDomainEvent(new SlideDeletedDomainEvent(imagePathToDelete));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)
             return new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
-        fileService.DeleteFile(imagePathToDelete);
         return Result.Success();
     }
 }

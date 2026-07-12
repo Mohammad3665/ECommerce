@@ -5,6 +5,7 @@ using ECommerce.Infrastructure.Authentication;
 using ECommerce.Infrastructure.Common.Services;
 using ECommerce.Infrastructure.Identity.Handlers;
 using ECommerce.Infrastructure.Identity.Providers;
+using ECommerce.Infrastructure.Persistence.Interceptors;
 using ECommerce.Infrastructure.Repositories.Common.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using StackExchange.Redis;
@@ -24,10 +25,15 @@ public static class DependencyInjection
     /// <returns>The configured service collection.</returns>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        // Domain Events
+        services.AddScoped<DispatchDomainEventsInterceptor>();
+
         // Database
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.
-                GetConnectionString(StaticDataStore.DefaultSqlServerConnectionStringName)));
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString(StaticDataStore.DefaultSqlServerConnectionStringName));
+            options.AddInterceptors(sp.GetRequiredService<DispatchDomainEventsInterceptor>());
+        });
 
         // Unit of Work
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -38,6 +44,13 @@ public static class DependencyInjection
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
+
+        // Product Services
+        services.AddScoped<IProductImageService, ProductImageService>();
+        services.AddScoped<IProductSpecificationService, ProductSpecificationService>();
+
+        // Slug Service
+        services.AddScoped<ISlugService, SlugService>();
 
         // User Context
         services.AddScoped<ICurrentUserService, CurrenUserService>();
@@ -50,6 +63,13 @@ public static class DependencyInjection
         services.AddScoped<ICartService, RedisCartService>();
         services.AddSingleton<IConnectionMultiplexer>(provider =>
             ConnectionMultiplexer.Connect(configuration["Redis:ConnectionString"]!));
+
+        // Redis Caching
+        services.AddSingleton<IConnectionMultiplexer>(_ =>
+        {
+            var connectionString = configuration["Redis:ConnectionString"]!;
+            return ConnectionMultiplexer.Connect(connectionString);
+        });
 
         // Payment Service
         services.AddHttpClient<IPaymentService, ZarinPalPaymentService>();

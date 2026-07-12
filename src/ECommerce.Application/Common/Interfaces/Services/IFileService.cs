@@ -35,6 +35,8 @@ public interface IFileService
     /// <param name="relativeFilePath">The relative directory path where the file is located.</param>
     void DeleteFile(string relativeFilePath);
 
+    Task DeleteFilesAsync(IEnumerable<string> paths, CancellationToken cancellationToken = default);
+
     /// <summary>
     ///     Sanitizes a file name by removing invalid characters and limiting length.
     /// </summary>

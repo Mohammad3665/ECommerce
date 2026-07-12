@@ -4,7 +4,7 @@ using Mapster;
 
 namespace ECommerce.Application.Features.Products.Commands.CreateProduct;
 
-public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateProductCommand, Result<long>>
+public class CreateProductCommandHandler(IUnitOfWork unitOfWork, ISlugService slugService) : IRequestHandler<CreateProductCommand, Result<long>>
 {
     public async Task<Result<long>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
@@ -29,19 +29,10 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
         if (isNameDuplicate)
             return new Error("Product.DuplicateName", "محصولی با این نام قبلاً ثبت شده است.", ErrorType.Validation);
 
-        string baseSlug = request.EnglishName.ToSlug();
-        string finalSlug = baseSlug;
-        int version = 1;
-
-        while (await unitOfWork.ProductRepository.IsExistAsync(expression: p => p.Slug == finalSlug, cancellationToken: cancellationToken))
-        {
-            finalSlug = $"{baseSlug}-{version}";
-            version++;
-        }
 
         var product = request.Adapt<Product>();
 
-        product.Slug = finalSlug;
+        product.Slug = await slugService.GenerateProductSlugAsync(request.EnglishName, product.Id);
         product.Name = request.Name.Trim();
         product.EnglishName = request.EnglishName.Trim();
         product.ViewCount = 0;

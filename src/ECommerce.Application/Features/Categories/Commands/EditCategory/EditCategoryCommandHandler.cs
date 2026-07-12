@@ -1,10 +1,11 @@
 using ECommerce.Application.Common.Extensions;
 using ECommerce.Domain.Entities.Product;
+using ECommerce.Domain.Events.Category;
 using Mapster;
 
 namespace ECommerce.Application.Features.Categories.Commands.EditCategory;
 
-public class EditCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<EditCategoryCommand, Result>
+public class EditCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<EditCategoryCommand, Result>
 {
     public async Task<Result> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -30,13 +31,13 @@ public class EditCategoryCommandHandler(IUnitOfWork unitOfWork, IFileService fil
             category.ImageUrl = request.ImageUrl;
 
         unitOfWork.CategoryRepository.Update(category);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-
-        if (saveResult.IsFailure)
-            return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-            fileService.DeleteFile(oldImagePath);
+            category.AddDomainEvent(new CategoryEditedDomainEvent(oldImagePath));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+            return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         return Result.Success();
     }

@@ -1,9 +1,10 @@
 using ECommerce.Domain.Entities.Application.Slide;
+using ECommerce.Domain.Events.Slide;
 using Mapster;
 
 namespace ECommerce.Application.Features.Slides.Commands.EditSlide;
 
-public class EditSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<EditSlideCommand, Result>
+public class EditSlideCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<EditSlideCommand, Result>
 {
     public async Task<Result> Handle(EditSlideCommand request, CancellationToken cancellationToken)
     {
@@ -54,13 +55,13 @@ public class EditSlideCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
             slide.ImageUrl = request.ImageUrl!;
 
         unitOfWork.SlideRepository.Update(slide);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-
-        if (saveResult.IsFailure)
-            return new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-            fileService.DeleteFile(oldImagePath);
+            slide.AddDomainEvent(new SlideEditedDomainEvent(oldImagePath));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+        if (saveResult.IsFailure)
+            return new Error("Slide.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
 
         return Result.Success();
     }

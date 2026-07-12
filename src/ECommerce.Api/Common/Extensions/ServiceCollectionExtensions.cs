@@ -1,5 +1,6 @@
 using System.Text;
 using Asp.Versioning;
+using ECommerce.Api.Common.Binders;
 using ECommerce.Api.Middlewares;
 using ECommerce.Application;
 using ECommerce.Domain.Common.Stores;
@@ -29,7 +30,12 @@ public static class ServiceCollectionExtensions
         services.AddInfrastructure(configuration);
         services.AddApplication();
         services.AddApi();
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            using var scope = services.BuildServiceProvider();
+            var sanitizer = scope.GetRequiredService<IHtmlSanitizerService>();
+            options.ModelBinderProviders.Insert(0, new SanitizedStringBinderProvider(sanitizer));
+        });
 
         var connectionString = configuration.GetConnectionString(StaticDataStore.DefaultSqlServerConnectionStringName);
         var redisConnectionString = configuration["Redis:ConnectionString"];

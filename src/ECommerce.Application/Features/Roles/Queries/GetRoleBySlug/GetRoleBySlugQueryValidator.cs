@@ -7,6 +7,6 @@ public class GetRoleBySlugQueryValidator : AbstractValidator<GetRoleBySlugQuery>
         RuleFor(x => x.Slug)
             .NotEmpty()
             .WithName("اسلاگ")
-            .MaximumLength(1000);
+            .MaximumLength(300);
     }
 }

@@ -7,6 +7,6 @@ public class GetArticleCategoryBySlugQueryValidator : AbstractValidator<GetArtic
         RuleFor(x => x.Slug)
             .NotEmpty()
             .WithName("اسلاگ")
-            .MaximumLength(1000);
+            .MaximumLength(300);
     }
 }

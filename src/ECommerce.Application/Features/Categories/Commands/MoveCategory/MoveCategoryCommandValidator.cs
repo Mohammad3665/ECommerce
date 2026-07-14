@@ -6,6 +6,7 @@ public class MoveCategoryCommandValidator : AbstractValidator<MoveCategoryComman
     {
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithName("اسلاگ");
+            .WithName("اسلاگ")
+            .MaximumLength(300);
     }
 }

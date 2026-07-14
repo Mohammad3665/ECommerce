@@ -7,7 +7,7 @@ public class EditProductCommandValidator : AbstractValidator<EditProductCommand>
         RuleFor(x => x.CurrentSlug)
             .NotEmpty()
             .WithName("اسلاگ فعلی")
-            .MaximumLength(1000);
+            .MaximumLength(300);
 
         RuleFor(x => x.BrandId)
             .NotEmpty()

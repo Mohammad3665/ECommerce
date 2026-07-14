@@ -5,6 +5,7 @@ using ECommerce.Infrastructure.Authentication;
 using ECommerce.Infrastructure.Common.Services;
 using ECommerce.Infrastructure.Identity.Handlers;
 using ECommerce.Infrastructure.Identity.Providers;
+using ECommerce.Infrastructure.Options;
 using ECommerce.Infrastructure.Persistence.Interceptors;
 using ECommerce.Infrastructure.Repositories.Common.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
@@ -76,6 +77,9 @@ public static class DependencyInjection
 
         // Html Sanitizer Service
         services.AddScoped<IHtmlSanitizerService, HtmlSanitizerService>();
+
+        // Add Option Pattern
+        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
         return services;
     }

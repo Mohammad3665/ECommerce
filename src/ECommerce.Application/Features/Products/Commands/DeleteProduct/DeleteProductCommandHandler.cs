@@ -1,4 +1,4 @@
-using ECommerce.Domain.Events.Product;
+using ECommerce.Domain.Entities.Product.Events.Product;
 
 namespace ECommerce.Application.Features.Products.Commands.DeleteProduct;
 

@@ -1,6 +1,5 @@
-using ECommerce.Application.Common.Extensions;
 using ECommerce.Domain.Entities.Product;
-using ECommerce.Domain.Events.Product;
+using ECommerce.Domain.Entities.Product.Events.Product;
 using Mapster;
 
 namespace ECommerce.Application.Features.Products.Commands.EditProduct;

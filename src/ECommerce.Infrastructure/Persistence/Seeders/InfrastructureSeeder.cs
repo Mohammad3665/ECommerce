@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Domain.Entities.Application.Role;
 using ECommerce.Domain.Entities.Identity;
 using ECommerce.Infrastructure.Common.Services;
@@ -97,66 +98,66 @@ public static class InfrastructureSeeder
         return new List<Permission>
         {
             // User Management
-            new Permission { Name = "users.create", Module = "User Management", Description = "امکان ساخت کاربر جدید" },
-            new Permission { Name = "users.read", Module = "User Management", Description = "امکان مشاهده لیست و جزئیات کاربران" },
-            new Permission { Name = "users.update", Module = "User Management", Description = "امکان ویرایش اطلاعات کاربران" },
-            new Permission { Name = "users.delete", Module = "User Management", Description = "امکان حذف نرم یا غیرفعال‌سازی کاربران" },
+            new Permission { Name = Permissions.Users.Create, Module = "User Management", Description = "امکان ساخت کاربر جدید" },
+            new Permission { Name = Permissions.Users.Read, Module = "User Management", Description = "امکان مشاهده لیست و جزئیات کاربران" },
+            new Permission { Name = Permissions.Users.Update, Module = "User Management", Description = "امکان ویرایش اطلاعات کاربران" },
+            new Permission { Name = Permissions.Users.Delete, Module = "User Management", Description = "امکان حذف نرم یا غیرفعال‌سازی کاربران" },
 
             // Role Management
-            new Permission { Name = "roles.create", Module = "Role Management", Description = "امکان ساخت نقش جدید" },
-            new Permission { Name = "roles.read", Module = "Role Management", Description = "امکان مشاهده نقش‌ها و دسترسی‌ها" },
-            new Permission { Name = "roles.update", Module = "Role Management", Description = "امکان ویرایش نقش‌ها و تغییر دسترسی‌ها" },
-            new Permission { Name = "roles.delete", Module = "Role Management", Description = "امکان حذف نقش‌های سفارشی سیستم" },
+            new Permission { Name = Permissions.Roles.Create, Module = "Role Management", Description = "امکان ساخت نقش جدید" },
+            new Permission { Name = Permissions.Roles.Read, Module = "Role Management", Description = "امکان مشاهده نقش‌ها و دسترسی‌ها" },
+            new Permission { Name = Permissions.Roles.Update, Module = "Role Management", Description = "امکان ویرایش نقش‌ها و تغییر دسترسی‌ها" },
+            new Permission { Name = Permissions.Roles.Delete, Module = "Role Management", Description = "امکان حذف نقش‌های سفارشی سیستم" },
 
             // Product Management
-            new Permission { Name = "products.create", Module = "Product Management", Description = "امکان ثبت محصول جدید" },
-            new Permission { Name = "products.read", Module = "Product Management", Description = "امکان مشاهده محصولات پنل مدیریت" },
-            new Permission { Name = "products.update", Module = "Product Management", Description = "امکان ویرایش اطلاعات محصولات" },
-            new Permission { Name = "products.delete", Module = "Product Management", Description = "امکان حذف محصولات" },
+            new Permission { Name = Permissions.Products.Create, Module = "Product Management", Description = "امکان ثبت محصول جدید" },
+            new Permission { Name = Permissions.Products.Read, Module = "Product Management", Description = "امکان مشاهده محصولات پنل مدیریت" },
+            new Permission { Name = Permissions.Products.Update, Module = "Product Management", Description = "امکان ویرایش اطلاعات محصولات" },
+            new Permission { Name = Permissions.Products.Delete, Module = "Product Management", Description = "امکان حذف محصولات" },
 
             // Category Management
-            new Permission { Name = "categories.create", Module = "Category Management", Description = "امکان ساخت دسته‌بندی جدید" },
-            new Permission { Name = "categories.read", Module = "Category Management", Description = "امکان مشاهده دسته‌بندی‌ها" },
-            new Permission { Name = "categories.update", Module = "Category Management", Description = "امکان ویرایش دسته‌بندی‌ها" },
-            new Permission { Name = "categories.delete", Module = "Category Management", Description = "امکان حذف دسته‌بندی‌ها" },
+            new Permission { Name = Permissions.Categories.Create, Module = "Category Management", Description = "امکان ساخت دسته‌بندی جدید" },
+            new Permission { Name = Permissions.Categories.Read, Module = "Category Management", Description = "امکان مشاهده دسته‌بندی‌ها" },
+            new Permission { Name = Permissions.Categories.Update, Module = "Category Management", Description = "امکان ویرایش دسته‌بندی‌ها" },
+            new Permission { Name = Permissions.Categories.Delete, Module = "Category Management", Description = "امکان حذف دسته‌بندی‌ها" },
 
             // Brand Management
-            new Permission { Name = "brands.create", Module = "Brand Management", Description = "امکان ثبت برند جدید" },
-            new Permission { Name = "brands.read", Module = "Brand Management", Description = "امکان مشاهده برندها" },
-            new Permission { Name = "brands.update", Module = "Brand Management", Description = "امکان ویرایش اطلاعات برندها" },
-            new Permission { Name = "brands.delete", Module = "Brand Management", Description = "امکان حذف برندها" },
+            new Permission { Name = Permissions.Brands.Create, Module = "Brand Management", Description = "امکان ثبت برند جدید" },
+            new Permission { Name = Permissions.Brands.Read, Module = "Brand Management", Description = "امکان مشاهده برندها" },
+            new Permission { Name = Permissions.Brands.Update, Module = "Brand Management", Description = "امکان ویرایش اطلاعات برندها" },
+            new Permission { Name = Permissions.Brands.Delete, Module = "Brand Management", Description = "امکان حذف برندها" },
 
             // Order Management
-            new Permission { Name = "orders.read", Module = "Order Management", Description = "امکان مشاهده و فیلتر سفارشات مشتریان" },
-            new Permission { Name = "orders.update", Module = "Order Management", Description = "امکان ویرایش وضعیت سفارشات" },
-            new Permission { Name = "orders.cancel", Module = "Order Management", Description = "امکان لغو سفارشات مشتریان" },
+            new Permission { Name = Permissions.Orders.Read, Module = "Order Management", Description = "امکان مشاهده و فیلتر سفارشات مشتریان" },
+            new Permission { Name = Permissions.Orders.Update, Module = "Order Management", Description = "امکان ویرایش وضعیت سفارشات" },
+            new Permission { Name = Permissions.Orders.Cancel, Module = "Order Management", Description = "امکان لغو سفارشات مشتریان" },
 
             // Comment Management
-            new Permission { Name = "comments.read", Module = "Comment Management", Description = "امکان مشاهده نظرات کاربران روی محصولات/مقالات" },
-            new Permission { Name = "comments.approve", Module = "Comment Management", Description = "امکان تایید نظرات جهت نمایش در سایت" },
-            new Permission { Name = "comments.reject", Module = "Comment Management", Description = "امکان رد کردن نظرات کاربران" },
-            new Permission { Name = "comments.delete", Module = "Comment Management", Description = "امکان حذف کامل نظرات" },
+            new Permission { Name = Permissions.Comments.Read, Module = "Comment Management", Description = "امکان مشاهده نظرات کاربران روی محصولات/مقالات" },
+            new Permission { Name = Permissions.Comments.Approve, Module = "Comment Management", Description = "امکان تایید نظرات جهت نمایش در سایت" },
+            new Permission { Name = Permissions.Comments.Reject, Module = "Comment Management", Description = "امکان رد کردن نظرات کاربران" },
+            new Permission { Name = Permissions.Comments.Delete, Module = "Comment Management", Description = "امکان حذف کامل نظرات" },
 
             // Article Management
-            new Permission { Name = "articles.create", Module = "Article Management", Description = "امکان ایجاد و انتشار مقاله در وبلاگ" },
-            new Permission { Name = "articles.read", Module = "Article Management", Description = "امکان مشاهده لیست مقالات پنل" },
-            new Permission { Name = "articles.update", Module = "Article Management", Description = "امکان ویرایش محتوای مقالات" },
-            new Permission { Name = "articles.delete", Module = "Article Management", Description = "امکان حذف مقالات وبلاگ" },
+            new Permission { Name = Permissions.Articles.Create, Module = "Article Management", Description = "امکان ایجاد و انتشار مقاله در وبلاگ" },
+            new Permission { Name = Permissions.Articles.Read, Module = "Article Management", Description = "امکان مشاهده لیست مقالات پنل" },
+            new Permission { Name = Permissions.Articles.Update, Module = "Article Management", Description = "امکان ویرایش محتوای مقالات" },
+            new Permission { Name = Permissions.Articles.Delete, Module = "Article Management", Description = "امکان حذف مقالات وبلاگ" },
 
             // Slider Management
-            new Permission { Name = "sliders.create", Module = "Slider Management", Description = "امکان افزودن اسلاید جدید به صفحه اصلی" },
-            new Permission { Name = "sliders.read", Module = "Slider Management", Description = "امکان مشاهده اسلایدرهای وب‌سایت" },
-            new Permission { Name = "sliders.update", Module = "Slider Management", Description = "امکان ویرایش تصاویر و لینک‌های اسلایدر" },
-            new Permission { Name = "sliders.delete", Module = "Slider Management", Description = "امکان حذف اسلایدرها" },
+            new Permission { Name = Permissions.Sliders.Create, Module = "Slider Management", Description = "امکان افزودن اسلاید جدید به صفحه اصلی" },
+            new Permission { Name = Permissions.Sliders.Read, Module = "Slider Management", Description = "امکان مشاهده اسلایدرهای وب‌سایت" },
+            new Permission { Name = Permissions.Sliders.Update, Module = "Slider Management", Description = "امکان ویرایش تصاویر و لینک‌های اسلایدر" },
+            new Permission { Name = Permissions.Sliders.Delete, Module = "Slider Management", Description = "امکان حذف اسلایدرها" },
 
             // Coupon Management
-            new Permission { Name = "coupons.create", Module = "Coupon Management", Description = "امکان تعریف کد تخفیف جدید" },
-            new Permission { Name = "coupons.read", Module = "Coupon Management", Description = "امکان مشاهده کدهای تخفیف تعریف شده" },
-            new Permission { Name = "coupons.update", Module = "Coupon Management", Description = "امکان ویرایش شرایط و تاریخ کدهای تخفیف" },
-            new Permission { Name = "coupons.delete", Module = "Coupon Management", Description = "امکان حذف کدهای تخفیف" },
+            new Permission { Name = Permissions.Coupons.Create, Module = "Coupon Management", Description = "امکان تعریف کد تخفیف جدید" },
+            new Permission { Name = Permissions.Coupons.Read, Module = "Coupon Management", Description = "امکان مشاهده کدهای تخفیف تعریف شده" },
+            new Permission { Name = Permissions.Coupons.Update, Module = "Coupon Management", Description = "امکان ویرایش شرایط و تاریخ کدهای تخفیف" },
+            new Permission { Name = Permissions.Coupons.Delete, Module = "Coupon Management", Description = "امکان حذف کدهای تخفیف" },
 
             // Dashboard
-            new Permission { Name = "dashboard.view", Module = "Dashboard", Description = "امکان ورود و مشاهده آمارهای کلی داشبورد مدیریت" }
+            new Permission { Name = Permissions.Dashboard.View, Module = "Dashboard", Description = "امکان ورود و مشاهده آمارهای کلی داشبورد مدیریت" }
         };
     }
 

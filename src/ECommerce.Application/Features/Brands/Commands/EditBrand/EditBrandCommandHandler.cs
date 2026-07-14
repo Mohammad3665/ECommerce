@@ -1,10 +1,11 @@
 using ECommerce.Application.Common.Extensions;
 using ECommerce.Domain.Entities.Product;
+using ECommerce.Domain.Entities.Product.Events.Brand;
 using Mapster;
 
 namespace ECommerce.Application.Features.Brands.Commands.EditBrand;
 
-public class EditBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<EditBrandCommand, Result>
+public class EditBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<EditBrandCommand, Result>
 {
     public async Task<Result> Handle(EditBrandCommand request, CancellationToken cancellationToken)
     {
@@ -31,13 +32,12 @@ public class EditBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileSe
             brand.LogoImageUrl = request.LogoImageUrl!;
 
         unitOfWork.BrandRepository.Update(brand);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
 
+        brand.AddDomainEvent(new BrandEditedDomainEvent(oldImagePath));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)
             return new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
-
-        if (hasNewImage && !string.IsNullOrEmpty(oldImagePath))
-            fileService.DeleteFile(oldImagePath);
 
         return Result.Success();
     }

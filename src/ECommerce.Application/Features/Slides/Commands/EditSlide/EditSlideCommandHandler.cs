@@ -1,5 +1,5 @@
 using ECommerce.Domain.Entities.Application.Slide;
-using ECommerce.Domain.Events.Slide;
+using ECommerce.Domain.Entities.Slide.Events.Slide;
 using Mapster;
 
 namespace ECommerce.Application.Features.Slides.Commands.EditSlide;

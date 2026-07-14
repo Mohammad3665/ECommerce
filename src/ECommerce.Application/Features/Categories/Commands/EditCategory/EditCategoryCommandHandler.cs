@@ -1,6 +1,6 @@
 using ECommerce.Application.Common.Extensions;
 using ECommerce.Domain.Entities.Product;
-using ECommerce.Domain.Events.Category;
+using ECommerce.Domain.Entities.Product.Events.Category;
 using Mapster;
 
 namespace ECommerce.Application.Features.Categories.Commands.EditCategory;

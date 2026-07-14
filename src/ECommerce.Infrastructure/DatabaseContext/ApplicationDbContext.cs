@@ -1,4 +1,4 @@
-using ECommerce.Domain.Common.DomainEvent;
+using ECommerce.Domain.Abstractions.DomainEvent;
 using ECommerce.Domain.Entities.Application.Article;
 using ECommerce.Domain.Entities.Application.Invoice;
 using ECommerce.Domain.Entities.Application.Role;

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Products;
 using ECommerce.Application.Features.Products.Commands.CreateProduct;
 using ECommerce.Application.Features.Products.Commands.DeleteProduct;
@@ -11,7 +12,7 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
 {
 
     [HttpGet]
-    [HasPermission("products.read")]
+    [HasPermission(Permissions.Products.Read)]
     public async Task<IActionResult> GetLowStockAlerts(CancellationToken cancellationToken)
     {
         var query = new GetLowStockProductsQuery();
@@ -20,7 +21,7 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
     }
 
     [HttpPost]
-    [HasPermission("products.create")]
+    [HasPermission(Permissions.Products.Create)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateProductRequestDto request, List<IFormFile> imageFiles, CancellationToken cancellationToken)
     {
@@ -72,7 +73,7 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("products.update")]
+    [HasPermission(Permissions.Products.Update)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Edit([FromRoute] string slug, [FromForm] EditProductRequestDto request, List<IFormFile> newImageFiles, CancellationToken cancellationToken)
     {
@@ -140,7 +141,7 @@ public class ProductsController(ISender sender, ILogger<ProductsController> logg
     }
 
     [HttpDelete("{slug}")]
-    [HasPermission("products.delete")]
+    [HasPermission(Permissions.Products.Delete)]
     public async Task<IActionResult> Delete([FromRoute] string slug, CancellationToken cancellationToken)
     {
         var command = new DeleteProductCommand(slug);

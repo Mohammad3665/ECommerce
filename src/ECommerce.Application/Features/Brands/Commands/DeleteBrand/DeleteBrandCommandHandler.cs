@@ -1,6 +1,8 @@
+using ECommerce.Domain.Entities.Product.Events.Brand;
+
 namespace ECommerce.Application.Features.Brands.Commands.DeleteBrand;
 
-public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService fileService) : IRequestHandler<DeleteBrandCommand, Result>
+public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteBrandCommand, Result>
 {
     public async Task<Result> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
     {
@@ -21,13 +23,12 @@ public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork, IFileService file
         var imageUrlToRemove = brand.LogoImageUrl;
 
         unitOfWork.BrandRepository.DeletePermanently(brand);
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
 
+        brand.AddDomainEvent(new BrandDeletedDomainEvent(imageUrlToRemove));
+
+        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
         if (saveResult.IsFailure)
             return new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
-
-        if (saveResult.IsSuccess && !string.IsNullOrWhiteSpace(imageUrlToRemove))
-            fileService.DeleteFile(imageUrlToRemove);
 
         return Result.Success();
     }

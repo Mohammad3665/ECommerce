@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Brands;
 using ECommerce.Application.Features.Brands.Commands.CreateBrand;
 using ECommerce.Application.Features.Brands.Commands.DeleteBrand;
@@ -9,7 +10,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class BrandsController(ISender sender, ILogger<BrandsController> logger, IFileService fileService) : AdminBaseController
 {
     [HttpPost]
-    [HasPermission("brands.create")]
+    [HasPermission(Permissions.Brands.Create)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateBrandRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -27,13 +28,13 @@ public class BrandsController(ISender sender, ILogger<BrandsController> logger, 
             LogoImageUrl: relativeUrl,
             IsActive: request.IsActive
         );
-        
+
         var result = await sender.Send(command, cancellationToken);
         return result.ToActionResult(logger);
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("brands.update")]
+    [HasPermission(Permissions.Brands.Update)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Edit(string slug, [FromForm] EditBrandRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -62,7 +63,7 @@ public class BrandsController(ISender sender, ILogger<BrandsController> logger, 
     }
 
     [HttpDelete("{slug}")]
-    [HasPermission("brands.delete")]
+    [HasPermission(Permissions.Brands.Delete)]
     public async Task<IActionResult> DeleteAsync(string slug, CancellationToken cancellationToken)
     {
         var command = new DeleteBrandCommand(slug);
@@ -71,7 +72,7 @@ public class BrandsController(ISender sender, ILogger<BrandsController> logger, 
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("brands.update")]
+    [HasPermission(Permissions.Brands.Update)]
     public async Task<IActionResult> ToggleStatus(string slug, [FromBody] bool isActive, CancellationToken cancellationToken)
     {
         var command = new ToggleBrandStatusCommand(slug, isActive);

@@ -1,4 +1,4 @@
-using ECommerce.Domain.Events.Category;
+using ECommerce.Domain.Entities.Product.Events.Category;
 
 namespace ECommerce.Application.Features.Categories.Commands.DeleteCategory;
 

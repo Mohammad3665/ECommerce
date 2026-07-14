@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Coupons;
 using ECommerce.Application.Features.Coupons.Commands.CreateCoupon;
 using ECommerce.Application.Features.Coupons.Commands.DeleteCoupon;
@@ -10,7 +11,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class CouponsController(ISender sender, ILogger<CouponsController> logger) : AdminBaseController
 {
     [HttpGet]
-    [HasPermission("coupons.read")]
+    [HasPermission(Permissions.Coupons.Read)]
     public async Task<IActionResult> GetAll([FromQuery] GetAllCouponsQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
@@ -18,7 +19,7 @@ public class CouponsController(ISender sender, ILogger<CouponsController> logger
     }
 
     [HttpPost]
-    [HasPermission("coupons.create")]
+    [HasPermission(Permissions.Coupons.Create)]
     public async Task<IActionResult> Create([FromBody] CreateCouponRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<CreateCouponCommand>();
@@ -27,7 +28,7 @@ public class CouponsController(ISender sender, ILogger<CouponsController> logger
     }
 
     [HttpPut("{id:guid}")]
-    [HasPermission("coupons.update")]
+    [HasPermission(Permissions.Coupons.Update)]
     public async Task<IActionResult> Edit(Guid id, [FromBody] EditCouponRequestDto dto, CancellationToken cancellationToken)
     {
         var command = new EditCouponCommand(id, dto.Code, dto.Type, dto.Value, dto.MinOrderAmount, dto.UsageLimit, dto.StartDate, dto.EndDate);
@@ -36,7 +37,7 @@ public class CouponsController(ISender sender, ILogger<CouponsController> logger
     }
 
     [HttpDelete("{id:guid}")]
-    [HasPermission("coupons.delete")]
+    [HasPermission(Permissions.Coupons.Delete)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteCouponCommand(id);
@@ -45,7 +46,7 @@ public class CouponsController(ISender sender, ILogger<CouponsController> logger
     }
 
     [HttpPut("{id:guid}")]
-    [HasPermission("coupons.update")]
+    [HasPermission(Permissions.Coupons.Update)]
     public async Task<IActionResult> ToggleStatus(Guid id, [FromBody] bool isActive, CancellationToken cancellationToken)
     {
         var command = new ToggleCouponStatusCommand(id, isActive);

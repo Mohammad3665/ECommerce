@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Categories;
 using ECommerce.Application.Features.Categories.Commands.CreateCategory;
 using ECommerce.Application.Features.Categories.Commands.DeleteCategory;
@@ -11,7 +12,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class CategoriesController(ILogger<CategoriesController> logger, ISender sender, IFileService fileService) : AdminBaseController
 {
     [HttpGet]
-    [HasPermission("categories.read")]
+    [HasPermission(Permissions.Categories.Read)]
     public async Task<IActionResult> GetPaged([FromQuery] GetPagedCategoriesQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
@@ -19,7 +20,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
     }
 
     [HttpPost]
-    [HasPermission("categories.create")]
+    [HasPermission(Permissions.Categories.Create)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateCategoryRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -29,7 +30,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
             string fileNameSeed = $"{request.EnglishName.Trim()}_gallery";
             relativeUrl = await fileService.SaveFileAsync(imageFile, fileNameSeed, "uploads/categories");
         }
-        
+
         var command = new CreateCategoryCommand(
             Name: request.Name,
             EnglishName: request.EnglishName,
@@ -43,7 +44,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("categories.update")]
+    [HasPermission(Permissions.Categories.Update)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Edit(string slug, [FromForm] EditCategoryRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -73,7 +74,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
     }
 
     [HttpDelete("{slug}")]
-    [HasPermission("categories.delete")]
+    [HasPermission(Permissions.Categories.Delete)]
     public async Task<IActionResult> Delete(string slug, CancellationToken cancellationToken)
     {
         var command = new DeleteCategoryCommand(slug);
@@ -82,7 +83,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("categories.update")]
+    [HasPermission(Permissions.Categories.Update)]
     public async Task<IActionResult> ToggleStatus(string slug, [FromBody] bool IsActive, CancellationToken cancellationToken)
     {
         var command = new ToggleCategoryStatusCommand(slug, IsActive);
@@ -91,7 +92,7 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("categories.update")]
+    [HasPermission(Permissions.Categories.Update)]
     public async Task<IActionResult> Move(string slug, [FromBody] MoveCategoryRequestDto dto, CancellationToken cancellationToken)
     {
         var command = new MoveCategoryCommand(slug, dto.newParentId);

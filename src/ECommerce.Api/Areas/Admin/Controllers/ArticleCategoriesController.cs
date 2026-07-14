@@ -1,4 +1,5 @@
 using ECommerce.Api.Common.Extensions;
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.ArticleCategories;
 using ECommerce.Application.Features.ArticleCategories.Commands.CreateArticleCategory;
 using ECommerce.Application.Features.ArticleCategories.Commands.DeleteArticleCategory;
@@ -10,7 +11,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class ArticleCategoriesController(ISender sender, ILogger<ArticleCategoriesController> logger) : AdminBaseController
 {
     [HttpPost]
-    [HasPermission("articles.create")]
+    [HasPermission(Permissions.Articles.Create)]
     public async Task<IActionResult> Create([FromBody] CreateArticleCategoryRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<CreateArticleCategoryCommand>();
@@ -19,7 +20,7 @@ public class ArticleCategoriesController(ISender sender, ILogger<ArticleCategori
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("articles.update")]
+    [HasPermission(Permissions.Articles.Update)]
     public async Task<IActionResult> Edit(string slug, [FromBody] EditArticleCategoryRequestDto dto, CancellationToken cancellationToken)
     {
         var command = new EditArticleCategoryCommand(slug, dto.Name, dto.EnglishName);
@@ -28,7 +29,7 @@ public class ArticleCategoriesController(ISender sender, ILogger<ArticleCategori
     }
 
     [HttpDelete("{slug}")]
-    [HasPermission("articles.delete")]
+    [HasPermission(Permissions.Articles.Delete)]
     public async Task<IActionResult> Delete(string slug, CancellationToken cancellationToken)
     {
         var command = new DeleteArticleCategoryCommand(slug);

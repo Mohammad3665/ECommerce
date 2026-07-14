@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Articles;
 using ECommerce.Application.Features.Articles.Commands.ChangeArticleStatus;
 using ECommerce.Application.Features.Articles.Commands.CreateArticle;
@@ -10,7 +11,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class ArticlesController(ISender sender, ILogger<ArticlesController> logger, IFileService fileService) : AdminBaseController
 {
     [HttpGet("{slug}")]
-    [HasPermission("articles.read")]
+    [HasPermission(Permissions.Articles.Read)]
     public async Task<IActionResult> AdminGet(string slug, CancellationToken cancellationToken)
     {
         var query = new AdminGetArticleBySlugQuery(slug);
@@ -19,7 +20,7 @@ public class ArticlesController(ISender sender, ILogger<ArticlesController> logg
     }
 
     [HttpPost]
-    [HasPermission("articles.create")]
+    [HasPermission(Permissions.Articles.Create)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateArticleRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -46,7 +47,7 @@ public class ArticlesController(ISender sender, ILogger<ArticlesController> logg
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("articles.update")]
+    [HasPermission(Permissions.Articles.Update)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Edit(string slug, [FromForm] EditArticleRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -76,7 +77,7 @@ public class ArticlesController(ISender sender, ILogger<ArticlesController> logg
     }
 
     [HttpDelete("{slug}")]
-    [HasPermission("articles.delete")]
+    [HasPermission(Permissions.Articles.Delete)]
     public async Task<IActionResult> Delete(string slug, CancellationToken cancellationToken)
     {
         var command = new DeleteArticleCommand(slug);
@@ -85,7 +86,7 @@ public class ArticlesController(ISender sender, ILogger<ArticlesController> logg
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("articles.update")]
+    [HasPermission(Permissions.Articles.Update)]
     public async Task<IActionResult> ChangeStatus(string slug, [FromBody] string status, CancellationToken cancellationToken)
     {
         var command = new ChangeArticleStatusCommand(slug, status);

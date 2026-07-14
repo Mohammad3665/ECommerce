@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Slides;
 using ECommerce.Application.Features.Slides.Commands.CreateSlide;
 using ECommerce.Application.Features.Slides.Commands.DeleteSlide;
@@ -11,7 +12,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class SlidesController(ISender sender, ILogger<SlidesController> logger, IFileService fileService) : AdminBaseController
 {
     [HttpGet]
-    [HasPermission("sliders.read")]
+    [HasPermission(Permissions.Sliders.Read)]
     public async Task<IActionResult> AdminGetAll([FromQuery] GetAdminSlidesQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
@@ -19,7 +20,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpGet("{id:long}")]
-    [HasPermission("sliders.read")]
+    [HasPermission(Permissions.Sliders.Read)]
     public async Task<IActionResult> GetById(long id, CancellationToken cancellationToken)
     {
         var query = new GetSlideByIdQuery(id);
@@ -28,7 +29,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpPost]
-    [HasPermission("sliders.create")]
+    [HasPermission(Permissions.Sliders.Create)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Create([FromForm] CreateSlideRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -53,7 +54,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpPut("{id:long}")]
-    [HasPermission("sliders.update")]
+    [HasPermission(Permissions.Sliders.Update)]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Edit(long id, [FromForm] EditSlideRequestDto request, IFormFile imageFile, CancellationToken cancellationToken)
     {
@@ -81,7 +82,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpDelete("{id:long}")]
-    [HasPermission("sliders.delete")]
+    [HasPermission(Permissions.Sliders.Delete)]
     public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
     {
         var command = new DeleteSlideCommand(id);
@@ -90,7 +91,7 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
     }
 
     [HttpPut("{id:long}")]
-    [HasPermission("sliders.update")]
+    [HasPermission(Permissions.Sliders.Update)]
     public async Task<IActionResult> ToggleStatus(long id, [FromBody] bool isActive, CancellationToken cancellationToken)
     {
         var command = new ToggleSlideStatusCommand(id, isActive);

@@ -1,4 +1,4 @@
-using ECommerce.Domain.Common.DomainEvent;
+using ECommerce.Domain.Abstractions.DomainEvent;
 
 namespace ECommerce.Domain.Entities.Base;
 

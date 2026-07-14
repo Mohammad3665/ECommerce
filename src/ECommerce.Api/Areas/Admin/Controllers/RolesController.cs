@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Roles;
 using ECommerce.Application.Features.Roles.Commands.AssignUserRoles;
 using ECommerce.Application.Features.Roles.Commands.CreateRole;
@@ -12,7 +13,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
 {
 
     [HttpGet]
-    [HasPermission("roles.read")]
+    [HasPermission(Permissions.Roles.Read)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetAllRolesQuery();
@@ -21,7 +22,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     }
 
     [HttpGet("{slug}")]
-    [HasPermission("roles.read")]
+    [HasPermission(Permissions.Roles.Read)]
     public async Task<IActionResult> GetBySlug(string slug, CancellationToken cancellationToken)
     {
         var query = new GetRoleBySlugQuery(slug);
@@ -30,7 +31,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     }
 
     [HttpPost]
-    [HasPermission("roles.create")]
+    [HasPermission(Permissions.Roles.Create)]
     public async Task<IActionResult> Create([FromBody] CreateRoleRequestDto dto, CancellationToken cancellationToken)
     {
         var command = dto.Adapt<CreateRoleCommand>();
@@ -39,7 +40,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     }
 
     [HttpPut("{slug}")]
-    [HasPermission("roles.update")]
+    [HasPermission(Permissions.Roles.Update)]
     public async Task<IActionResult> Edit(string slug, [FromBody] EditRoleRequestDto dto, CancellationToken cancellationToken)
     {
         var command = new EditRoleCommand(slug, dto.DisplayName, dto.Description, dto.level, dto.GrantAllPermissions, dto.PermissionIds);
@@ -48,7 +49,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     }
 
     [HttpDelete("{slug}")]
-    [HasPermission("roles.delete")]
+    [HasPermission(Permissions.Roles.Delete)]
     public async Task<IActionResult> Delete(string slug, [FromQuery] bool forceDelete, CancellationToken cancellationToken)
     {
         var command = new DeleteRoleCommand(slug, forceDelete);
@@ -57,7 +58,7 @@ public class RolesController(ISender sender, ILogger<RolesController> logger) : 
     }
 
     [HttpPost("{userId:Guid}")]
-    [HasPermission("roles.update")]
+    [HasPermission(Permissions.Roles.Update)]
     public async Task<IActionResult> AssignRoles(Guid userId, [FromBody] AssignUserRolesRequestDto dto, CancellationToken cancellationToken)
     {
         var command = new AssignUserRolesCommand(userId, dto.RoleSlugs);

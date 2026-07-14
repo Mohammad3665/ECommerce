@@ -1,4 +1,4 @@
-using ECommerce.Domain.Events.Slide;
+using ECommerce.Domain.Entities.Slide.Events.Slide;
 
 namespace ECommerce.Application.Features.Slides.EventHandlers;
 

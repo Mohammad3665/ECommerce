@@ -3,12 +3,19 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using ECommerce.Domain.Common.Interfaces;
+using ECommerce.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce.Infrastructure.Authentication;
 
-public class JwtProvider(IConfiguration configuration) : IJwtProvider
+public class JwtProvider : IJwtProvider
 {
+    private readonly JwtSettings _jwtSettings;
+    public JwtProvider(IOptions<JwtSettings> options)
+    {
+        _jwtSettings = options.Value;
+    }
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[64];
@@ -19,7 +26,7 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
 
     public string GenerateToken(Guid userId, string email, IEnumerable<string> roles, IEnumerable<string> permissions)
     {
-        var secretKey = configuration["JwtSettings:Secret"]
+        var secretKey = _jwtSettings.Secret
             ?? throw new InvalidOperationException("JWT Secret key is missing.");
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -36,12 +43,12 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
 
         claims.AddRange(permissions.Select(permission => new Claim("permissions", permission)));
 
-        var expiryMinutes = double.Parse(configuration["JwtSettings:ExpiryInMinutes"] ?? "10");
+        var expiryMinutes = _jwtSettings.ExpirationInMinutes;
 
         var currentTime = DateTime.UtcNow;
         var token = new JwtSecurityToken(
-            issuer: configuration["JwtSettings:Issuer"],
-            audience: configuration["JwtSettings:Audience"],
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
             claims: claims,
             notBefore: currentTime,
             expires: currentTime.AddMinutes(expiryMinutes),
@@ -53,15 +60,15 @@ public class JwtProvider(IConfiguration configuration) : IJwtProvider
 
     public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
-        var secretKey = configuration["JwtSettings:Secret"]
+        var secretKey = _jwtSettings.Secret
             ?? throw new InvalidOperationException("JWT Secret key is missing.");
 
         var tokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = configuration["JwtSettings:ValidateIssuer"] == "True",
-            ValidateAudience = configuration["JwtSettings:ValidateAudience"] == "True",
-            ValidIssuer = configuration["JwtSettings:Issuer"],
-            ValidAudience = configuration["JwtSettings:Audience"],
+            ValidateIssuer = _jwtSettings.ValidateIssuer,
+            ValidateAudience = _jwtSettings.ValidateAudience,
+            ValidIssuer = _jwtSettings.Issuer,
+            ValidAudience = _jwtSettings.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
 
             ValidateLifetime = false

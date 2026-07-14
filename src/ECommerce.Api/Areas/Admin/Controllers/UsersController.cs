@@ -1,3 +1,4 @@
+using ECommerce.Application.Authorization;
 using ECommerce.Application.Dtos.Authentication;
 using ECommerce.Application.Features.Authentication.Commands.CreateUserByAdmin;
 using ECommerce.Application.Features.Users.Commands.ToggleUserStatus;
@@ -10,7 +11,7 @@ namespace ECommerce.Api.Areas.Admin.Controllers;
 public class UsersController(ISender sender, ILogger<UsersController> logger) : AdminBaseController
 {
     [HttpGet]
-    [HasPermission("users.read")]
+    [HasPermission(Permissions.Users.Read)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetAllUsersQuery();
@@ -19,7 +20,7 @@ public class UsersController(ISender sender, ILogger<UsersController> logger) : 
     }
 
     [HttpGet("{id:Guid}")]
-    [HasPermission("users.read")]
+    [HasPermission(Permissions.Users.Read)]
     public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var query = new GetUserByIdQuery(id);
@@ -28,7 +29,7 @@ public class UsersController(ISender sender, ILogger<UsersController> logger) : 
     }
 
     [HttpPost]
-    [HasPermission("users.create")]
+    [HasPermission(Permissions.Users.Create)]
     public async Task<IActionResult> Create([FromBody] CreateUserByAdminRequestDto request, CancellationToken cancellationToken)
     {
         var command = request.Adapt<CreateUserByAdminCommand>();
@@ -37,7 +38,7 @@ public class UsersController(ISender sender, ILogger<UsersController> logger) : 
     }
 
     [HttpGet]
-    [HasPermission("users.read")]
+    [HasPermission(Permissions.Users.Read)]
     public async Task<IActionResult> GetPaged([FromQuery] GetPagedUsersQuery query, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
@@ -45,7 +46,7 @@ public class UsersController(ISender sender, ILogger<UsersController> logger) : 
     }
 
     [HttpPut("{id:guid}")]
-    [HasPermission("users.update")]
+    [HasPermission(Permissions.Users.Update)]
     public async Task<IActionResult> ToggleStatus([FromRoute] Guid id, [FromBody] bool isActive, CancellationToken cancellationToken)
     {
         var command = new ToggleUserStatusCommand(id, isActive);

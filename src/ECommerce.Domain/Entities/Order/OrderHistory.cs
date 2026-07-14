@@ -15,7 +15,6 @@ public class OrderHistory : BaseEntity<long>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Order.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Order))]
     public long OrderId { get; set; }
 
     /// <summary>
@@ -25,7 +24,6 @@ public class OrderHistory : BaseEntity<long>
     ///     A nullable <see cref="Guid"/> referencing <see cref="User.Id"/>.
     ///     <c>null</c> indicates the change was performed by the system (automated process).
     /// </value>
-    [ForeignKey(nameof(User))]
     public Guid? ChangedByUserId { get; set; }
 
     #endregion

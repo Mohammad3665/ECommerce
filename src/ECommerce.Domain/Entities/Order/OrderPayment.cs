@@ -13,8 +13,6 @@ public class OrderPayment : BaseEntity<long>
     /// <value>
     ///     A string representing the payment gateway or method. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(100)]
     public string PaymentMethod { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class OrderPayment : BaseEntity<long>
     /// <value>
     ///     A string containing the gateway's transaction reference number. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(100)]
     public string TransactionId { get; set; } = string.Empty;
 
     /// <summary>
@@ -54,7 +50,6 @@ public class OrderPayment : BaseEntity<long>
     /// <value>
     ///     The unique identifier of the order that this shipping information belongs to.
     /// </value>
-    [ForeignKey(nameof(Order))]
     public long OrderId { get; set; }
 
     /// <summary>

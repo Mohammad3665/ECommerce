@@ -13,8 +13,6 @@ public class ProductSpecification : BaseEntity<long>
     /// <value>
     ///     A string representing the specification type (e.g., "Color", "Storage", "Processor", "RAM", "Weight").
     /// </value>
-    [Required]
-    [MaxLength(50)]
     public string Key { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class ProductSpecification : BaseEntity<long>
     /// <value>
     ///     A string representing the specification detail (e.g., "Red", "256GB", "Intel i7", "2.5 kg").
     /// </value>
-    [Required]
-    [MaxLength(50)]
     public string Value { get; set; } = string.Empty;
 
     #endregion
@@ -37,13 +33,12 @@ public class ProductSpecification : BaseEntity<long>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Product.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Product))]
     public long ProductId { get; set; }
 
     #endregion
-    
+
     #region Realtions
-    
+
     /// <summary>
     ///     Gets or sets the product associated with this specification.
     /// </summary>

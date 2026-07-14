@@ -15,7 +15,6 @@ public class Invoice : BaseEntity<long>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Order.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Order))]
     public long OrderId { get; set; }
 
     #endregion
@@ -28,8 +27,6 @@ public class Invoice : BaseEntity<long>
     /// <value>
     ///     A string containing the invoice number in a standardized format. Must be unique.
     /// </value>
-    [Required]
-    [MaxLength(30)]
     public string InvoiceNumber { get; set; } = string.Empty;
 
     /// <summary>
@@ -46,7 +43,6 @@ public class Invoice : BaseEntity<long>
     /// <value>
     ///     A string containing the path to the PDF document. Defaults to empty string.
     /// </value>
-    [MaxLength(300)]
     public string InvoicePdfUrl { get; set; } = string.Empty;
 
     #endregion

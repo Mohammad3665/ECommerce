@@ -15,8 +15,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A string containing the article's title. Should be descriptive and engaging.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
@@ -25,8 +23,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A string containing the article's english title. Should be descriptive and engaging.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string EnglishTitle { get; set; } = string.Empty;
 
     /// <summary>
@@ -35,8 +31,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A SEO-friendly string derived from <see cref="Title"/> (e.g., "10-essential-tips-for-learning-csharp-2024").
     /// </value>
-    [Required]
-    [MaxLength(1000)]
     public string Slug { get; set; } = string.Empty;
 
     /// <summary>
@@ -45,7 +39,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A string containing the complete article content. May support HTML/Markdown formatting.
     /// </value>
-    [Required]
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
@@ -54,8 +47,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A short string (typically 150-300 characters) summarizing the article.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string Summary { get; set; } = string.Empty;
 
     /// <summary>
@@ -64,8 +55,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A string representing the path to the article's cover image.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string ImageUrl { get; set; } = string.Empty;
 
     /// <summary>
@@ -108,7 +97,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="ArticleCategory.Id"/>.
     /// </value>
-    [ForeignKey(nameof(ArticleCategory))]
     public long ArticleCategoryId { get; set; }
 
     /// <summary>
@@ -117,7 +105,6 @@ public class Article : BaseEntity<long>
     /// <value>
     ///     A <see cref="Guid"/> value referencing <see cref="User.Id"/>.
     /// </value>
-    [ForeignKey(nameof(User))]
     public Guid AuthorId { get; set; }
 
     #endregion

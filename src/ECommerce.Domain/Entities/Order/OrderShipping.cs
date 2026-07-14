@@ -19,8 +19,6 @@ public class OrderShipping : BaseEntity<long>
     /// <value>
     ///     A string containing the complete name of the person receiving the package. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string FullName { get; set; } = string.Empty;
 
     /// <summary>
@@ -29,8 +27,6 @@ public class OrderShipping : BaseEntity<long>
     /// <value>
     ///     A string containing the phone number for delivery coordination. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(11)]
     public string PhoneNumber { get; set; } = string.Empty;
 
     #endregion
@@ -43,8 +39,6 @@ public class OrderShipping : BaseEntity<long>
     /// <value>
     ///     A string containing the complete address including street name, building number, unit/apartment, and landmarks. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(500)]
     public string Address { get; set; } = string.Empty;
 
     /// <summary>
@@ -53,8 +47,6 @@ public class OrderShipping : BaseEntity<long>
     /// <value>
     ///     A string containing the postal code for accurate address identification. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(20)]
     public string PostalCode { get; set; } = string.Empty;
 
     #endregion
@@ -67,7 +59,6 @@ public class OrderShipping : BaseEntity<long>
     /// <value>
     ///     The unique identifier of the order that this shipping information belongs to.
     /// </value>
-    [ForeignKey(nameof(Order))]
     public long OrderId { get; set; }
 
     /// <summary>
@@ -78,5 +69,6 @@ public class OrderShipping : BaseEntity<long>
     ///     This property is required and cannot be null.
     /// </value>
     public Order Order { get; set; } = null!;
+
     #endregion
 }

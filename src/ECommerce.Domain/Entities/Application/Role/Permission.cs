@@ -13,8 +13,6 @@ public class Permission : BaseEntity<long>
     /// <value>
     ///     A string containing the permission key in dot notation format. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(50)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class Permission : BaseEntity<long>
     /// <value>
     ///     A string containing the module name for logical grouping. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(50)]
     public string Module { get; set; } = string.Empty;
 
     /// <summary>
@@ -33,8 +29,6 @@ public class Permission : BaseEntity<long>
     /// <value>
     ///     A string containing the human-readable description of the permission. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string Description { get; set; } = string.Empty;
 
     #endregion

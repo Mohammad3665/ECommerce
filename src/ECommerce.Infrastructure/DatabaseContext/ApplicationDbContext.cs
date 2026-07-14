@@ -1,3 +1,4 @@
+using ECommerce.Domain.Common.DomainEvent;
 using ECommerce.Domain.Entities.Application.Article;
 using ECommerce.Domain.Entities.Application.Invoice;
 using ECommerce.Domain.Entities.Application.Role;
@@ -45,127 +46,15 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Category>()
-            .HasOne(c => c.ParentCategory)
-            .WithMany(c => c.SubCategories)
-            .HasForeignKey(c => c.ParentCategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
-        modelBuilder.Entity<Comment>(entity =>
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            entity.HasKey(c => c.Id);
-
-            entity.HasOne(c => c.ParentComment)
-                .WithMany(c => c.Replies)
-                .HasForeignKey(c => c.ParentCommentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(c => c.User)
-                .WithMany(u => u.Comments)
-                .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(c => c.Product)
-                .WithMany(p => p.Comments)
-                .HasForeignKey(c => c.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(c => c.Article)
-                .WithMany(a => a.Comments)
-                .HasForeignKey(c => c.ArticleId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<UserRole>(entity =>
-        {
-            entity.HasKey(ur => new { ur.UserId, ur.RoleId });
-
-            entity.HasOne(ur => ur.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(ur => ur.Role)
-                .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(ur => ur.AssignedBy)
-                .WithMany()
-                .HasForeignKey(ur => ur.AssignedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-
-        modelBuilder.Entity<RolePermission>(entity =>
-        {
-            entity.ToTable("RolePermission").HasKey(rp => new { rp.RoleId, rp.PermissionId });
-
-            entity.HasOne(rp => rp.Role)
-                .WithMany(rp => rp.RolePermissions)
-                .HasForeignKey(rp => rp.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(rp => rp.Permission)
-                .WithMany(p => p.RolePermissions)
-                .HasForeignKey(rp => rp.PermissionId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<Invoice>(entity =>
-        {
-            entity.HasOne(i => i.Order)
-                .WithOne()
-                .HasForeignKey<Invoice>(i => i.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasIndex(i => i.InvoiceNumber).IsUnique();
-        });
-
-        modelBuilder.Entity<Order>(entity =>
-        {
-            entity.HasIndex(o => o.OrderNumber).IsUnique();
-
-            entity.HasOne(o => o.User)
-                .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-
-        modelBuilder.Entity<OrderItem>(entity =>
-        {
-            entity.HasOne(oi => oi.Product)
-                .WithMany(oi => oi.OrderItems)
-                .HasForeignKey(oi => oi.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(oi => oi.Order)
-                .WithMany(o => o.Items)
-                .HasForeignKey(oi => oi.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<OrderShipping>(entity =>
-        {
-            entity.HasOne(os => os.Order)
-                .WithOne()
-                .HasForeignKey<OrderShipping>(os => os.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<Article>()
-            .HasOne(a => a.Author)
-            .WithMany(u => u.Articles)
-            .HasForeignKey(a => a.AuthorId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Invoice>()
-            .HasOne(i => i.Order)
-            .WithOne()
-            .HasForeignKey<Invoice>(i => i.OrderId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<Invoice>().HasIndex(i => i.InvoiceNumber).IsUnique();
-        modelBuilder.Entity<Order>().HasIndex(o => o.OrderNumber).IsUnique();
+            if (typeof(IHasDomainEvents).IsAssignableFrom(entityType.ClrType))
+            {
+                modelBuilder.Entity(entityType.ClrType).Ignore(nameof(IHasDomainEvents.DomainEvents));
+            }
+        }
     }
 
     #endregion

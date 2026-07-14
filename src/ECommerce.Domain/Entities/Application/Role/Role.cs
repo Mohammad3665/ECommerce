@@ -13,8 +13,6 @@ public class Role : BaseEntity<long>
     /// <value>
     ///     A string containing the system-level role name (e.g., "SuperAdmin", "ProductManager"). Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(50)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class Role : BaseEntity<long>
     /// <value>
     ///     A string containing the localized, user-friendly role title. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(100)]
     public string DisplayName { get; set; } = string.Empty;
 
     /// <summary>
@@ -33,8 +29,6 @@ public class Role : BaseEntity<long>
     /// <value>
     ///     A SEO-friendly string derived from <see cref="Name"/> (e.g., "electronics", "gaming-laptops"). Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(1000)]
     public string Slug { get; set; } = string.Empty;
 
     /// <summary>
@@ -43,8 +37,6 @@ public class Role : BaseEntity<long>
     /// <value>
     ///     A string explaining what users with this role can do. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string Description { get; set; } = string.Empty;
 
     #endregion

@@ -74,6 +74,9 @@ public static class DependencyInjection
         // Payment Service
         services.AddHttpClient<IPaymentService, ZarinPalPaymentService>();
 
+        // Html Sanitizer Service
+        services.AddScoped<IHtmlSanitizerService, HtmlSanitizerService>();
+
         return services;
     }
 }

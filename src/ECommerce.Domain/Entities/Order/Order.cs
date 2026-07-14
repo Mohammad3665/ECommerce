@@ -16,8 +16,6 @@ public class Order : BaseEntity<long>
     /// <value>
     ///     A string containing the order reference number. Must be unique across the system.
     /// </value>
-    [Required]
-    [MaxLength(20)]
     public string OrderNumber { get; set; } = string.Empty;
 
     /// <summary>
@@ -26,7 +24,6 @@ public class Order : BaseEntity<long>
     /// <value>
     ///     A <see cref="Guid"/> value referencing <see cref="User.Id"/>.
     /// </value>
-    [ForeignKey(nameof(User))]
     public Guid UserId { get; set; }
 
     /// <summary>
@@ -35,7 +32,6 @@ public class Order : BaseEntity<long>
     /// <value>
     ///     A <see cref="DateTime"/> value representing the exact moment of order placement.
     /// </value>
-    [Required]
     public DateTime OrderDate { get; set; }
 
     /// <summary>
@@ -56,7 +52,6 @@ public class Order : BaseEntity<long>
     /// <value>
     ///     A decimal value representing the sum of (item price × quantity) for all order items.
     /// </value>
-    [Required]
     public decimal SubTotal { get; set; }
 
     /// <summary>
@@ -73,7 +68,6 @@ public class Order : BaseEntity<long>
     /// <value>
     ///     A decimal value representing delivery fees based on shipping method, weight, or distance.
     /// </value>
-    [Required]
     public decimal ShippingCost { get; set; }
 
     /// <summary>
@@ -82,13 +76,24 @@ public class Order : BaseEntity<long>
     /// <value>
     ///     A decimal value representing the grand total after all calculations.
     /// </value>
-    [Required]
     public decimal TotalAmount { get; set; }
 
     #endregion
 
+    #region Foreign Keys
+
+    /// <summary>
+    ///     Gets or sets the unique identifier of the cuopon.
+    /// </summary>
+    /// <value>
+    ///     A <see cref="Guid"/> value referencing <see cref="User.Id"/>.
+    /// </value>
+    public Guid? CouponId { get; set; }
+
+    #endregion
+
     #region Relations
-    
+
     /// <summary>
     ///     Gets or sets the customer who placed this order.
     /// </summary>
@@ -120,6 +125,25 @@ public class Order : BaseEntity<long>
     ///     A <see cref="Coupon"/> entity, or <c>null</c> if no coupon was used.
     /// </value>
     public Coupon? Coupon { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the payment details associated with this order.
+    /// </summary>
+    /// <value>
+    ///     A <see cref="OrderPayment"/> entity containing payment information,
+    ///     or <c>null</c> if payment has not been initiated or processed yet.
+    /// </value>
+    public OrderPayment? Payment { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the shipping details associated with this order.
+    /// </summary>
+    /// <value>
+    ///     A <see cref="OrderShipping"/> entity containing shipping information,
+    ///     such as address, carrier, tracking number, and delivery status;
+    ///     or <c>null</c> if shipping has not been arranged yet.
+    /// </value>
+    public OrderShipping? Shipping { get; set; }
 
     #endregion
 }

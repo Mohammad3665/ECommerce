@@ -16,8 +16,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A string containing the product's title as shown to customers. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
@@ -26,8 +24,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A string containing the product's english title. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string EnglishName { get; set; } = string.Empty;
 
     /// <summary>
@@ -36,8 +32,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A SEO-friendly string derived from <see cref="Name"/> (e.g., "iphone-15-pro-max"). Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(1000)]
     public string Slug { get; set; } = string.Empty;
 
     /// <summary>
@@ -46,7 +40,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A string containing comprehensive product information, features, and specifications. Defaults to empty string.
     /// </value>
-    [Required]
     public string Description { get; set; } = string.Empty;
 
     /// <summary>
@@ -55,8 +48,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A short string (typically 150-200 characters) summarizing the product. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string ShortDescription { get; set; } = string.Empty;
 
     #endregion
@@ -69,7 +60,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A decimal value representing the price in the store's default currency.
     /// </value>
-    [Required]
     public decimal Price { get; set; }
 
     /// <summary>
@@ -78,7 +68,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     An integer representing how many units are in stock. Defaults to 0.
     /// </value>
-    [Required]
     public int StockQuantity { get; set; }
 
     /// <summary>
@@ -107,7 +96,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Brand.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Brand))]
     public long BrandId { get; set; }
 
     /// <summary>
@@ -116,7 +104,6 @@ public class Product : BaseEntity<long>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Category.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Category))]
     public long CategoryId { get; set; }
 
     #endregion

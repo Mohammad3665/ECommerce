@@ -15,8 +15,6 @@ public class Coupon : BaseEntity<Guid>
     /// <value>
     ///     A string containing the promotional code. Must be unique across the system.
     /// </value>
-    [Required]
-    [MaxLength(30)]
     public string Code { get; set; } = string.Empty;
 
     /// <summary>
@@ -35,7 +33,6 @@ public class Coupon : BaseEntity<Guid>
     ///     - Percentage (0-100) when <see cref="Type"/> is <see cref="CouponType.Percentage"/>
     ///     - Fixed amount in store currency when <see cref="Type"/> is <see cref="CouponType.FixedAmount"/>
     /// </value>
-    [Required]
     public decimal Value { get; set; }
 
     #endregion
@@ -66,7 +63,6 @@ public class Coupon : BaseEntity<Guid>
     /// <value>
     ///     An integer counter tracking total successful coupon applications.
     /// </value>
-    [Required]
     public int UsedCount { get; set; }
 
     #endregion
@@ -79,7 +75,6 @@ public class Coupon : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="DateTime"/> value representing the activation timestamp.
     /// </value>
-    [Required]
     public DateTime StartDate { get; set; }
 
     /// <summary>
@@ -88,7 +83,6 @@ public class Coupon : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="DateTime"/> value representing the expiration timestamp.
     /// </value>
-    [Required]
     public DateTime EndDate { get; set; }
 
     /// <summary>

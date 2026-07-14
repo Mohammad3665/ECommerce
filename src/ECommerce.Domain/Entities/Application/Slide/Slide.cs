@@ -13,8 +13,6 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string containing the slide's primary text. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string containing the article's english title. Should be descriptive and engaging.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string EnglishTitle { get; set; } = string.Empty;
 
     /// <summary>
@@ -33,8 +29,6 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string containing additional details or call-to-action text. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string Description { get; set; } = string.Empty;
 
     #endregion
@@ -47,8 +41,6 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string representing the path to the slide image. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string ImageUrl { get; set; } = string.Empty;
 
     /// <summary>
@@ -57,8 +49,6 @@ public class Slide : BaseEntity<long>
     /// <value>
     ///     A string containing the relative or absolute URL to navigate to. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(300)]
     public string Link { get; set; } = string.Empty;
 
     #endregion

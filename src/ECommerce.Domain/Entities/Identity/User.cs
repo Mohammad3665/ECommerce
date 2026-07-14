@@ -13,8 +13,6 @@ public class User : BaseEntity<Guid>
     /// <value>
     ///     A string containing the user's first and last name. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string FullName { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class User : BaseEntity<Guid>
     /// <value>
     ///     A string representing the user's unique email. Defaults to empty string.
     /// </value>
-    [Required]
-    [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
@@ -33,8 +29,6 @@ public class User : BaseEntity<Guid>
     /// <value>
     ///     A string containing the user's contact number. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(11)]
     public string PhoneNumber { get; set; } = string.Empty;
 
     /// <summary>
@@ -43,8 +37,6 @@ public class User : BaseEntity<Guid>
     /// <value>
     ///     A string representing the securely hashed password. Never stores plain text.
     /// </value>
-    [Required]
-    [MaxLength(100)]
     public string PasswordHash { get; set; } = string.Empty;
 
     /// <summary>
@@ -73,7 +65,6 @@ public class User : BaseEntity<Guid>
     /// <value>
     ///     A nullable <see cref="string" /> representing the one-time security token.
     /// </value>
-    [MaxLength(6)]
     public string? SecurityCode { get; set; }
 
     /// <summary>
@@ -98,7 +89,6 @@ public class User : BaseEntity<Guid>
     /// <value>
     /// A nullable <see cref="string" /> indicating when token refreshed.
     /// </value>
-    [MaxLength(256)]
     public string? RefreshToken { get; set; }
 
     /// <summary>

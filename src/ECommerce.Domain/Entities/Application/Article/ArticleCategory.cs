@@ -13,8 +13,6 @@ public class ArticleCategory : BaseEntity<long>
     /// <value>
     ///     A string containing the category's title as shown to users. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class ArticleCategory : BaseEntity<long>
     /// <value>
     ///     A string containing the category's english title. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(150)]
     public string EnglishName { get; set; } = string.Empty;
 
     /// <summary>
@@ -33,8 +29,6 @@ public class ArticleCategory : BaseEntity<long>
     /// <value>
     ///     A SEO-friendly string derived from <see cref="EnglishName"/> (e.g., "technology", "health-wellness").
     /// </value>
-    [Required]
-    [MaxLength(1000)]
     public string Slug { get; set; } = string.Empty;
 
     #endregion

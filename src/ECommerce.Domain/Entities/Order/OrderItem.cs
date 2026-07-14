@@ -13,7 +13,6 @@ public class OrderItem : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Order.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Order))]
     public long OrderId { get; set; }
 
     /// <summary>
@@ -22,7 +21,6 @@ public class OrderItem : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Product.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Product))]
     public long ProductId { get; set; }
 
     #endregion
@@ -32,8 +30,6 @@ public class OrderItem : BaseEntity<Guid>
     /// <summary>
     ///     Gets or sets the name of the product at the time of purchase.
     /// </summary>
-    [Required]
-    [MaxLength(150)]
     public string ProductName { get; set; } = string.Empty;
 
     /// <summary>
@@ -42,7 +38,6 @@ public class OrderItem : BaseEntity<Guid>
     /// <value>
     ///     A decimal value representing the snapshot of the product's selling price.
     /// </value>
-    [Required]
     public decimal UnitPrice { get; set; }
 
     /// <summary>
@@ -51,7 +46,6 @@ public class OrderItem : BaseEntity<Guid>
     /// <value>
     ///     An integer representing how many units of the product were ordered.
     /// </value>
-    [Required]
     public int Quantity { get; set; }
 
     /// <summary>
@@ -60,7 +54,6 @@ public class OrderItem : BaseEntity<Guid>
     /// <value>
     ///     A decimal value representing the subtotal for this specific item before order-level discounts.
     /// </value>
-    [Required]
     public decimal TotalPrice { get; set; }
 
     #endregion

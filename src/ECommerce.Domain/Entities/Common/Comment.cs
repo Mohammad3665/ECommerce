@@ -13,8 +13,6 @@ public class Comment : BaseEntity<Guid>
     /// <value>
     ///     A string containing the comment's brief headline. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(50)]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
@@ -23,8 +21,6 @@ public class Comment : BaseEntity<Guid>
     /// <value>
     ///     A string containing the full comment content. Defaults to empty string.
     /// </value>
-    [Required]
-    [MaxLength(1000)]
     public string Content { get; set; } = string.Empty;
 
     #endregion
@@ -37,7 +33,6 @@ public class Comment : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="Guid"/> value referencing <see cref="User.Id"/>.
     /// </value>
-    [ForeignKey(nameof(User))]
     public Guid UserId { get; set; }
 
     /// <summary>
@@ -46,7 +41,6 @@ public class Comment : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Product.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Product))]
     public long? ProductId { get; set; }
 
     /// <summary>
@@ -55,7 +49,6 @@ public class Comment : BaseEntity<Guid>
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Article.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Article))]
     public long? ArticleId { get; set; }
 
     /// <summary>
@@ -65,7 +58,6 @@ public class Comment : BaseEntity<Guid>
     ///     A nullable <see cref="Guid"/> referencing the parent <see cref="Comment.Id"/>.
     ///     <c>null</c> indicates this is a top-level comment.
     /// </value>
-    [ForeignKey(nameof(Comment))]
     public Guid? ParentCommentId { get; set; }
 
     #endregion
@@ -143,7 +135,7 @@ public class Comment : BaseEntity<Guid>
         var replies = allComments.Where(c => c.ParentCommentId == this.Id).ToList();
         foreach (var reply in replies)
         {
-            replies.Add(reply);
+            resultList.Add(reply);
             reply.CollectAllRepliesRecursive(allComments, resultList);
         }
     }

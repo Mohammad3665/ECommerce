@@ -13,7 +13,6 @@ public class RolePermission
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Role.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Role))]
     public long RoleId { get; set; }
 
     /// <summary>
@@ -22,7 +21,6 @@ public class RolePermission
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Permission.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Permission))]
     public long PermissionId { get; set; }
 
     #endregion

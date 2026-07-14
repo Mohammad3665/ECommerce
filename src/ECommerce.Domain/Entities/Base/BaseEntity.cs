@@ -14,7 +14,6 @@ public class BaseEntity<TKey> : IHasDomainEvents
     /// <summary>
     /// Gets or sets the unique identifier for the entity.
     /// </summary>
-    [Key]
     public TKey Id { get; set; } = default!;
 
     /// <summary>
@@ -40,7 +39,6 @@ public class BaseEntity<TKey> : IHasDomainEvents
 
     private readonly List<IDomainEvent> _domainEvents = [];
 
-    [NotMapped]
     public IReadOnlyCollection<IDomainEvent> DomainEvents
         => _domainEvents.AsReadOnly();
 

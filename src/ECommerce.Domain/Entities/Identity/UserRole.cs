@@ -13,7 +13,6 @@ public class UserRole
     /// <value>
     ///     A <see cref="Guid"/> value referencing <see cref="User.Id"/>.
     /// </value>
-    [ForeignKey(nameof(User))]
     public Guid UserId { get; set; }
 
     /// <summary>
@@ -22,7 +21,6 @@ public class UserRole
     /// <value>
     ///     A <see cref="long"/> value referencing <see cref="Role.Id"/>.
     /// </value>
-    [ForeignKey(nameof(Role))]
     public long RoleId { get; set; }
 
     #endregion
@@ -35,7 +33,6 @@ public class UserRole
     /// <value>
     ///     A <see cref="DateTime"/> value representing the assignment time in UTC.
     /// </value>
-    [Required]
     public DateTime AssignedAt { get; set; }
 
     /// <summary>
@@ -45,7 +42,6 @@ public class UserRole
     ///     A nullable <see cref="Guid"/> referencing <see cref="User.Id"/>.
     ///     <c>null</c> indicates the assignment was done automatically by the system (e.g., default role on registration).
     /// </value>
-    [ForeignKey(nameof(AssignedBy))]
     public Guid? AssignedByUserId { get; set; }
 
     #endregion

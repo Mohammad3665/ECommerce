@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "مدیریت دسته‌بندی‌ها";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">مدیریت دسته‌بندی‌ها</h4>
+                    </div>
+                    <div class="ml-auto">
+                        <a asp-action="Create" class="btn btn-info">
+                            <i class="mdi mdi-folder-plus"></i> افزودن دسته‌بندی
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" id="zero_config">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">تصویر</th>
+                            <th class="border-top-0">نام</th>
+                            <th class="border-top-0">توضیحات</th>
+                            <th class="border-top-0">تعداد محصولات</th>
+                            <th class="border-top-0">وضعیت</th>
+                            <th class="border-top-0">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                <i class="mdi mdi-information-outline font-24"></i>
+                                <p class="m-t-10">داده‌ای یافت نشد</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,6 +17,7 @@
 # Mono auto generated files
 mono_crash.*
 
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -232,7 +233,8 @@ _pkginfo.txt
 
 # Others
 ClientBin/
-wwwroot/
+src/ECommerce.Api/wwwroot
+AdminPanelTemplate/
 .mimocode/
 ~$*
 *~

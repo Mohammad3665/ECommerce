@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+    <title>@ViewData["Title"] - پنل مدیریت فروشگاه</title>
+    <!-- Vazirmatn Persian Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
+    <link href="~/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
+    <link href="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <!-- Main CSS -->
+    <link href="~/dist/css/style.min.css" rel="stylesheet">
+    <!-- Persian Font Override -->
+    <style>
+        body, h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, label, input, button, select, textarea,
+        .sidebar-link, .dropdown-item, .breadcrumb, .page-title, .card-title, .font-medium {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        @await Html.PartialAsync("_Topbar")
+        @await Html.PartialAsync("_Sidebar")
+        <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-5 align-self-center">
+                        <h4 class="page-title">@ViewData["Title"]</h4>
+                    </div>
+                    <div class="col-7 align-self-center">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a asp-controller="Home" asp-action="Index">خانه</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+            @await Html.PartialAsync("_Footer")
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Popper.js -->
+    <script src="~/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart libs -->
+    <script src="~/assets/libs/chartist/dist/chartist.min.js"></script>
+    <script src="~/assets/extra-libs/c3/d3.min.js"></script>
+    <script src="~/assets/extra-libs/c3/c3.min.js"></script>
+    <script src="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+    <!-- Template core -->
+    <script src="~/dist/js/app.min.js"></script>
+    <script src="~/dist/js/sidebarmenu.js"></script>
+    <script src="~/dist/js/waves.js"></script>
+    <script src="~/dist/js/custom.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

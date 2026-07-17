@@ -140,6 +140,29 @@ services:
       - ecommerce-network
     restart: on-failure
 
+  ecommerceadmin:
+    image: ecommerceadmin
+    build:
+      context: .
+      dockerfile: src/ECommerce.AdminPanel/Dockerfile
+    ports:
+      - "5001:8080" # HTTP
+    environment:
+      # ASP.NET Core
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;
+
+      # Connection Strings
+      - ConnectionStrings__DefaultConnection=Server=ecommerce_db;Database=ECommerceDB;User=sa;Password=Password123;TrustServerCertificate=True;
+    depends_on:
+      ecommerce_db:
+        condition: service_healthy
+    volumes:
+      - ./src/ECommerce.AdminPanel/wwwroot:/app/wwwroot
+    networks:
+      - ecommerce-network
+    restart: on-failure
+
 volumes:
   mssql_data:
   redis-data:

@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = "ویرایش مقاله";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">ویرایش مقاله</h4>
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">عنوان</label>
+                                    <input type="text" name="Title" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">عنوان انگلیسی</label>
+                                    <input type="text" name="EnglishTitle" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Slug</label>
+                                    <input type="text" name="Slug" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">دسته‌بندی مقاله</label>
+                                    <select name="ArticleCategoryId" class="form-control">
+                                        <option value="">انتخاب دسته‌بندی</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">خلاصه</label>
+                                    <textarea name="Summary" class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">محتوای مقاله</label>
+                                    <textarea name="Content" class="form-control" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">تاریخ انتشار</label>
+                                    <input type="datetime" name="PublishedAt" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">وضعیت</label>
+                                    <select name="Status" class="form-control">
+                                        <option value="0">پیش‌نویس</option>
+                                        <option value="1">منتشر شده</option>
+                                        <option value="2">بایگانی شده</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">تصویر مقاله</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload" accept="image/*">
+                                        <label class="custom-file-label" for="imageUpload">انتخاب تصویر جدید</label>
+                                    </div>
+                                    <div class="mt-2">
+                                        <img id="imagePreview" src="#" alt="پیش‌نمایش" style="max-width: 300px; max-height: 200px; display: none; border-radius: 5px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="mdi mdi-content-save"></i> ذخیره تغییرات
+                        </button>
+                        <a asp-action="Index" class="btn btn-inverse">انصراف</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function (e) {
+            var preview = document.getElementById('imagePreview');
+            var file = e.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

@@ -14,3 +14,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ~/.vsdbg:/remote_debugger:rw
+
+  ecommerceadmin:
+    image: ecommerceadmin
+    build:
+      context: .
+      dockerfile: src/ECommerce.AdminPanel/Dockerfile
+      args:
+        - configuration=Debug
+    ports:
+      - 5163:5163
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw

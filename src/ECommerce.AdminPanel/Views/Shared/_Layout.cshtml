@@ -13,12 +13,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="~/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
-    <link href="~/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
-    <link href="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-    <!-- Main CSS -->
-    <link href="~/dist/css/style.min.css" rel="stylesheet">
-    <!-- Persian Font Override -->
+    @* <link href="~/assets/libs/chartist/dist/chartist.min.css" type="text/css" rel="stylesheet"> *@
+    <link href="~/assets/extra-libs/c3/c3.min.css" type="text/css" rel="stylesheet">
+    @* <link href="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" type="text/css" rel="stylesheet" /> *@
+    <!-- Custom CSS -->
+    <link href="~/dist/css/style.min.css" type="text/css" rel="stylesheet">
+    <!-- Persian Font Override (must be after style.min.css) -->
     <style>
         body, h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, label, input, button, select, textarea,
         .sidebar-link, .dropdown-item, .breadcrumb, .page-title, .card-title, .font-medium {
@@ -29,15 +29,18 @@
 </head>
 
 <body>
+    <!-- Preloader -->
     <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
     </div>
+
     <div id="main-wrapper">
         @await Html.PartialAsync("_Topbar")
         @await Html.PartialAsync("_Sidebar")
+
         <div class="page-wrapper">
             <div class="page-breadcrumb">
                 <div class="row">
@@ -65,22 +68,36 @@
         </div>
     </div>
 
-    <!-- jQuery -->
+    <div class="chat-windows"></div>
+
+    <!-- All Jquery -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Popper.js -->
+    <!-- Bootstrap tether Core JavaScript -->
     <script src="~/assets/libs/popper.js/dist/umd/popper.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Chart libs -->
-    <script src="~/assets/libs/chartist/dist/chartist.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- apps -->
+    <script src="~/dist/js/app.min.js"></script>
+    <script src="~/dist/js/app.init.js"></script>
+    <script src="~/dist/js/app-style-switcher.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/extra-libs/sparkline/sparkline.js"></script>
+    <!-- Wave Effects -->
+    <script src="~/dist/js/waves.js"></script>
+    <!-- Menu sidebar -->
+    <script src="~/dist/js/sidebarmenu.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="~/dist/js/custom.js"></script>
+    <!-- This page JavaScript -->
+    @* <script src="~/assets/libs/chartist/dist/chartist.min.js"></script> *@
+    @* <script src="~/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script> *@
+    <!-- c3 charts -->
     <script src="~/assets/extra-libs/c3/d3.min.js"></script>
     <script src="~/assets/extra-libs/c3/c3.min.js"></script>
-    <script src="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
-    <!-- Template core -->
-    <script src="~/dist/js/app.min.js"></script>
-    <script src="~/dist/js/sidebarmenu.js"></script>
-    <script src="~/dist/js/waves.js"></script>
-    <script src="~/dist/js/custom.min.js"></script>
+    @* <script src="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="~/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script> *@
+    <script src="~/dist/js/pages/dashboards/dashboard1.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

@@ -1,0 +1,145 @@
+@{
+    ViewData["Title"] = "لیست سفارشات";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">لیست سفارشات</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" id="zero_config">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">شماره سفارش</th>
+                            <th class="border-top-0">مشتری</th>
+                            <th class="border-top-0">تعداد اقلام</th>
+                            <th class="border-top-0">مجموع مبلغ</th>
+                            <th class="border-top-0">تاریخ</th>
+                            <th class="border-top-0">وضعیت پرداخت</th>
+                            <th class="border-top-0">وضعیت ارسال</th>
+                            <th class="border-top-0">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a asp-action="Details" asp-route-id="1" class="font-medium">ORD-854578</a></td>
+                            <td>علی محمدی</td>
+                            <td>۳</td>
+                            <td>۲,۵۰۰,۰۰۰ تومان</td>
+                            <td>۱۵ تیر ۱۴۰۵</td>
+                            <td><span class="label label-success font-weight-100">پرداخت شده</span></td>
+                            <td><span class="label label-info font-weight-100">ارسال شده</span></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="1" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="جزئیات">
+                                    <i class="ti-marker-alt"></i>
+                                </a>
+                                <a asp-action="ChangeStatus" asp-route-id="1" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="تغییر وضعیت">
+                                    <i class="ti-reload"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="text-inverse" title="حذف" data-toggle="tooltip">
+                                    <i class="ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a asp-action="Details" asp-route-id="2" class="font-medium">ORD-954578</a></td>
+                            <td>زهرا کریمی</td>
+                            <td>۱</td>
+                            <td>۸۵۰,۰۰۰ تومان</td>
+                            <td>۱۴ تیر ۱۴۰۵</td>
+                            <td><span class="label label-warning font-weight-100">در انتظار</span></td>
+                            <td><span class="label label-warning font-weight-100">در انتظار ارسال</span></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="2" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="جزئیات">
+                                    <i class="ti-marker-alt"></i>
+                                </a>
+                                <a asp-action="ChangeStatus" asp-route-id="2" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="تغییر وضعیت">
+                                    <i class="ti-reload"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="text-inverse" title="حذف" data-toggle="tooltip">
+                                    <i class="ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a asp-action="Details" asp-route-id="3" class="font-medium">ORD-684578</a></td>
+                            <td>رضا احمدی</td>
+                            <td>۵</td>
+                            <td>۴,۲۰۰,۰۰۰ تومان</td>
+                            <td>۱۳ تیر ۱۴۰۵</td>
+                            <td><span class="label label-success font-weight-100">پرداخت شده</span></td>
+                            <td><span class="label label-success font-weight-100">تحویل شده</span></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="3" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="جزئیات">
+                                    <i class="ti-marker-alt"></i>
+                                </a>
+                                <a asp-action="ChangeStatus" asp-route-id="3" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="تغییر وضعیت">
+                                    <i class="ti-reload"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="text-inverse" title="حذف" data-toggle="tooltip">
+                                    <i class="ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a asp-action="Details" asp-route-id="4" class="font-medium">ORD-454578</a></td>
+                            <td>مریم حسینی</td>
+                            <td>۲</td>
+                            <td>۱,۷۰۰,۰۰۰ تومان</td>
+                            <td>۱۲ تیر ۱۴۰۵</td>
+                            <td><span class="label label-danger font-weight-100">ناموفق</span></td>
+                            <td><span class="label label-default font-weight-100 bg-secondary">لغو شده</span></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="4" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="جزئیات">
+                                    <i class="ti-marker-alt"></i>
+                                </a>
+                                <a asp-action="ChangeStatus" asp-route-id="4" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="تغییر وضعیت">
+                                    <i class="ti-reload"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="text-inverse" title="حذف" data-toggle="tooltip">
+                                    <i class="ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a asp-action="Details" asp-route-id="5" class="font-medium">ORD-652578</a></td>
+                            <td>امیر رضایی</td>
+                            <td>۴</td>
+                            <td>۳,۱۰۰,۰۰۰ تومان</td>
+                            <td>۱۱ تیر ۱۴۰۵</td>
+                            <td><span class="label label-success font-weight-100">پرداخت شده</span></td>
+                            <td><span class="label label-info font-weight-100">ارسال شده</span></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="5" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="جزئیات">
+                                    <i class="ti-marker-alt"></i>
+                                </a>
+                                <a asp-action="ChangeStatus" asp-route-id="5" class="text-inverse p-r-10"
+                                   data-toggle="tooltip" title="تغییر وضعیت">
+                                    <i class="ti-reload"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="text-inverse" title="حذف" data-toggle="tooltip">
+                                    <i class="ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,18 +1,18 @@
 @{
-    ViewData["Title"] = "افزودن دسته‌بندی";
+    ViewData["Title"] = "افزودن محصول";
 }
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">افزودن دسته‌بندی جدید</h4>
+                <h4 class="card-title">افزودن محصول جدید</h4>
                 <form asp-action="Create" enctype="multipart/form-data">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label">نام</label>
+                                    <label class="control-label">نام محصول</label>
                                     <input type="text" name="Name" class="form-control" />
                                 </div>
                             </div>
@@ -24,28 +24,33 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label">توضیحات</label>
-                                    <textarea name="Description" class="form-control" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label">دسته‌بندی والد</label>
-                                    <select name="ParentCategoryId" class="form-control">
-                                        <option value="">بدون والد</option>
-                                    </select>
+                                    <label class="control-label">قیمت</label>
+                                    <input type="number" name="Price" class="form-control" step="0.01" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label">وضعیت</label>
-                                    <select name="IsActive" class="form-control">
-                                        <option value="true">فعال</option>
-                                        <option value="false">غیرفعال</option>
+                                    <label class="control-label">موجودی</label>
+                                    <input type="number" name="StockQuantity" class="form-control" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">دسته‌بندی</label>
+                                    <select name="CategoryId" class="form-control">
+                                        <option value="">انتخاب دسته‌بندی</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">برند</label>
+                                    <select name="BrandId" class="form-control">
+                                        <option value="">انتخاب برند</option>
                                     </select>
                                 </div>
                             </div>
@@ -53,7 +58,23 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">تصویر دسته‌بندی</label>
+                                    <label class="control-label">توضیحات کوتاه</label>
+                                    <textarea name="ShortDescription" class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">توضیحات کامل</label>
+                                    <textarea name="Description" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">تصویر محصول</label>
                                     <div class="custom-file">
                                         <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload" accept="image/*">
                                         <label class="custom-file-label" for="imageUpload">انتخاب تصویر</label>

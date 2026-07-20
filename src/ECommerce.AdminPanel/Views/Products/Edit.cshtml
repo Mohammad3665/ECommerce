@@ -1,68 +1,56 @@
 @{
-    ViewData["Title"] = "ویرایش مقاله";
+    ViewData["Title"] = "ویرایش محصول";
 }
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">ویرایش مقاله</h4>
+                <h4 class="card-title">ویرایش محصول</h4>
                 <form asp-action="Edit" enctype="multipart/form-data">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label">عنوان</label>
-                                    <input type="text" name="Title" class="form-control" />
+                                    <label class="control-label">نام محصول</label>
+                                    <input type="text" name="Name" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label">عنوان انگلیسی</label>
-                                    <input type="text" name="EnglishTitle" class="form-control" />
+                                    <label class="control-label">نام انگلیسی</label>
+                                    <input type="text" name="EnglishName" class="form-control" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label">دسته‌بندی مقاله</label>
-                                    <select name="ArticleCategoryId" class="form-control">
-                                        <option value="">انتخاب دسته‌بندی</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label">خلاصه</label>
-                                    <textarea name="Summary" class="form-control" rows="2"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label">محتوای مقاله</label>
-                                    <textarea name="Content" class="form-control" rows="10"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">تاریخ انتشار</label>
-                                    <input type="datetime" name="PublishedAt" class="form-control" />
+                                    <label class="control-label">قیمت</label>
+                                    <input type="number" name="Price" class="form-control" step="0.01" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="control-label">وضعیت</label>
-                                    <select name="Status" class="form-control">
-                                        <option value="0">پیش‌نویس</option>
-                                        <option value="1">منتشر شده</option>
-                                        <option value="2">بایگانی شده</option>
+                                    <label class="control-label">موجودی</label>
+                                    <input type="number" name="StockQuantity" class="form-control" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">دسته‌بندی</label>
+                                    <select name="CategoryId" class="form-control">
+                                        <option value="">انتخاب دسته‌بندی</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">برند</label>
+                                    <select name="BrandId" class="form-control">
+                                        <option value="">انتخاب برند</option>
                                     </select>
                                 </div>
                             </div>
@@ -70,15 +58,29 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">تصویر مقاله</label>
+                                    <label class="control-label">توضیحات کوتاه</label>
+                                    <textarea name="ShortDescription" class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">توضیحات کامل</label>
+                                    <textarea name="Description" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">تصویر محصول</label>
                                     <div class="custom-file">
-                                        <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload"
-                                               accept="image/*">
+                                        <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload" accept="image/*">
                                         <label class="custom-file-label" for="imageUpload">انتخاب تصویر جدید</label>
                                     </div>
                                     <div class="mt-2">
-                                        <img id="imagePreview" src="#" alt="پیش‌نمایش"
-                                             style="max-width: 300px; max-height: 200px; display: none; border-radius: 5px;" />
+                                        <img id="imagePreview" src="#" alt="پیش‌نمایش" style="max-width: 300px; max-height: 200px; display: none; border-radius: 5px;" />
                                     </div>
                                 </div>
                             </div>

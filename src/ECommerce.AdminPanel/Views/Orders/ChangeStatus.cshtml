@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "تغییر وضعیت سفارش";
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">تغییر وضعیت سفارش #ORD-854578</h4>
+                <form asp-action="ChangeStatus" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="1" />
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">وضعیت پرداخت</label>
+                                    <select name="paymentStatus" class="form-control">
+                                        <option value="Pending">در انتظار پرداخت</option>
+                                        <option value="Paid">پرداخت شده</option>
+                                        <option value="Failed">ناموفق</option>
+                                        <option value="Refunded">بازپرداخت شده</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">وضعیت ارسال</label>
+                                    <select name="shippingStatus" class="form-control">
+                                        <option value="Pending">در انتظار ارسال</option>
+                                        <option value="Processing">در حال پردازش</option>
+                                        <option value="Shipped">ارسال شده</option>
+                                        <option value="Delivered">تحویل شده</option>
+                                        <option value="Cancelled">لغو شده</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="mdi mdi-content-save"></i> ذخیره تغییرات
+                        </button>
+                        <a asp-action="Details" asp-route-id="1" class="btn btn-inverse">انصراف</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">وضعیت فعلی</h4>
+                <div class="m-t-20">
+                    <div class="d-flex justify-content-between m-b-15">
+                        <span>شماره سفارش:</span>
+                        <span class="font-medium">ORD-854578</span>
+                    </div>
+                    <div class="d-flex justify-content-between m-b-15">
+                        <span>وضعیت پرداخت:</span>
+                        <span class="label label-success font-weight-100">پرداخت شده</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>وضعیت ارسال:</span>
+                        <span class="label label-info font-weight-100">ارسال شده</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

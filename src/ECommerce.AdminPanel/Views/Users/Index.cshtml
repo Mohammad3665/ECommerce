@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "لیست کاربران";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">لیست کاربران</h4>
+                    </div>
+                    <div class="ml-auto">
+                        <a asp-action="Create" class="btn btn-success">
+                            <i class="mdi mdi-account-plus"></i> افزودن کاربر جدید
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" id="zero_config">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">نام</th>
+                            <th class="border-top-0">ایمیل</th>
+                            <th class="border-top-0">تلفن</th>
+                            <th class="border-top-0">وضعیت</th>
+                            <th class="border-top-0">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                <i class="mdi mdi-information-outline font-24"></i>
+                                <p class="m-t-10">داده‌ای یافت نشد</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

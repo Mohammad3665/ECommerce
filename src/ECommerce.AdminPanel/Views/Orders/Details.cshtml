@@ -1,0 +1,105 @@
+@{
+    ViewData["Title"] = "جزئیات سفارش";
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">اقلام سفارش</h4>
+                <div class="table-responsive">
+                    <table class="table product-overview">
+                        <thead>
+                            <tr>
+                                <th>تصویر</th>
+                                <th>نام محصول</th>
+                                <th>قیمت واحد</th>
+                                <th>تعداد</th>
+                                <th>جمع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img src="~/assets/images/gallery/chair.jpg" alt="محصول" width="80"></td>
+                                <td>صندلی گرد</td>
+                                <td>۱۲۵,۰۰۰ تومان</td>
+                                <td>۲</td>
+                                <td>۲۵۰,۰۰۰ تومان</td>
+                            </tr>
+                            <tr>
+                                <td><img src="~/assets/images/gallery/chair2.jpg" alt="محصول" width="80"></td>
+                                <td>صندلی چوبی</td>
+                                <td>۸۵,۰۰۰ تومان</td>
+                                <td>۳</td>
+                                <td>۲۵۵,۰۰۰ تومان</td>
+                            </tr>
+                            <tr>
+                                <td><img src="~/assets/images/gallery/chair3.jpg" alt="محصول" width="80"></td>
+                                <td>میز تحریر</td>
+                                <td>۴۵۰,۰۰۰ تومان</td>
+                                <td>۱</td>
+                                <td>۴۵۰,۰۰۰ تومان</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">خلاصه سفارش</h4>
+                <div class="d-flex justify-content-between m-t-20">
+                    <span>شماره سفارش:</span>
+                    <span class="font-medium">ORD-854578</span>
+                </div>
+                <div class="d-flex justify-content-between m-t-10">
+                    <span>تاریخ سفارش:</span>
+                    <span>۱۵ تیر ۱۴۰۵</span>
+                </div>
+                <div class="d-flex justify-content-between m-t-10">
+                    <span>وضعیت پرداخت:</span>
+                    <span class="label label-success font-weight-100">پرداخت شده</span>
+                </div>
+                <div class="d-flex justify-content-between m-t-10">
+                    <span>وضعیت ارسال:</span>
+                    <span class="label label-info font-weight-100">ارسال شده</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>جمع کل:</span>
+                    <span class="font-medium text-danger">۹۵۵,۰۰۰ تومان</span>
+                </div>
+                <div class="m-t-20">
+                    <a asp-action="ChangeStatus" asp-route-id="1" class="btn btn-warning btn-block">
+                        <i class="mdi mdi-reload"></i> تغییر وضعیت سفارش
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">اطلاعات مشتری</h4>
+                <div class="m-t-20">
+                    <div class="d-flex align-items-center m-b-10">
+                        <i class="mdi mdi-account font-18 text-muted m-l-10"></i>
+                        <span>علی محمدی</span>
+                    </div>
+                    <div class="d-flex align-items-center m-b-10">
+                        <i class="mdi mdi-phone font-18 text-muted m-l-10"></i>
+                        <span>۰۹۱۲۱۲۳۴۵۶۷</span>
+                    </div>
+                    <div class="d-flex align-items-center m-b-10">
+                        <i class="mdi mdi-email font-18 text-muted m-l-10"></i>
+                        <span>ali@example.com</span>
+                    </div>
+                    <div class="d-flex align-items-start m-b-10">
+                        <i class="mdi mdi-map-marker font-18 text-muted m-l-10 m-t-2"></i>
+                        <span>تهران، خیابان ولیعصر، پلاک ۱۲۳، واحد ۴</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

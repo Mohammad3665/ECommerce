@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "افزودن نقش";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">افزودن نقش جدید</h4>
+                <form asp-action="Create">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">نام نقش</label>
+                                    <input type="text" name="Name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">نام نمایشی</label>
+                                    <input type="text" name="DisplayName" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">سطح</label>
+                                    <input type="number" name="Level" class="form-control" value="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">نقش پیش‌فرض</label>
+                                    <select name="IsDefault" class="form-control">
+                                        <option value="false">خیر</option>
+                                        <option value="true">بله</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">توضیحات</label>
+                                    <textarea name="Description" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="mdi mdi-content-save"></i> ذخیره
+                        </button>
+                        <a asp-action="Index" class="btn btn-inverse">انصراف</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

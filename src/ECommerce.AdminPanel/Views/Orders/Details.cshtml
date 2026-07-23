@@ -1,5 +1,28 @@
+@model ECommerce.AdminPanel.Models.OrderDetailViewModel
 @{
     ViewData["Title"] = "جزئیات سفارش";
+
+    string GetStatusText(ECommerce.Domain.Enums.OrderStatus status) => status switch
+    {
+        ECommerce.Domain.Enums.OrderStatus.Pending => "در انتظار پرداخت",
+        ECommerce.Domain.Enums.OrderStatus.Paid => "پرداخت شده",
+        ECommerce.Domain.Enums.OrderStatus.Processing => "در حال پردازش",
+        ECommerce.Domain.Enums.OrderStatus.Shipping => "در حال ارسال",
+        ECommerce.Domain.Enums.OrderStatus.Delivered => "تحویل شده",
+        ECommerce.Domain.Enums.OrderStatus.Cancelled => "لغو شده",
+        _ => status.ToString()
+    };
+
+    string GetStatusBadgeClass(ECommerce.Domain.Enums.OrderStatus status) => status switch
+    {
+        ECommerce.Domain.Enums.OrderStatus.Pending => "label-warning",
+        ECommerce.Domain.Enums.OrderStatus.Paid => "label-success",
+        ECommerce.Domain.Enums.OrderStatus.Processing => "label-info",
+        ECommerce.Domain.Enums.OrderStatus.Shipping => "label-primary",
+        ECommerce.Domain.Enums.OrderStatus.Delivered => "label-success",
+        ECommerce.Domain.Enums.OrderStatus.Cancelled => "label-danger",
+        _ => "label-default"
+    };
 }
 
 <div class="row">
@@ -11,7 +34,6 @@
                     <table class="table product-overview">
                         <thead>
                             <tr>
-                                <th>تصویر</th>
                                 <th>نام محصول</th>
                                 <th>قیمت واحد</th>
                                 <th>تعداد</th>
@@ -19,27 +41,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><img src="~/assets/images/gallery/chair.jpg" alt="محصول" width="80"></td>
-                                <td>صندلی گرد</td>
-                                <td>۱۲۵,۰۰۰ تومان</td>
-                                <td>۲</td>
-                                <td>۲۵۰,۰۰۰ تومان</td>
-                            </tr>
-                            <tr>
-                                <td><img src="~/assets/images/gallery/chair2.jpg" alt="محصول" width="80"></td>
-                                <td>صندلی چوبی</td>
-                                <td>۸۵,۰۰۰ تومان</td>
-                                <td>۳</td>
-                                <td>۲۵۵,۰۰۰ تومان</td>
-                            </tr>
-                            <tr>
-                                <td><img src="~/assets/images/gallery/chair3.jpg" alt="محصول" width="80"></td>
-                                <td>میز تحریر</td>
-                                <td>۴۵۰,۰۰۰ تومان</td>
-                                <td>۱</td>
-                                <td>۴۵۰,۰۰۰ تومان</td>
-                            </tr>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.UnitPrice.ToString("N0") تومان</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.TotalPrice.ToString("N0") تومان</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -52,27 +62,38 @@
                 <h4 class="card-title">خلاصه سفارش</h4>
                 <div class="d-flex justify-content-between m-t-20">
                     <span>شماره سفارش:</span>
-                    <span class="font-medium">ORD-854578</span>
+                    <span class="font-medium">#@Model.OrderNumber</span>
                 </div>
                 <div class="d-flex justify-content-between m-t-10">
                     <span>تاریخ سفارش:</span>
-                    <span>۱۵ تیر ۱۴۰۵</span>
+                    <span>@Model.OrderDate.ToString("yyyy/MM/dd")</span>
                 </div>
                 <div class="d-flex justify-content-between m-t-10">
-                    <span>وضعیت پرداخت:</span>
-                    <span class="label label-success font-weight-100">پرداخت شده</span>
-                </div>
-                <div class="d-flex justify-content-between m-t-10">
-                    <span>وضعیت ارسال:</span>
-                    <span class="label label-info font-weight-100">ارسال شده</span>
+                    <span>وضعیت:</span>
+                    <span class="label @GetStatusBadgeClass(Model.Status) font-weight-100">
+                        @GetStatusText(Model.Status)
+                    </span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
-                    <span>جمع کل:</span>
-                    <span class="font-medium text-danger">۹۵۵,۰۰۰ تومان</span>
+                    <span>جمع جزئی:</span>
+                    <span>@Model.SubTotal.ToString("N0") تومان</span>
+                </div>
+                <div class="d-flex justify-content-between m-t-10">
+                    <span>تخفیف:</span>
+                    <span>@Model.DiscountAmount.ToString("N0") تومان</span>
+                </div>
+                <div class="d-flex justify-content-between m-t-10">
+                    <span>هزینه ارسال:</span>
+                    <span>@Model.ShippingCost.ToString("N0") تومان</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span class="font-bold">جمع کل:</span>
+                    <span class="font-medium text-danger">@Model.TotalAmount.ToString("N0") تومان</span>
                 </div>
                 <div class="m-t-20">
-                    <a asp-action="ChangeStatus" asp-route-id="1" class="btn btn-warning btn-block">
+                    <a asp-action="ChangeStatus" asp-route-id="@Model.OrderId" class="btn btn-warning btn-block">
                         <i class="mdi mdi-reload"></i> تغییر وضعیت سفارش
                     </a>
                 </div>
@@ -80,23 +101,23 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">اطلاعات مشتری</h4>
+                <h4 class="card-title">اطلاعات ارسال</h4>
                 <div class="m-t-20">
                     <div class="d-flex align-items-center m-b-10">
                         <i class="mdi mdi-account font-18 text-muted m-l-10"></i>
-                        <span>علی محمدی</span>
+                        <span>@Model.CustomerName</span>
                     </div>
                     <div class="d-flex align-items-center m-b-10">
                         <i class="mdi mdi-phone font-18 text-muted m-l-10"></i>
-                        <span>۰۹۱۲۱۲۳۴۵۶۷</span>
+                        <span>@Model.CustomerPhone</span>
                     </div>
                     <div class="d-flex align-items-center m-b-10">
-                        <i class="mdi mdi-email font-18 text-muted m-l-10"></i>
-                        <span>ali@example.com</span>
+                        <i class="mdi mdi-numeric font-18 text-muted m-l-10"></i>
+                        <span>@Model.CustomerPostalCode</span>
                     </div>
                     <div class="d-flex align-items-start m-b-10">
                         <i class="mdi mdi-map-marker font-18 text-muted m-l-10 m-t-2"></i>
-                        <span>تهران، خیابان ولیعصر، پلاک ۱۲۳، واحد ۴</span>
+                        <span>@Model.CustomerAddress</span>
                     </div>
                 </div>
             </div>

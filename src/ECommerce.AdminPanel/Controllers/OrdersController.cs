@@ -1,32 +1,75 @@
+using ECommerce.AdminPanel.Models;
+using ECommerce.Application.Features.Orders.Queries.GetOrderHistory;
+using ECommerce.Application.Features.Orders.Queries.GetOrderById;
+using ECommerce.Domain.Enums;
+using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.AdminPanel.Controllers;
 
-public class OrdersController : Controller
+public class OrdersController(ISender sender) : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index(CancellationToken ct)
     {
         ViewData["Title"] = "لیست سفارشات";
-        return View();
+        var result = await sender.Send(new GetOrderHistoryQuery(), ct);
+        var orders = result.IsSuccess ? result.Data.Adapt<List<OrderListViewModel>>() : [];
+        return View(orders);
     }
 
-    public IActionResult Details(long id)
+    public async Task<IActionResult> Details(long id, CancellationToken ct)
     {
         ViewData["Title"] = "جزئیات سفارش";
-        return View();
+        var result = await sender.Send(new GetOrderByIdQuery(id), ct);
+        if (result.IsFailure) return RedirectToAction(nameof(Index));
+
+        var dto = result.Data;
+        var model = new OrderDetailViewModel
+        {
+            OrderId = dto!.OrderId,
+            OrderNumber = dto.OrderNumber,
+            Status = dto.Status,
+            OrderDate = dto.OrderDate,
+            SubTotal = dto.SubTotal,
+            DiscountAmount = dto.DiscountAmount,
+            ShippingCost = dto.ShippingCost,
+            TotalAmount = dto.TotalAmount,
+            Items = dto.Items.Select(i => new OrderItemViewModel
+            {
+                ProductName = i.ProductName,
+                UnitPrice = i.UnitPrice,
+                Quantity = i.Quantity,
+                TotalPrice = i.TotalPrice
+            }).ToList(),
+            CustomerName = dto.Shipping.FullName,
+            CustomerPhone = dto.Shipping.PhoneNumber,
+            CustomerAddress = dto.Shipping.Address,
+            CustomerPostalCode = dto.Shipping.PostalCode
+        };
+        return View(model);
     }
 
-    public IActionResult ChangeStatus(long id)
+    public async Task<IActionResult> ChangeStatus(long id, CancellationToken ct)
     {
         ViewData["Title"] = "تغییر وضعیت سفارش";
-        return View();
+        var result = await sender.Send(new GetOrderByIdQuery(id), ct);
+        var model = result.IsSuccess
+            ? new OrderChangeStatusViewModel
+            {
+                Id = result.Data.OrderId,
+                OrderNumber = result.Data.OrderNumber,
+                CurrentStatus = result.Data.Status
+            }
+            : new OrderChangeStatusViewModel { Id = id };
+        return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult ChangeStatus(long id, string paymentStatus, string shippingStatus)
+    public async Task<IActionResult> ChangeStatus(OrderChangeStatusViewModel model, CancellationToken ct)
     {
-        // TODO: Update order status in database
-        return RedirectToAction(nameof(Details), new { id });
+        // TODO: Send ChangeOrderStatusCommand when available in Application layer
+        return RedirectToAction(nameof(Details), new { id = model.Id });
     }
 }

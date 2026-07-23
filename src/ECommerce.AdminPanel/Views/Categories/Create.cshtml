@@ -1,5 +1,7 @@
+@model ECommerce.AdminPanel.Models.CategoryFormViewModel
 @{
     ViewData["Title"] = "افزودن دسته‌بندی";
+    var parentCategories = ViewBag.ParentCategories as List<ParentCategoryDto> ?? [];
 }
 
 <div class="row">
@@ -13,13 +15,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام</label>
-                                    <input type="text" name="Name" class="form-control" />
+                                    <input asp-for="Name" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام انگلیسی</label>
-                                    <input type="text" name="EnglishName" class="form-control" />
+                                    <input asp-for="EnglishName" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -27,23 +29,27 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">توضیحات</label>
-                                    <textarea name="Description" class="form-control" rows="3"></textarea>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">دسته‌بندی والد</label>
-                                    <select name="ParentCategoryId" class="form-control">
+                                    <select asp-for="ParentCategoryId" class="form-control">
                                         <option value="">بدون والد</option>
+                                        @foreach (var cat in parentCategories)
+                                        {
+                                            <option value="@cat.Id">@cat.Name</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">وضعیت</label>
-                                    <select name="IsActive" class="form-control">
+                                    <select asp-for="IsActive" class="form-control">
                                         <option value="true">فعال</option>
                                         <option value="false">غیرفعال</option>
                                     </select>

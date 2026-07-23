@@ -1,5 +1,7 @@
+@model ECommerce.AdminPanel.Models.ArticleFormViewModel
 @{
     ViewData["Title"] = "ویرایش مقاله";
+    var categories = ViewBag.ArticleCategories as List<ECommerce.Application.Dtos.ArticleCategories.GetArticleCategoryResponseDto> ?? [];
 }
 
 <div class="row">
@@ -8,28 +10,58 @@
             <div class="card-body">
                 <h4 class="card-title">ویرایش مقاله</h4>
                 <form asp-action="Edit" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Slug" />
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ExistingImageUrl" />
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">عنوان</label>
-                                    <input type="text" name="Title" class="form-control" />
+                                    <input asp-for="Title" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">عنوان انگلیسی</label>
-                                    <input type="text" name="EnglishTitle" class="form-control" />
+                                    <input asp-for="EnglishTitle" class="form-control" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">دسته‌بندی مقاله</label>
-                                    <select name="ArticleCategoryId" class="form-control">
+                                    <select asp-for="ArticleCategoryId" class="form-control">
                                         <option value="">انتخاب دسته‌بندی</option>
+                                        @foreach (var cat in categories)
+                                        {
+                                            if (Model.ArticleCategoryId == cat.Id)
+                                            {
+                                                <option value="@cat.Id" selected>@cat.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@cat.Id">@cat.Name</option>
+                                            }
+                                        }
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">وضعیت</label>
+                                    <select asp-for="Status" class="form-control">
+                                        <option value="0">پیش‌نویس</option>
+                                        <option value="1">منتشر شده</option>
+                                        <option value="2">بایگانی شده</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">تاریخ انتشار</label>
+                                    <input asp-for="PublishedAt" class="form-control" type="datetime-local" />
                                 </div>
                             </div>
                         </div>
@@ -37,7 +69,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">خلاصه</label>
-                                    <textarea name="Summary" class="form-control" rows="2"></textarea>
+                                    <textarea asp-for="Summary" class="form-control" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -45,40 +77,33 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">محتوای مقاله</label>
-                                    <textarea name="Content" class="form-control" rows="10"></textarea>
+                                    <textarea asp-for="Content" class="form-control" rows="10"></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">تاریخ انتشار</label>
-                                    <input type="datetime" name="PublishedAt" class="form-control" />
+                        @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">تصویر فعلی</label>
+                                        <div>
+                                            <img src="~/@Model.ExistingImageUrl" style="width: 200px; height: 150px; object-fit: cover; border-radius: 5px;" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">وضعیت</label>
-                                    <select name="Status" class="form-control">
-                                        <option value="0">پیش‌نویس</option>
-                                        <option value="1">منتشر شده</option>
-                                        <option value="2">بایگانی شده</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                        }
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">تصویر مقاله</label>
+                                    <label class="control-label">تصویر جدید</label>
                                     <div class="custom-file">
-                                        <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload"
-                                               accept="image/*">
+                                        <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload" accept="image/*">
                                         <label class="custom-file-label" for="imageUpload">انتخاب تصویر جدید</label>
                                     </div>
                                     <div class="mt-2">
-                                        <img id="imagePreview" src="#" alt="پیش‌نمایش"
-                                             style="max-width: 300px; max-height: 200px; display: none; border-radius: 5px;" />
+                                        <img id="imagePreview" src="#" alt="پیش‌نمایش" style="max-width: 300px; max-height: 200px; display: none; border-radius: 5px;" />
                                     </div>
                                 </div>
                             </div>

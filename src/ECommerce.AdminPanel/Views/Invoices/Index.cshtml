@@ -1,0 +1,75 @@
+@model List<ECommerce.AdminPanel.Models.InvoiceListViewModel>
+@{
+    ViewData["Title"] = "لیست صورتحساب‌ها";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">لیست صورتحساب‌ها</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">شماره</th>
+                            <th class="border-top-0">مشتری</th>
+                            <th class="border-top-0">تاریخ</th>
+                            <th class="border-top-0">مبلغ</th>
+                            <th class="border-top-0">وضعیت</th>
+                            <th class="border-top-0">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var invoice in Model)
+                            {
+                                <tr>
+                                    <td><a asp-action="Details" asp-route-id="@invoice.Id" class="font-medium">@invoice.InvoiceNumber</a></td>
+                                    <td>@invoice.CustomerName</td>
+                                    <td>@invoice.InvoiceDate.ToString("yyyy/MM/dd")</td>
+                                    <td>@invoice.TotalAmount.ToString("N0") تومان</td>
+                                    <td>
+                                        @{
+                                            var statusClass = invoice.Status switch
+                                            {
+                                                "Paid" => "label-success",
+                                                "Pending" => "label-warning",
+                                                "Cancelled" => "label-danger",
+                                                _ => "label-default"
+                                            };
+                                            var statusText = invoice.Status switch
+                                            {
+                                                "Paid" => "پرداخت شده",
+                                                "Pending" => "در انتظار",
+                                                "Cancelled" => "لغو شده",
+                                                _ => invoice.Status
+                                            };
+                                        }
+                                        <span class="label @statusClass font-weight-100">@statusText</span>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@invoice.Id" class="text-inverse p-r-10" title="مشاهده">
+                                            <i class="ti-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">
+                                    <i class="mdi mdi-information-outline font-24"></i>
+                                    <p class="m-t-10">داده‌ای یافت نشد</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

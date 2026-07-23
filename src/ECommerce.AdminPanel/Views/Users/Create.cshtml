@@ -1,5 +1,7 @@
+@model ECommerce.AdminPanel.Models.UserFormViewModel
 @{
     ViewData["Title"] = "افزودن کاربر";
+    var roles = ViewBag.Roles as List<dynamic> ?? [];
 }
 
 <div class="row">
@@ -13,37 +15,57 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام و نام خانوادگی</label>
-                                    <input type="text" name="FullName" class="form-control" />
+                                    <input asp-for="FullName" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">ایمیل</label>
-                                    <input type="email" name="Email" class="form-control" />
+                                    <input asp-for="Email" class="form-control" type="email" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">شماره تلفن</label>
-                                    <input type="text" name="PhoneNumber" class="form-control" />
+                                    <input asp-for="PhoneNumber" class="form-control" />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">رمز عبور</label>
-                                    <input type="password" name="Password" class="form-control" />
+                                    <label class="control-label">رمز عبور (اختیاری - در صورت خالی رمز خودکار ارسال می‌شود)</label>
+                                    <input asp-for="Password" class="form-control" type="password" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">نقش</label>
+                                    <select asp-for="RoleName" class="form-control">
+                                        <option value="">انتخاب نقش</option>
+                                        @foreach (dynamic role in roles)
+                                        {
+                                            <option value="@role.Name">@role.DisplayName</option>
+                                        }
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">وضعیت</label>
-                                    <select name="IsActive" class="form-control">
-                                        <option value="true">فعال</option>
-                                        <option value="false">غیرفعال</option>
+                                    <select asp-for="IsActive" class="form-control">
+                                        @if (Model.IsActive)
+                                        {
+                                            <option value="true" selected>فعال</option>
+                                            <option value="false">غیرفعال</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="true">فعال</option>
+                                            <option value="false" selected>غیرفعال</option>
+                                        }
                                     </select>
                                 </div>
                             </div>

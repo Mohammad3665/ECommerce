@@ -61,7 +61,9 @@ public class CategoriesController(ILogger<CategoriesController> logger, ISender 
             Name: request.Name,
             EnglishName: request.EnglishName,
             Description: request.Description,
-            ImageUrl: relativeUrl
+            ImageUrl: relativeUrl,
+            ParentCategoryId: request.ParentCategoryId,
+            IsActive: request.IsActive
         );
 
         var result = await sender.Send(command, cancellationToken);

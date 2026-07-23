@@ -9,8 +9,7 @@ public class GetAllRolesQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<G
         var roles = await unitOfWork.RoleRepository.GetAllAsync<GetAllRolesResponseDto>(
             expression: null,
             order: query => query.OrderBy(r => r.Name),
-            cancellationToken: cancellationToken,
-            includes: r => r.RolePermissions
+            cancellationToken: cancellationToken
         );
         if (roles is null || !roles.Any())
             return new Error("Role.NotFound", "دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);

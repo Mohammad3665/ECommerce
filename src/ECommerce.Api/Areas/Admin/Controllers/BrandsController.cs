@@ -50,7 +50,8 @@ public class BrandsController(ISender sender, ILogger<BrandsController> logger, 
             Name: request.Name,
             EnglishName: request.EnglishName,
             Description: request.Description,
-            LogoImageUrl: relativeUrl
+            LogoImageUrl: relativeUrl,
+            IsActive: request.IsActive
         );
 
         var result = await sender.Send(command, cancellationToken);

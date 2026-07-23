@@ -1,0 +1,39 @@
+@model ECommerce.AdminPanel.Models.ArticleCategoryFormViewModel
+@{
+    ViewData["Title"] = "ویرایش دسته‌بندی مقاله";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">ویرایش دسته‌بندی مقاله</h4>
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Slug" />
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">نام</label>
+                                    <input asp-for="Name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">نام انگلیسی</label>
+                                    <input asp-for="EnglishName" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <i class="mdi mdi-content-save"></i> ذخیره تغییرات
+                        </button>
+                        <a asp-action="Index" class="btn btn-inverse">انصراف</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

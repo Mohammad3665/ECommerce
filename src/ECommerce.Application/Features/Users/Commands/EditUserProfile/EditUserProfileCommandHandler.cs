@@ -1,14 +1,11 @@
 namespace ECommerce.Application.Features.Users.Commands.EditUserProfile;
 
-public class EditUserProfileCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<EditUserProfileCommand, Result>
+public class EditUserProfileCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<EditUserProfileCommand, Result>
 {
     public async Task<Result> Handle(EditUserProfileCommand request, CancellationToken cancellationToken)
     {
-        if (currentUser.UserId is null)
-            return new Error("Auth.Unauthorized", "کاربر احراز هویت نشده است.", ErrorType.Unauthorized);
-
         var user = await unitOfWork.UserRepository.GetAsync(
-            expression: u => u.Id == currentUser.UserId.Value,
+            expression: u => u.Id == request.UserId,
             cancellationToken: cancellationToken
         );
         if (user is null)

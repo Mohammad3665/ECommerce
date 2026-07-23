@@ -5,5 +5,6 @@ public record EditSlideRequestDto(
     string EnglishTitle,
     string Description,
     string Link,
-    int DisplayOrder
+    int DisplayOrder,
+    bool IsActive
 );

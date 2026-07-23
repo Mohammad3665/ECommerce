@@ -5,5 +5,7 @@ public record EditCategoryCommand(
     string Name,
     string EnglishName,
     string? Description,
-    string? ImageUrl
+    string? ImageUrl,
+    long? ParentCategoryId,
+    bool IsActive
 ) : IRequest<Result>;

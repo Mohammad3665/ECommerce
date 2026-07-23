@@ -1,0 +1,78 @@
+@model List<ECommerce.AdminPanel.Models.ArticleCategoryListViewModel>
+@{
+    ViewData["Title"] = "مدیریت دسته‌بندی مقالات";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">مدیریت دسته‌بندی مقالات</h4>
+                    </div>
+                    <div class="ml-auto">
+                        <a asp-action="Create" class="btn btn-purple">
+                            <i class="mdi mdi-folder-plus"></i> افزودن دسته‌بندی
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">نام</th>
+                            <th class="border-top-0">نام انگلیسی</th>
+                            <th class="border-top-0">تعداد مقالات</th>
+                            <th class="border-top-0">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var cat in Model)
+                            {
+                                <tr>
+                                    <td>@cat.Name</td>
+                                    <td>@cat.EnglishName</td>
+                                    <td>@cat.ArticleCount</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-slug="@cat.Slug" class="text-inverse p-r-10" title="ویرایش">
+                                            <i class="ti-marker-alt"></i>
+                                        </a>
+                                        <form asp-action="Delete" asp-route-slug="@cat.Slug" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="text-inverse btn-link p-0" title="حذف" onclick="return confirm('آیا مطمئن هستید؟')">
+                                                <i class="ti-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    <i class="mdi mdi-information-outline font-24"></i>
+                                    <p class="m-t-10">داده‌ای یافت نشد</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

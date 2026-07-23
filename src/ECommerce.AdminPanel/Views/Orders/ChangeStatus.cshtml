@@ -1,37 +1,55 @@
+@model ECommerce.AdminPanel.Models.OrderChangeStatusViewModel
 @{
     ViewData["Title"] = "تغییر وضعیت سفارش";
+    var statusList = Enum.GetValues(typeof(ECommerce.Domain.Enums.OrderStatus))
+        .Cast<ECommerce.Domain.Enums.OrderStatus>()
+        .Select(s => new { Value = s.ToString(), Text = GetStatusText(s) });
+}
+
+@functions {
+    string GetStatusText(ECommerce.Domain.Enums.OrderStatus status) => status switch
+    {
+        ECommerce.Domain.Enums.OrderStatus.Pending => "در انتظار پرداخت",
+        ECommerce.Domain.Enums.OrderStatus.Paid => "پرداخت شده",
+        ECommerce.Domain.Enums.OrderStatus.Processing => "در حال پردازش",
+        ECommerce.Domain.Enums.OrderStatus.Shipping => "در حال ارسال",
+        ECommerce.Domain.Enums.OrderStatus.Delivered => "تحویل شده",
+        ECommerce.Domain.Enums.OrderStatus.Cancelled => "لغو شده",
+        _ => status.ToString()
+    };
+
+    string GetStatusBadgeClass(ECommerce.Domain.Enums.OrderStatus status) => status switch
+    {
+        ECommerce.Domain.Enums.OrderStatus.Pending => "label-warning",
+        ECommerce.Domain.Enums.OrderStatus.Paid => "label-success",
+        ECommerce.Domain.Enums.OrderStatus.Processing => "label-info",
+        ECommerce.Domain.Enums.OrderStatus.Shipping => "label-primary",
+        ECommerce.Domain.Enums.OrderStatus.Delivered => "label-success",
+        ECommerce.Domain.Enums.OrderStatus.Cancelled => "label-danger",
+        _ => "label-default"
+    };
 }
 
 <div class="row">
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">تغییر وضعیت سفارش #ORD-854578</h4>
+                <h4 class="card-title">تغییر وضعیت سفارش #@Model.OrderNumber</h4>
                 <form asp-action="ChangeStatus" method="post">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" name="id" value="1" />
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="OrderNumber" />
+                    <input type="hidden" asp-for="CurrentStatus" />
                     <div class="form-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">وضعیت پرداخت</label>
-                                    <select name="paymentStatus" class="form-control">
-                                        <option value="Pending">در انتظار پرداخت</option>
-                                        <option value="Paid">پرداخت شده</option>
-                                        <option value="Failed">ناموفق</option>
-                                        <option value="Refunded">بازپرداخت شده</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">وضعیت ارسال</label>
-                                    <select name="shippingStatus" class="form-control">
-                                        <option value="Pending">در انتظار ارسال</option>
-                                        <option value="Processing">در حال پردازش</option>
-                                        <option value="Shipped">ارسال شده</option>
-                                        <option value="Delivered">تحویل شده</option>
-                                        <option value="Cancelled">لغو شده</option>
+                                    <label class="control-label">وضعیت جدید</label>
+                                    <select asp-for="NewStatus" class="form-control">
+                                        @foreach (var status in statusList)
+                                        {
+                                            <option value="@status.Value">@status.Text</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -41,7 +59,7 @@
                         <button type="submit" class="btn btn-success">
                             <i class="mdi mdi-content-save"></i> ذخیره تغییرات
                         </button>
-                        <a asp-action="Details" asp-route-id="1" class="btn btn-inverse">انصراف</a>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-inverse">انصراف</a>
                     </div>
                 </form>
             </div>
@@ -54,15 +72,13 @@
                 <div class="m-t-20">
                     <div class="d-flex justify-content-between m-b-15">
                         <span>شماره سفارش:</span>
-                        <span class="font-medium">ORD-854578</span>
-                    </div>
-                    <div class="d-flex justify-content-between m-b-15">
-                        <span>وضعیت پرداخت:</span>
-                        <span class="label label-success font-weight-100">پرداخت شده</span>
+                        <span class="font-medium">#@Model.OrderNumber</span>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <span>وضعیت ارسال:</span>
-                        <span class="label label-info font-weight-100">ارسال شده</span>
+                        <span>وضعیت:</span>
+                        <span class="label @GetStatusBadgeClass(Model.CurrentStatus) font-weight-100">
+                            @GetStatusText(Model.CurrentStatus)
+                        </span>
                     </div>
                 </div>
             </div>

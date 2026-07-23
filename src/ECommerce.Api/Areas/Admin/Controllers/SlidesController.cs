@@ -71,7 +71,8 @@ public class SlidesController(ISender sender, ILogger<SlidesController> logger, 
             Description: request.Description,
             ImageUrl: relativeUrl,
             Link: request.Link,
-            DisplayOrder: request.DisplayOrder
+            DisplayOrder: request.DisplayOrder,
+            IsActive: request.IsActive
         );
         var result = await sender.Send(command, cancellationToken);
         if (result.IsFailure && !string.IsNullOrEmpty(relativeUrl))

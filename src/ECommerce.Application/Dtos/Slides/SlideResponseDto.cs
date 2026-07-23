@@ -5,6 +5,7 @@ namespace ECommerce.Application.Dtos.Slides;
 public record SlideResponseDto(
     long Id,
     string Title,
+    string EnglishTitle,
     string Description,
     string Link,
     int DisplayOrder,

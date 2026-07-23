@@ -1,3 +1,4 @@
+@model ECommerce.AdminPanel.Models.SlideFormViewModel
 @{
     ViewData["Title"] = "ویرایش اسلایدر";
 }
@@ -8,18 +9,20 @@
             <div class="card-body">
                 <h4 class="card-title">ویرایش اسلایدر</h4>
                 <form asp-action="Edit" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ExistingImageUrl" />
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">عنوان</label>
-                                    <input type="text" name="Title" class="form-control" />
+                                    <input asp-for="Title" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">عنوان انگلیسی</label>
-                                    <input type="text" name="EnglishTitle" class="form-control" />
+                                    <input asp-for="EnglishTitle" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -27,7 +30,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">توضیحات</label>
-                                    <textarea name="Description" class="form-control" rows="3"></textarea>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -35,29 +38,50 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">لینک</label>
-                                    <input type="text" name="Link" class="form-control" />
+                                    <input asp-for="Link" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">ترتیب نمایش</label>
-                                    <input type="number" name="DisplayOrder" class="form-control" value="0" />
+                                    <input asp-for="DisplayOrder" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">وضعیت</label>
-                                    <select name="IsActive" class="form-control">
-                                        <option value="true">فعال</option>
-                                        <option value="false">غیرفعال</option>
+                                    <select asp-for="IsActive" class="form-control">
+                                        @if (Model.IsActive)
+                                        {
+                                            <option value="true" selected>فعال</option>
+                                            <option value="false">غیرفعال</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="true">فعال</option>
+                                            <option value="false" selected>غیرفعال</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
                         </div>
+                        @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">تصویر فعلی</label>
+                                        <div>
+                                            <img src="~/@Model.ExistingImageUrl" style="width: 200px; height: 120px; object-fit: cover; border-radius: 5px;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">تصویر اسلایدر</label>
+                                    <label class="control-label">تصویر جدید</label>
                                     <div class="custom-file">
                                         <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload" accept="image/*">
                                         <label class="custom-file-label" for="imageUpload">انتخاب تصویر جدید</label>

@@ -8,6 +8,7 @@ namespace ECommerce.Application.Dtos.Articles;
 
 public record GetAdminArticleResponseDto(
     long Id,
+    long ArticleCategoryId,
     string Slug,
     string Title,
     string EnglishTitle,

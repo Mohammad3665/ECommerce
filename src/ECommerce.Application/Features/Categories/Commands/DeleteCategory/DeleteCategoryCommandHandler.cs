@@ -1,4 +1,5 @@
 using ECommerce.Domain.Entities.Product.Events.Category;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Features.Categories.Commands.DeleteCategory;
 
@@ -27,9 +28,16 @@ public class DeleteCategoryCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         if (!string.IsNullOrEmpty(imagePathToDelete))
             category.AddDomainEvent(new CategoryDeletedDomainEvent(imagePathToDelete));
 
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-            return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
+        try
+        {
+            var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+            if (saveResult.IsFailure)
+                return new Error("Category.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
+        }
+        catch (DbUpdateException)
+        {
+            return new Error("Category.HasDependencies", "این دسته‌بندی دارای وابستگی‌هایی است و قابل حذف نیست.", ErrorType.Validation);
+        }
 
         return Result.Success();
     }

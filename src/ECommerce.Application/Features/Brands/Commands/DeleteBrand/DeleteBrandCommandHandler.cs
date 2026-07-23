@@ -1,4 +1,5 @@
 using ECommerce.Domain.Entities.Product.Events.Brand;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Features.Brands.Commands.DeleteBrand;
 
@@ -26,9 +27,16 @@ public class DeleteBrandCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler
 
         brand.AddDomainEvent(new BrandDeletedDomainEvent(imageUrlToRemove));
 
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-            return new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
+        try
+        {
+            var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+            if (saveResult.IsFailure)
+                return new Error("Brand.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
+        }
+        catch (DbUpdateException)
+        {
+            return new Error("Brand.HasDependencies", "حذف این برند امکان‌پذیر نیست، زیرا محصولاتی در سیستم به این برند متصل هستند.", ErrorType.Validation);
+        }
 
         return Result.Success();
     }

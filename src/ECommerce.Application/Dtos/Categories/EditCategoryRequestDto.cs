@@ -4,5 +4,6 @@ public record EditCategoryRequestDto(
     string Name,
     string EnglishName,
     string Description,
-    long? ParentCategoryId
+    long? ParentCategoryId,
+    bool IsActive
 );

@@ -1,5 +1,7 @@
+@model ECommerce.AdminPanel.Models.RoleFormViewModel
 @{
     ViewData["Title"] = "افزودن نقش";
+    var permissionsByModule = ViewBag.PermissionsByModule as Dictionary<string, List<PermissionViewModel>> ?? new();
 }
 
 <div class="row">
@@ -10,33 +12,24 @@
                 <form asp-action="Create">
                     <div class="form-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">نام نقش</label>
-                                    <input type="text" name="Name" class="form-control" />
+                                    <label class="control-label">نام سیستمی (انگلیسی)</label>
+                                    <input asp-for="Name" class="form-control" placeholder="مثال: product-manager" />
+                                    <small class="form-text text-muted">فقط حروف انگلیسی و عدد و خط تیره</small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">نام نمایشی</label>
-                                    <input type="text" name="DisplayName" class="form-control" />
+                                    <input asp-for="DisplayName" class="form-control" placeholder="مثال: مدیر محصولات" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">سطح</label>
-                                    <input type="number" name="Level" class="form-control" value="0" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">نقش پیش‌فرض</label>
-                                    <select name="IsDefault" class="form-control">
-                                        <option value="false">خیر</option>
-                                        <option value="true">بله</option>
-                                    </select>
+                                    <label class="control-label">سطح دسترسی</label>
+                                    <input asp-for="Level" class="form-control" type="number" />
+                                    <small class="form-text text-muted">عدد بالاتر = دسترسی بیشتر</small>
                                 </div>
                             </div>
                         </div>
@@ -44,9 +37,50 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">توضیحات</label>
-                                    <textarea name="Description" class="form-control" rows="3"></textarea>
+                                    <textarea asp-for="Description" class="form-control" rows="2"></textarea>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input asp-for="GrantAllPermissions" class="custom-control-input" id="grantAll" onchange="toggleAllPermissions(this)">
+                                        <label class="custom-control-label" for="grantAll"><strong>اعطای تمام دسترسی‌ها</strong></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="permissionsSection">
+                            @foreach (var module in permissionsByModule.Keys.OrderBy(k => k))
+                            {
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0">
+                                            <i class="mdi mdi-lock"></i> @module
+                                        </h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row">
+                                            @foreach (var perm in permissionsByModule[module])
+                                            {
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" name="SelectedPermissionIds" value="@perm.Id"
+                                                               class="custom-control-input permission-cb" id="perm_@perm.Id"
+                                                               @(Model.SelectedPermissionIds != null && Model.SelectedPermissionIds.Contains(perm.Id) ? "checked" : "")>
+                                                        <label class="custom-control-label" for="perm_@perm.Id">
+                                                            <small>@perm.Name</small>
+                                                            <br />
+                                                            <small class="text-muted">@perm.Description</small>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                     <div class="form-actions">
@@ -60,3 +94,12 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function toggleAllPermissions(checkbox) {
+            var cbs = document.querySelectorAll('.permission-cb');
+            cbs.forEach(function (cb) { cb.checked = checkbox.checked; });
+        }
+    </script>
+}

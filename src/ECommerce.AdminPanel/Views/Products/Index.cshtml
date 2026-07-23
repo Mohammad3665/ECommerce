@@ -1,5 +1,16 @@
+@model List<ECommerce.AdminPanel.Models.ProductListViewModel>
 @{
     ViewData["Title"] = "لیست محصولات";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
 
 <div class="row">
@@ -22,37 +33,63 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-4 col-md-6">
-        <div class="card" style="overflow: hidden;">
-            <div style="height: 200px; overflow: hidden; background: #f1f2f3; display: flex; align-items: center; justify-content: center;">
-                <img src="~/assets/images/background/img5.png" alt="محصول" style="width: 100%; height: 200px; object-fit: cover;">
-            </div>
-            <div class="card-body">
-                <h5 class="card-title m-b-0">نام محصول</h5>
-                <div class="d-flex align-items-center m-t-10">
-                    <span class="badge badge-info">دسته‌بندی</span>
-                    <span class="badge badge-warning m-l-5">برند</span>
-                </div>
-                <div class="d-flex align-items-center m-t-15">
-                    <h3 class="m-b-0 text-danger font-light" style="direction: rtl;">۱۲۵,۰۰۰ <small class="text-muted font-14">تومان</small></h3>
-                    <div class="ml-auto">
-                        <span class="badge badge-pill badge-success">موجود</span>
+    @if (Model.Any())
+    {
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card" style="overflow: hidden;">
+                    <div style="height: 200px; overflow: hidden; background: #f1f2f3; display: flex; align-items: center; justify-content: center;">
+                        @if (!string.IsNullOrEmpty(product.MainImageUrl))
+                        {
+                            <img src="~/@product.MainImageUrl" alt="@product.Name" style="width: 100%; height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <i class="mdi mdi-package-variant text-muted" style="font-size: 48px;"></i>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title m-b-0">@product.Name</h5>
+                        <div class="d-flex align-items-center m-t-10">
+                            <span class="badge badge-info">@product.CategoryName</span>
+                            <span class="badge badge-warning m-l-5">@product.BrandName</span>
+                        </div>
+                        <div class="d-flex align-items-center m-t-15">
+                            <h3 class="m-b-0 text-danger font-light" style="direction: rtl;">@product.Price.ToString("N0") <small class="text-muted font-14">تومان</small></h3>
+                            <div class="ml-auto">
+                                <span class="badge badge-pill @(product.IsInStock ? "badge-success" : "badge-danger")">
+                                    @(product.IsInStock ? "موجود" : "ناموجود")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body border-top" style="padding: 0.75rem 1.25rem;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-action="Edit" asp-route-slug="@product.Slug" class="btn btn-sm btn-outline-warning">
+                                <i class="mdi mdi-lead-pencil"></i> ویرایش
+                            </a>
+                            <form asp-action="Delete" asp-route-slug="@product.Slug" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('آیا مطمئن هستید؟')">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body border-top" style="padding: 0.75rem 1.25rem;">
-                <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">موجودی: ۵۰ عدد</small>
-                    <div>
-                        <a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-outline-warning" title="ویرایش">
-                            <i class="mdi mdi-lead-pencil"></i>
-                        </a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-danger" title="حذف">
-                            <i class="mdi mdi-delete"></i>
-                        </a>
-                    </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center text-muted">
+                    <i class="mdi mdi-information-outline font-24"></i>
+                    <p class="m-t-10">داده‌ای یافت نشد</p>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>

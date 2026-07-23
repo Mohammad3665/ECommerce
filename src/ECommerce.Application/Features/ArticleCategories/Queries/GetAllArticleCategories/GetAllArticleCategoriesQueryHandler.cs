@@ -9,7 +9,8 @@ public class GetAllArticleCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequ
         var articleCategories = await unitOfWork.ArticleCategoryRepository.GetAllAsync<GetArticleCategoryResponseDto>(
             expression: null,
             order: query => query.OrderBy(ac => ac.Name),
-            cancellationToken: cancellationToken
+            cancellationToken: cancellationToken,
+            includes: ac => ac.Articles
         );
 
         return articleCategories is null || !articleCategories.Any() ?

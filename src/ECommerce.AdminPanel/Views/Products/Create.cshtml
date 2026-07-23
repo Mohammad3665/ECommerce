@@ -1,5 +1,8 @@
+@model ECommerce.AdminPanel.Models.ProductFormViewModel
 @{
     ViewData["Title"] = "افزودن محصول";
+    var brands = ViewBag.Brands as dynamic ?? new List<dynamic>();
+    var categories = ViewBag.Categories as dynamic ?? new List<dynamic>();
 }
 
 <div class="row">
@@ -13,13 +16,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام محصول</label>
-                                    <input type="text" name="Name" class="form-control" />
+                                    <input asp-for="Name" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام انگلیسی</label>
-                                    <input type="text" name="EnglishName" class="form-control" />
+                                    <input asp-for="EnglishName" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -27,13 +30,13 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">قیمت</label>
-                                    <input type="number" name="Price" class="form-control" step="0.01" />
+                                    <input asp-for="Price" class="form-control" step="0.01" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">موجودی</label>
-                                    <input type="number" name="StockQuantity" class="form-control" value="0" />
+                                    <input asp-for="StockQuantity" class="form-control" value="0" />
                                 </div>
                             </div>
                         </div>
@@ -41,16 +44,24 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">دسته‌بندی</label>
-                                    <select name="CategoryId" class="form-control">
+                                    <select asp-for="CategoryId" class="form-control">
                                         <option value="">انتخاب دسته‌بندی</option>
+                                        @foreach (dynamic cat in categories)
+                                        {
+                                            <option value="@cat.Id">@cat.Name</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">برند</label>
-                                    <select name="BrandId" class="form-control">
+                                    <select asp-for="BrandId" class="form-control">
                                         <option value="">انتخاب برند</option>
+                                        @foreach (dynamic brand in brands)
+                                        {
+                                            <option value="@brand.Id">@brand.Name</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -59,7 +70,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">توضیحات کوتاه</label>
-                                    <textarea name="ShortDescription" class="form-control" rows="2"></textarea>
+                                    <textarea asp-for="ShortDescription" class="form-control" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -67,21 +78,46 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">توضیحات کامل</label>
-                                    <textarea name="Description" class="form-control" rows="5"></textarea>
+                                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">تصویر محصول</label>
+                                    <label class="control-label">تصاویر محصول</label>
                                     <div class="custom-file">
-                                        <input type="file" name="ImageFile" class="custom-file-input" id="imageUpload" accept="image/*">
-                                        <label class="custom-file-label" for="imageUpload">انتخاب تصویر</label>
+                                        <input type="file" name="ImageFiles" class="custom-file-input" id="imageUpload"
+                                               accept="image/*" multiple>
+                                        <label class="custom-file-label" for="imageUpload">انتخاب تصاویر (امکان انتخاب چند تصویر)</label>
                                     </div>
-                                    <div class="mt-2">
-                                        <img id="imagePreview" src="#" alt="پیش‌نمایش" style="max-width: 300px; max-height: 200px; display: none; border-radius: 5px;" />
+                                    <div class="mt-2 d-flex flex-wrap" id="imagePreviewContainer">
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">مشخصات فنی</label>
+                                    <div id="specificationsContainer">
+                                        <div class="row specification-row mb-2">
+                                            <div class="col-md-5">
+                                                <input type="text" name="Specifications[0].Key" class="form-control" placeholder="نام مشخصه (مثلاً رنگ)" />
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" name="Specifications[0].Value" class="form-control" placeholder="مقدار (مثلاً قرمز)" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeSpec(this)">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-info mt-2" onclick="addSpec()">
+                                        <i class="mdi mdi-plus"></i> افزودن مشخصه
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -100,16 +136,33 @@
 
 @section Scripts {
     <script>
+        var specIndex = 1;
+        function addSpec() {
+            var container = document.getElementById('specificationsContainer');
+            var row = document.createElement('div');
+            row.className = 'row specification-row mb-2';
+            row.innerHTML = '<div class="col-md-5"><input type="text" name="Specifications[' + specIndex + '].Key" class="form-control" placeholder="نام مشخصه (مثلاً رنگ)" /></div>' +
+                '<div class="col-md-5"><input type="text" name="Specifications[' + specIndex + '].Value" class="form-control" placeholder="مقدار (مثلاً قرمز)" /></div>' +
+                '<div class="col-md-2"><button type="button" class="btn btn-danger btn-sm" onclick="removeSpec(this)"><i class="mdi mdi-delete"></i></button></div>';
+            container.appendChild(row);
+            specIndex++;
+        }
+        function removeSpec(btn) {
+            btn.closest('.specification-row').remove();
+        }
         document.getElementById('imageUpload').addEventListener('change', function (e) {
-            var preview = document.getElementById('imagePreview');
-            var file = e.target.files[0];
-            if (file) {
+            var container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = '';
+            var files = e.target.files;
+            for (var i = 0; i < files.length; i++) {
                 var reader = new FileReader();
                 reader.onload = function (event) {
-                    preview.src = event.target.result;
-                    preview.style.display = 'block';
+                    var img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.style.cssText = 'width: 150px; height: 150px; object-fit: cover; border-radius: 5px; margin: 5px;';
+                    container.appendChild(img);
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(files[i]);
             }
         });
     </script>

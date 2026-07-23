@@ -9,7 +9,8 @@ public class GetAllCategoriesQueryHandler(IUnitOfWork unitOfWork) : IRequestHand
         var categories = await unitOfWork.CategoryRepository.GetAllAsync<GetCategoryResponseDto>(
             expression: null,
             order: query => query.OrderBy(c => c.Name),
-            cancellationToken: cancellationToken
+            cancellationToken: cancellationToken,
+            includes: c => c.Products
         );
         if (categories is null || !categories.Any())
             return new Error("Category.NotFound", "هیچ دیتایی جهت نمایش وجود ندارد.", ErrorType.NotFound);

@@ -1,3 +1,4 @@
+@model ECommerce.AdminPanel.Models.BrandFormViewModel
 @{
     ViewData["Title"] = "ویرایش برند";
 }
@@ -8,18 +9,20 @@
             <div class="card-body">
                 <h4 class="card-title">ویرایش برند</h4>
                 <form asp-action="Edit" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Slug" />
+                    <input type="hidden" asp-for="ExistingLogoUrl" />
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام برند</label>
-                                    <input type="text" name="Name" class="form-control" />
+                                    <input asp-for="Name" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">نام انگلیسی</label>
-                                    <input type="text" name="EnglishName" class="form-control" />
+                                    <input asp-for="EnglishName" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -27,25 +30,38 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">توضیحات</label>
-                                    <textarea name="Description" class="form-control" rows="3"></textarea>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">وضعیت</label>
-                                    <select name="IsActive" class="form-control">
+                                    <select asp-for="IsActive" class="form-control">
                                         <option value="true">فعال</option>
                                         <option value="false">غیرفعال</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
+                        @if (!string.IsNullOrEmpty(Model.ExistingLogoUrl))
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">لوگوی فعلی</label>
+                                        <div>
+                                            <img src="~/@Model.ExistingLogoUrl" style="width: 150px; height: 150px; object-fit: cover; border-radius: 5px;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="control-label">لوگوی برند</label>
+                                    <label class="control-label">لوگوی جدید</label>
                                     <div class="custom-file">
                                         <input type="file" name="LogoFile" class="custom-file-input" id="imageUpload" accept="image/*">
                                         <label class="custom-file-label" for="imageUpload">انتخاب لوگوی جدید</label>

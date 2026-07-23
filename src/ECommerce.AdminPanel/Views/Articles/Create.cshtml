@@ -1,5 +1,7 @@
+@model ECommerce.AdminPanel.Models.ArticleFormViewModel
 @{
     ViewData["Title"] = "افزودن مقاله";
+    var categories = ViewBag.ArticleCategories as List<ECommerce.Application.Dtos.ArticleCategories.GetArticleCategoryResponseDto> ?? [];
 }
 
 <div class="row">
@@ -13,23 +15,43 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">عنوان</label>
-                                    <input type="text" name="Title" class="form-control" />
+                                    <input asp-for="Title" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">عنوان انگلیسی</label>
-                                    <input type="text" name="EnglishTitle" class="form-control" />
+                                    <input asp-for="EnglishTitle" class="form-control" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">دسته‌بندی مقاله</label>
-                                    <select name="ArticleCategoryId" class="form-control">
+                                    <select asp-for="ArticleCategoryId" class="form-control">
                                         <option value="">انتخاب دسته‌بندی</option>
+                                        @foreach (var cat in categories)
+                                        {
+                                            <option value="@cat.Id">@cat.Name</option>
+                                        }
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">وضعیت</label>
+                                    <select asp-for="Status" class="form-control">
+                                        <option value="0">پیش‌نویس</option>
+                                        <option value="1">منتشر شده</option>
+                                        <option value="2">بایگانی شده</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">تاریخ انتشار</label>
+                                    <input asp-for="PublishedAt" class="form-control" type="datetime-local" />
                                 </div>
                             </div>
                         </div>
@@ -37,7 +59,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">خلاصه</label>
-                                    <textarea name="Summary" class="form-control" rows="2"></textarea>
+                                    <textarea asp-for="Summary" class="form-control" rows="2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -45,25 +67,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">محتوای مقاله</label>
-                                    <textarea name="Content" class="form-control" rows="10"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">تاریخ انتشار</label>
-                                    <input type="datetime" name="PublishedAt" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label">وضعیت</label>
-                                    <select name="Status" class="form-control">
-                                        <option value="0">پیش‌نویس</option>
-                                        <option value="1">منتشر شده</option>
-                                        <option value="2">بایگانی شده</option>
-                                    </select>
+                                    <textarea asp-for="Content" class="form-control" rows="10"></textarea>
                                 </div>
                             </div>
                         </div>

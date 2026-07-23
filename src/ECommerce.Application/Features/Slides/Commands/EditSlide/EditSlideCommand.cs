@@ -7,5 +7,6 @@ public record EditSlideCommand(
     string Description,
     string? ImageUrl,
     string Link,
-    int DisplayOrder
+    int DisplayOrder,
+    bool IsActive
 ) : IRequest<Result>;

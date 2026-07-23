@@ -1,5 +1,16 @@
+@model List<ECommerce.AdminPanel.Models.ArticleListViewModel>
 @{
     ViewData["Title"] = "مدیریت مقالات";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
 
 <div class="row">
@@ -22,32 +33,81 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-4 col-md-6">
-        <div class="card" style="overflow: hidden;">
-            <div style="height: 180px; overflow: hidden; background: #f1f2f3; display: flex; align-items: center; justify-content: center;">
-                <img src="~/assets/images/background/img5.png" alt="مقاله" style="width: 100%; height: 180px; object-fit: cover;">
-            </div>
-            <div class="card-body">
-                <h5 class="card-title m-b-0">عنوان مقاله</h5>
-                <div class="d-flex align-items-center m-t-10">
-                    <span class="badge badge-info">دسته‌بندی مقاله</span>
+    @if (Model.Any())
+    {
+        @foreach (var article in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card" style="overflow: hidden;">
+                    <div style="height: 180px; overflow: hidden; background: #f1f2f3; display: flex; align-items: center; justify-content: center;">
+                        @if (!string.IsNullOrEmpty(article.ImageUrl))
+                        {
+                            <img src="~/@article.ImageUrl" alt="@article.Title" style="width: 100%; height: 180px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <i class="mdi mdi-file-document text-muted" style="font-size: 48px;"></i>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title m-b-0">@article.Title</h5>
+                        <div class="d-flex align-items-center m-t-10">
+                            @if (!string.IsNullOrEmpty(article.CategoryName))
+                            {
+                                <span class="badge badge-info">@article.CategoryName</span>
+                            }
+                        </div>
+                        <p class="text-muted m-t-10 m-b-0" style="font-size: 13px;">@article.Summary</p>
+                        <div class="d-flex justify-content-between align-items-center m-t-15">
+                            <div>
+                                @{
+                                    var statusText = article.Status switch
+                                    {
+                                        0 => "پیش‌نویس",
+                                        1 => "منتشر شده",
+                                        2 => "بایگانی شده",
+                                        _ => "نامشخص"
+                                    };
+                                    var statusClass = article.Status switch
+                                    {
+                                        0 => "badge-warning",
+                                        1 => "badge-success",
+                                        2 => "badge-secondary",
+                                        _ => "badge-default"
+                                    };
+                                }
+                                <span class="badge @statusClass badge-pill">@statusText</span>
+                                @if (article.PublishedAt.HasValue)
+                                {
+                                    <span class="text-muted font-12 m-l-10">@article.PublishedAt.Value.ToString("yyyy/MM/dd")</span>
+                                }
+                            </div>
+                            <div>
+                                <a asp-action="Edit" asp-route-slug="@article.Slug" class="btn btn-sm btn-outline-warning" title="ویرایش">
+                                    <i class="mdi mdi-lead-pencil"></i>
+                                </a>
+                                <form asp-action="Delete" asp-route-slug="@article.Slug" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف" onclick="return confirm('آیا مطمئن هستید؟')">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-muted m-t-10 m-b-0" style="font-size: 13px;">خلاصه مقاله اینجا قرار می‌گیرد...</p>
-                <div class="d-flex justify-content-between align-items-center m-t-15">
-                    <div>
-                        <span class="badge badge-pill badge-success">منتشر شده</span>
-                        <span class="text-muted font-12 m-l-10">۱۵ تیر ۱۴۰۵</span>
-                    </div>
-                    <div>
-                        <a asp-action="Edit" asp-route-id="1" class="btn btn-sm btn-outline-warning" title="ویرایش">
-                            <i class="mdi mdi-lead-pencil"></i>
-                        </a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-danger" title="حذف">
-                            <i class="mdi mdi-delete"></i>
-                        </a>
-                    </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center text-muted">
+                    <i class="mdi mdi-information-outline font-24"></i>
+                    <p class="m-t-10">داده‌ای یافت نشد</p>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>

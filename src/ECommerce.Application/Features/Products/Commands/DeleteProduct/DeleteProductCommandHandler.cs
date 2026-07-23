@@ -1,4 +1,5 @@
 using ECommerce.Domain.Entities.Product.Events.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Features.Products.Commands.DeleteProduct;
 
@@ -23,9 +24,16 @@ public class DeleteProductCommandHandler(IUnitOfWork unitOfWork) : IRequestHandl
 
         product.AddDomainEvent(new ProductDeletedDomainEvent(imagePathsToRemove));
 
-        var saveResult = await unitOfWork.SaveAsync(cancellationToken);
-        if (saveResult.IsFailure)
-            return new Error("Product.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
+        try
+        {
+            var saveResult = await unitOfWork.SaveAsync(cancellationToken);
+            if (saveResult.IsFailure)
+                return new Error("Product.Failed", "خطای پیش‌بینی نشده‌ای رخ داد.", ErrorType.Unexpected);
+        }
+        catch (DbUpdateException)
+        {
+            return new Error("Product.HasOrders", "این محصول در سفارشات مشتریان استفاده شده و قابل حذف نیست.", ErrorType.Validation);
+        }
 
         return Result.Success();
     }
